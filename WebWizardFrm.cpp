@@ -666,7 +666,7 @@ REFRESH_TYPE ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 					"\tlayout.css\n"
 					"\t==========\n"
 					"\tcreated with DocMan\n"
-					"\t(c)2013-2014 by CRESD GmbH\n"
+					"\t(c)2013-2024 by Martin Gäckler\n"
 					"\tDO NOT EDIT\n"
 				"*/\n";
 

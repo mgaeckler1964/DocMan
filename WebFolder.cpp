@@ -133,7 +133,7 @@ inline void setupCopyrightNote( void )
 		copyrightNote =
 			(STRING)"\nCreated with DocMan " + AboutOpenSSLForm->getVersionString() + ".\n" +
 			AboutOpenSSLForm->getLegalCopyRight() + ".\n"
-			"http://www.cresd.de/\n"
+			"https://www.gaeckler.at/\n"
 			"====================\n"
 			"DO NOT EDIT\n"
 		;

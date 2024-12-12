@@ -173,13 +173,7 @@ static ACTION_GENERATE			theGenerateAction;
 // ----- class static data --------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-
 STRING THE_FILE::s_externalStorage;
-/* TODO :
-externalStoragePath
-Saturn: \\judith\cresd\pdoxdb\DocMan\ExternalStorage
-Merkur: C:\CRESD\PdoxDB\DocMan\ExternalStorage */
-
 
 // --------------------------------------------------------------------- //
 // ----- prototypes ---------------------------------------------------- //

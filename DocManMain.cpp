@@ -88,7 +88,7 @@ using namespace vcl;
 #pragma resource "*.dfm"
 TDocManMainForm *DocManMainForm;
 //---------------------------------------------------------------------------
-char registryKey[] = "\\Software\\CRESD\\DocMan";
+char registryKey[] = "\\Software\\gak\\DocMan";
 //---------------------------------------------------------------------------
 static int factoryCompare(
 	const FACTORY_BASE * e1,

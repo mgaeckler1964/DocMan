@@ -1,6 +1,5 @@
 // DocManService.h
 // Generated from file http://judith/DocMan/service.php?wsdl
-//(c) 2008-2014 by CRESD GmbH, Munich, http://www.cresd.de
 
 #ifndef SOAP_DocManService_H
 #define SOAP_DocManService_H

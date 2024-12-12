@@ -67,8 +67,8 @@
 // ----- constants ----------------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-#define XMLNS_DOCMAN	"http://www.cresd.com/XSL/DocMan"
-#define XMLNS_DMCONTENT	"http://www.cresd.com/XML/DocMan"
+#define XMLNS_DOCMAN	"http://www.gaeckler.at/XSL/DocMan"
+#define XMLNS_DMCONTENT	"http://www.gaeckler.at/XML/DocMan"
 
 #define FLAGS_PRE_EXPORT	1
 #define FLAGS_SINGLE_FILE	2

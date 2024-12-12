@@ -1,6 +1,5 @@
 // DocManService.cpp
 // Generated from file http://judith/DocMan/service.php?wsdl
-//(c) 2008-2014 by CRESD GmbH, Munich, http://www.cresd.de
 
 #include <gak/numericString.h>
 #include "DocManService.h"
