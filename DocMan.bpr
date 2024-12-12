@@ -132,7 +132,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=7
-Build=351
+Build=352
 Debug=0
 PreRelease=0
 Special=0
@@ -142,45 +142,47 @@ Locale=1033
 CodePage=1252
 
 [Version Info Keys]
-CompanyName=CRESD GmbH
+CompanyName=Martin Gäckler
 FileDescription=Source Code Control, Document Management, Content Management
-FileVersion=1.0.7.351
+FileVersion=1.0.7.352
 InternalName=DocMan
-LegalCopyright=(c) 2011-2014 by CRESD GmbH / Munich / Germany
+LegalCopyright=(c) 2011-2014 by Martin Gäckler / Linz / Austria
 LegalTrademarks=
 OriginalFilename=
 ProductName=DocMan
 ProductVersion=1.0.0.0
-Comments=http://www.cresd.de/
+Comments=https://www.gaeckler.at/
 
 [HistoryLists\hlIncludePath]
-Count=12
-Item0=..\GAKLIB\CTOOLS;..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;c:\openssl\include\;c:\Programme\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
-Item1=..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;c:\openssl\include\;c:\Programme\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
-Item2=..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;;c:\openssl\include\;c:\Programme\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
-Item3=..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item4=C:\Windows\system32\;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item5=C:\Windows\system32;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item6=..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item7=e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item8=e:\CBuilder5\Projects;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item9=..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item10=..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
-Item11=C:\Windows\system32;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Count=13
+Item0=..\XML_Edit;..\GAKLIB\CTOOLS;..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;c:\openssl\include\;c:\Programme\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item1=..\GAKLIB\CTOOLS;..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;c:\openssl\include\;c:\Programme\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item2=..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;c:\openssl\include\;c:\Programme\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item3=..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;;c:\openssl\include\;c:\Programme\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item4=..\GAKLIB\VCL_TOOLS;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item5=C:\Windows\system32\;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item6=C:\Windows\system32;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item7=..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item8=e:\CBuilder5\Projects\;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item9=e:\CBuilder5\Projects;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item10=..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item11=..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
+Item12=C:\Windows\system32;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;E:\OPENSSL\include\;C:\Program Files (x86)\OpenSSL\include\
 
 [HistoryLists\hlLibraryPath]
-Count=11
-Item0=..\GAKLIB\CTOOLS;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item1=..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item2=C:\Windows\system32\;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item3=C:\Windows\system32;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item4=e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item5=e:\CBuilder5\Projects;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item6=..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item7=e:\CBuilder5\Projects;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item8=..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item9=$(BCB)\lib_uk\obj;$(BCB)\lib_uk
-Item10=C:\Windows\system32;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Count=12
+Item0=..\XML_Edit;..\GAKLIB\CTOOLS;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item1=..\GAKLIB\CTOOLS;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item2=..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item3=C:\Windows\system32\;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item4=C:\Windows\system32;..\GAKLIB\VCL_TOOLS;e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item5=e:\CBuilder5\Projects\;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item6=e:\CBuilder5\Projects;..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item7=..\..\object\DocMan;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item8=e:\CBuilder5\Projects;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item9=..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item10=$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item11=C:\Windows\system32;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

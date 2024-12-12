@@ -1,29 +1,21 @@
 /*
-		Project:		
+		Project:		DocMan
 		Module:			
 		Description:	
 		Author:			Martin Gäckler
-		Address:		Grafrather Str 8, D-81245 München
-		Phone:			+49 - 89 - 65 30 95 63
-		Web:			http://www.cresd.de/
+		Address:		Hofmannsthalweg 14, A-4030 Linz
+		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2014 CRESD GmbH
+		Copyright:		(c) 1988-2024 Martin Gäckler
 
-		Sie dürfen die Software für private Zwecke oder, wenn die hiermit
-		erstellte Software ebenfalls kostenlos bereitgestellt wird,
-		kostenlos nutzen. Eine Nutzung mit Gewinnerzielungsabsicht, eine
-		anderweitige gewerbliche Nutung oder eine Weitergabe der Quellen
-		ist generell untersagt und wird zivilrechtlich verfolgt.
+		This program is free software: you can redistribute it and/or modify  
+		it under the terms of the GNU General Public License as published by  
+		the Free Software Foundation, version 3.
 
-		You may use this software for private, non-comercial projects,
-		only. Any distribution of the source is NOT allowed.
+		You should have received a copy of the GNU General Public License 
+		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		Die Software wird ohne GEWÄHRLEISTUNG vertrieben. Das Risiko bei
-		der Anwendung der Software liegt voll und ganz bei Ihnen. Es gibt
-		auch keinerlei Garantie, daß die Software einen bestimmten Zweck
-		erfüllt, jemals erfüllt hat oder irgendwann einmal erfüllen wird.
-
-		THIS SOFTWARE IS PROVIDED BY CRESD GmbH, Germany, Munich ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -35,14 +27,6 @@
 		OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 		OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 		SUCH DAMAGE.
-
-		Für eine kommerzielle Lizenz wenden Sie sich bitte an
-
-					support@cresd.de.
-
-		For a commercial licence, please, contact
-
-					support@cresd.de
 */
 
 #ifndef DOC_CRYPTO_FILE_H

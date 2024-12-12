@@ -58,7 +58,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=7
-Build=39
+Build=40
 Debug=0
 PreRelease=0
 Special=0
@@ -68,16 +68,16 @@ Locale=1033
 CodePage=1252
 
 [Version Info Keys]
-CompanyName=CRESD GmbH
+CompanyName=Martin Gäckler
 FileDescription=DocMan Databae Administration
-FileVersion=1.0.7.39
+FileVersion=1.0.7.40
 InternalName=DOCMANDB
-LegalCopyright=(c) 2011-2014 by CRESD GmbH
+LegalCopyright=(c) 2011-2014 by Martin Gäckler
 LegalTrademarks=
 OriginalFilename=docManDb.exe
 ProductName=DocMan
 ProductVersion=1.0.0.0
-Comments=http://www.cresd.de/
+Comments=https://www.gaeckler.at/
 
 [HistoryLists\hlIncludePath]
 Count=6
