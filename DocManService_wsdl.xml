@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<definitions xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="urn:CresdDocMan" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:CresdDocMan">
+<types>
+<xsd:schema targetNamespace="urn:CresdDocMan">
+<xsd:complexType name="UserRecord">
+<xsd:sequence>
+<xsd:element name="id" type="xsd:int" />
+<xsd:element name="nachname" type="xsd:string" />
+<xsd:element name="vorname" type="xsd:string" />
+<xsd:element name="strasse" type="xsd:string" />
+<xsd:element name="postfach" type="xsd:string" />
+<xsd:element name="land" type="xsd:string" />
+<xsd:element name="plz" type="xsd:string" />
+<xsd:element name="ort" type="xsd:string" />
+<xsd:element name="email" type="xsd:string" />
+<xsd:element name="password" type="xsd:string" />
+<xsd:element name="guest" type="xsd:string" />
+<xsd:element name="loginEnabled" type="xsd:string" />
+<xsd:element name="administrator" type="xsd:string" />
+<xsd:element name="is_group" type="xsd:string" />
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="UserTable">
+<xsd:all>
+<xsd:element name="item" type="UserRecord" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="ItemRecord">
+<xsd:sequence>
+<xsd:element name="id" type="xsd:int" />
+<xsd:element name="parentID" type="xsd:int" />
+<xsd:element name="item_type" type="xsd:int" />
+<xsd:element name="name" type="xsd:string" />
+<xsd:element name="description" type="xsd:string" />
+<xsd:element name="ownerUser" type="xsd:int" />
+<xsd:element name="ownerGroup" type="xsd:int" />
+<xsd:element name="mode" type="xsd:int" />
+<xsd:element name="createBy" type="xsd:int" />
+<xsd:element name="createDate" type="xsd:int" />
+<xsd:element name="modifiedDate" type="xsd:int" />
+<xsd:element name="reservedBy" type="xsd:int" />
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ItemContent">
+<xsd:all>
+<xsd:element name="item" type="ItemRecord" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="VersionRecord">
+<xsd:sequence>
+<xsd:element name="id" type="xsd:int" />
+<xsd:element name="itemID" type="xsd:int" />
+<xsd:element name="createBy" type="xsd:int" />
+<xsd:element name="mimeType" type="xsd:string" />
+<xsd:element name="description" type="xsd:string" />
+<xsd:element name="createDate" type="xsd:int" />
+<xsd:element name="modifiedDate" type="xsd:int" />
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="VersionTable">
+<xsd:all>
+<xsd:element name="item" type="VersionRecord" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sGetUserTableRequestType" />
+<xsd:complexType name="sGetUserTableResponseType">
+<xsd:all>
+<xsd:element name="theUserTable" type="UserTable" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUpdateUserRequestType">
+<xsd:all>
+<xsd:element name="theUser" type="UserRecord" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUpdateUserResponseType">
+<xsd:all>
+<xsd:element name="theUserID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sDeleteUserRequestType">
+<xsd:all>
+<xsd:element name="theUserID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sDeleteUserResponseType">
+<xsd:all>
+<xsd:element name="theUserID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sGetItemContentRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sGetItemContentResponseType">
+<xsd:all>
+<xsd:element name="theItemContent" type="ItemContent" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUpdateItemRequestType">
+<xsd:all>
+<xsd:element name="itemData" type="ItemRecord" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUpdateItemResponseType">
+<xsd:all>
+<xsd:element name="theItemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sDeleteItemRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sDeleteItemResponseType">
+<xsd:all>
+<xsd:element name="theItemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sAddVersionRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+<xsd:element name="mimeType" type="xsd:string" form="unqualified" />
+<xsd:element name="description" type="xsd:string" form="unqualified" />
+<xsd:element name="encodedData" type="xsd:string" form="unqualified" />
+<xsd:element name="modTime" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sAddVersionResponseType">
+<xsd:all>
+<xsd:element name="theVersionID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUpdateVersionRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+<xsd:element name="versionID" type="xsd:int" form="unqualified" />
+<xsd:element name="mimeType" type="xsd:string" form="unqualified" />
+<xsd:element name="description" type="xsd:string" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUpdateVersionResponseType">
+<xsd:all>
+<xsd:element name="theVersionID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sDeleteVersionRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+<xsd:element name="versionID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sDeleteVersionResponseType">
+<xsd:all>
+<xsd:element name="theVersionID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sGetVersionsRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+<xsd:element name="versionID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sGetVersionsResponseType">
+<xsd:all>
+<xsd:element name="theItemVersions" type="VersionTable" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sCanReserveRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sCanReserveResponseType">
+<xsd:all>
+<xsd:element name="canReserve" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sCanUnreserveRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sCanUnreserveResponseType">
+<xsd:all>
+<xsd:element name="canUnreserve" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sReserveRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sReserveResponseType">
+<xsd:all>
+<xsd:element name="reservedBy" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUnreserveRequestType">
+<xsd:all>
+<xsd:element name="itemID" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sUnreserveResponseType">
+<xsd:all>
+<xsd:element name="error" type="xsd:int" form="unqualified" />
+</xsd:all>
+</xsd:complexType>
+<xsd:element name="sGetUserTable" type="tns:sGetUserTableRequestType" />
+<xsd:element name="sGetUserTableResponse" type="tns:sGetUserTableResponseType" />
+<xsd:element name="sUpdateUser" type="tns:sUpdateUserRequestType" />
+<xsd:element name="sUpdateUserResponse" type="tns:sUpdateUserResponseType" />
+<xsd:element name="sDeleteUser" type="tns:sDeleteUserRequestType" />
+<xsd:element name="sDeleteUserResponse" type="tns:sDeleteUserResponseType" />
+<xsd:element name="sGetItemContent" type="tns:sGetItemContentRequestType" />
+<xsd:element name="sGetItemContentResponse" type="tns:sGetItemContentResponseType" />
+<xsd:element name="sUpdateItem" type="tns:sUpdateItemRequestType" />
+<xsd:element name="sUpdateItemResponse" type="tns:sUpdateItemResponseType" />
+<xsd:element name="sDeleteItem" type="tns:sDeleteItemRequestType" />
+<xsd:element name="sDeleteItemResponse" type="tns:sDeleteItemResponseType" />
+<xsd:element name="sAddVersion" type="tns:sAddVersionRequestType" />
+<xsd:element name="sAddVersionResponse" type="tns:sAddVersionResponseType" />
+<xsd:element name="sUpdateVersion" type="tns:sUpdateVersionRequestType" />
+<xsd:element name="sUpdateVersionResponse" type="tns:sUpdateVersionResponseType" />
+<xsd:element name="sDeleteVersion" type="tns:sDeleteVersionRequestType" />
+<xsd:element name="sDeleteVersionResponse" type="tns:sDeleteVersionResponseType" />
+<xsd:element name="sGetVersions" type="tns:sGetVersionsRequestType" />
+<xsd:element name="sGetVersionsResponse" type="tns:sGetVersionsResponseType" />
+<xsd:element name="sCanReserve" type="tns:sCanReserveRequestType" />
+<xsd:element name="sCanReserveResponse" type="tns:sCanReserveResponseType" />
+<xsd:element name="sCanUnreserve" type="tns:sCanUnreserveRequestType" />
+<xsd:element name="sCanUnreserveResponse" type="tns:sCanUnreserveResponseType" />
+<xsd:element name="sReserve" type="tns:sReserveRequestType" />
+<xsd:element name="sReserveResponse" type="tns:sReserveResponseType" />
+<xsd:element name="sUnreserve" type="tns:sUnreserveRequestType" />
+<xsd:element name="sUnreserveResponse" type="tns:sUnreserveResponseType" />
+</xsd:schema>
+</types>
+<message name="sGetUserTableRequest">
+<part name="parameters" element="tns:sGetUserTable" />
+</message>
+<message name="sGetUserTableResponse">
+<part name="parameters" element="tns:sGetUserTableResponse" />
+</message>
+<message name="sUpdateUserRequest">
+<part name="parameters" element="tns:sUpdateUser" />
+</message>
+<message name="sUpdateUserResponse">
+<part name="parameters" element="tns:sUpdateUserResponse" />
+</message>
+<message name="sDeleteUserRequest">
+<part name="parameters" element="tns:sDeleteUser" />
+</message>
+<message name="sDeleteUserResponse">
+<part name="parameters" element="tns:sDeleteUserResponse" />
+</message>
+<message name="sGetItemContentRequest">
+<part name="parameters" element="tns:sGetItemContent" />
+</message>
+<message name="sGetItemContentResponse">
+<part name="parameters" element="tns:sGetItemContentResponse" />
+</message>
+<message name="sUpdateItemRequest">
+<part name="parameters" element="tns:sUpdateItem" />
+</message>
+<message name="sUpdateItemResponse">
+<part name="parameters" element="tns:sUpdateItemResponse" />
+</message>
+<message name="sDeleteItemRequest">
+<part name="parameters" element="tns:sDeleteItem" />
+</message>
+<message name="sDeleteItemResponse">
+<part name="parameters" element="tns:sDeleteItemResponse" />
+</message>
+<message name="sAddVersionRequest">
+<part name="parameters" element="tns:sAddVersion" />
+</message>
+<message name="sAddVersionResponse">
+<part name="parameters" element="tns:sAddVersionResponse" />
+</message>
+<message name="sUpdateVersionRequest">
+<part name="parameters" element="tns:sUpdateVersion" />
+</message>
+<message name="sUpdateVersionResponse">
+<part name="parameters" element="tns:sUpdateVersionResponse" />
+</message>
+<message name="sDeleteVersionRequest">
+<part name="parameters" element="tns:sDeleteVersion" />
+</message>
+<message name="sDeleteVersionResponse">
+<part name="parameters" element="tns:sDeleteVersionResponse" />
+</message>
+<message name="sGetVersionsRequest">
+<part name="parameters" element="tns:sGetVersions" />
+</message>
+<message name="sGetVersionsResponse">
+<part name="parameters" element="tns:sGetVersionsResponse" />
+</message>
+<message name="sCanReserveRequest">
+<part name="parameters" element="tns:sCanReserve" />
+</message>
+<message name="sCanReserveResponse">
+<part name="parameters" element="tns:sCanReserveResponse" />
+</message>
+<message name="sCanUnreserveRequest">
+<part name="parameters" element="tns:sCanUnreserve" />
+</message>
+<message name="sCanUnreserveResponse">
+<part name="parameters" element="tns:sCanUnreserveResponse" />
+</message>
+<message name="sReserveRequest">
+<part name="parameters" element="tns:sReserve" />
+</message>
+<message name="sReserveResponse">
+<part name="parameters" element="tns:sReserveResponse" />
+</message>
+<message name="sUnreserveRequest">
+<part name="parameters" element="tns:sUnreserve" />
+</message>
+<message name="sUnreserveResponse">
+<part name="parameters" element="tns:sUnreserveResponse" />
+</message>
+<portType name="DocManServicePortType">
+<operation name="sGetUserTable">
+<documentation>Get Table Of Users</documentation>
+<input message="tns:sGetUserTableRequest" />
+<output message="tns:sGetUserTableResponse" />
+</operation>
+<operation name="sUpdateUser">
+<documentation>Create or update a User</documentation>
+<input message="tns:sUpdateUserRequest" />
+<output message="tns:sUpdateUserResponse" />
+</operation>
+<operation name="sDeleteUser">
+<documentation>delete a User</documentation>
+<input message="tns:sDeleteUserRequest" />
+<output message="tns:sDeleteUserResponse" />
+</operation>
+<operation name="sGetItemContent">
+<documentation>Get Table Of Content</documentation>
+<input message="tns:sGetItemContentRequest" />
+<output message="tns:sGetItemContentResponse" />
+</operation>
+<operation name="sUpdateItem">
+<documentation>Update an existing Item</documentation>
+<input message="tns:sUpdateItemRequest" />
+<output message="tns:sUpdateItemResponse" />
+</operation>
+<operation name="sDeleteItem">
+<documentation>Delete an existing Item</documentation>
+<input message="tns:sDeleteItemRequest" />
+<output message="tns:sDeleteItemResponse" />
+</operation>
+<operation name="sAddVersion">
+<documentation>Add a version to an existing Item</documentation>
+<input message="tns:sAddVersionRequest" />
+<output message="tns:sAddVersionResponse" />
+</operation>
+<operation name="sUpdateVersion">
+<documentation>Update a version of an existing Item</documentation>
+<input message="tns:sUpdateVersionRequest" />
+<output message="tns:sUpdateVersionResponse" />
+</operation>
+<operation name="sDeleteVersion">
+<documentation>Delete a version of an existing Item</documentation>
+<input message="tns:sDeleteVersionRequest" />
+<output message="tns:sDeleteVersionResponse" />
+</operation>
+<operation name="sGetVersions">
+<documentation>Get Versionlist of a File</documentation>
+<input message="tns:sGetVersionsRequest" />
+<output message="tns:sGetVersionsResponse" />
+</operation>
+<operation name="sCanReserve">
+<documentation>check a file can be reserved</documentation>
+<input message="tns:sCanReserveRequest" />
+<output message="tns:sCanReserveResponse" />
+</operation>
+<operation name="sCanUnreserve">
+<documentation>check a file can be unreserved</documentation>
+<input message="tns:sCanUnreserveRequest" />
+<output message="tns:sCanUnreserveResponse" />
+</operation>
+<operation name="sReserve">
+<documentation>reserve a file</documentation>
+<input message="tns:sReserveRequest" />
+<output message="tns:sReserveResponse" />
+</operation>
+<operation name="sUnreserve">
+<documentation>unreserve a file</documentation>
+<input message="tns:sUnreserveRequest" />
+<output message="tns:sUnreserveResponse" />
+</operation>
+</portType>
+<binding name="DocManServiceBinding" type="tns:DocManServicePortType">
+<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+<operation name="sGetUserTable">
+<soap:operation soapAction="http://judith/DocMan/service.php/sGetUserTable" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sUpdateUser">
+<soap:operation soapAction="http://judith/DocMan/service.php/sUpdateUser" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sDeleteUser">
+<soap:operation soapAction="http://judith/DocMan/service.php/sDeleteUser" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sGetItemContent">
+<soap:operation soapAction="http://judith/DocMan/service.php/sGetItemContent" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sUpdateItem">
+<soap:operation soapAction="http://judith/DocMan/service.php/sUpdateItem" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sDeleteItem">
+<soap:operation soapAction="http://judith/DocMan/service.php/sDeleteItem" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sAddVersion">
+<soap:operation soapAction="http://judith/DocMan/service.php/sAddVersion" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sUpdateVersion">
+<soap:operation soapAction="http://judith/DocMan/service.php/sUpdateVersion" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sDeleteVersion">
+<soap:operation soapAction="http://judith/DocMan/service.php/sDeleteVersion" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sGetVersions">
+<soap:operation soapAction="http://judith/DocMan/service.php/sGetVersions" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sCanReserve">
+<soap:operation soapAction="http://judith/DocMan/service.php/sCanReserve" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sCanUnreserve">
+<soap:operation soapAction="http://judith/DocMan/service.php/sCanUnreserve" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sReserve">
+<soap:operation soapAction="http://judith/DocMan/service.php/sReserve" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="sUnreserve">
+<soap:operation soapAction="http://judith/DocMan/service.php/sUnreserve" style="document" />
+<input>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:CresdDocMan" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+</binding>
+<service name="DocManService">
+<port name="DocManServicePort" binding="tns:DocManServiceBinding">
+<soap:address location="http://judith/DocMan/service.php" />
+</port>
+</service>
+</definitions>

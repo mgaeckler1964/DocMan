@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cresd.com/XSL/DocMan">
+<element name="docman" type="docman" />
+<complexType name="a" mixed="true">
+<sequence>
+<element name="img" minOccurs="0" type="img" />
+</sequence>
+<attribute name="href" type="ref" />
+<attribute name="class" type="string" />
+<attribute name="target" type="string" />
+</complexType>
+<complexType name="audio" mixed="true">
+<sequence>
+<element name="img" minOccurs="0" type="img" />
+</sequence>
+<attribute name="autoplay" type="string" />
+<attribute name="class" type="string" />
+<attribute name="controls" type="string" />
+<attribute name="loop" type="string" />
+<attribute name="muted" type="string" />
+<attribute name="src" type="ref" />
+<attribute name="preload" type="preload" />
+</complexType>
+<complexType name="autoCode">
+<attribute name="stylesheet" type="string" />
+</complexType>
+<complexType name="img">
+<attribute name="src" type="ref" />
+<attribute name="align" type="string" />
+<attribute name="alt" type="string" />
+<attribute name="border" type="string" />
+<attribute name="class" type="string" />
+<attribute name="height" type="string" />
+<attribute name="style" type="string" />
+<attribute name="title" type="string" />
+<attribute name="width" type="string" />
+</complexType>
+<complexType name="link">
+<attribute name="href" type="ref" />
+<attribute name="rel" type="string" />
+<attribute name="type" type="string" />
+</complexType>
+<complexType name="script">
+<attribute name="src" type="ref" />
+<attribute name="language" type="string" />
+<attribute name="type" type="string" />
+</complexType>
+<complexType name="head">
+<all>
+<element name="link" type="link" />
+</all>
+</complexType>
+<complexType name="content">
+<all>
+<element name="a" type="a" />
+<element name="audio" type="audio" />
+<element name="img" type="img" />
+<element name="language" type="autoCode" />
+<element name="menu" type="autoCode" />
+<element name="script" type="script" />
+</all>
+</complexType>
+<complexType name="docman">
+<all>
+<element name="head" type="head" />
+<element name="topLeft" type="content" />
+<element name="top" type="content" />
+<element name="topRight" type="content" />
+<element name="left" type="content" />
+<element name="content" type="content" />
+<element name="right" type="content" />
+<element name="bottomLeft" type="content" />
+<element name="bottom" type="content" />
+<element name="bottomRight" type="content" />
+</all>
+</complexType>
+<simpleType name="preload">
+<restriction base="string">
+<enumeration value="auto" />
+<enumeration value="metadata" />
+<enumeration value="none" />
+</restriction>
+</simpleType>
+</schema>

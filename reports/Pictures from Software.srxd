@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="Pictures from Software" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select i.ID, i.NAME, ip.NAME as PARENT_NAME
+from I_EXIF_DATA e, ITEM_TREE i, ITEM_TREE ip 
+where e.ITEM_ID = i.ID
+and ip.ID = i.PARENTID
+and e.SOFTWARE = :theArtist</sql>
+<params>
+<param name="theArtist" label="Software" value="" type="query">
+<query>select distinct SOFTWARE from I_EXIF_DATA</query>
+</param>
+</params>
+</query>
+<chart title="" legend="no" type="" subtype="" topAxisTitle="" leftAxisTitle="" rightAxisTitle="" bottomAxisTitle="" topAxisGrid="no" leftAxisGrid="no" rightAxisGrid="no" bottomAxisGrid="no" />
+</sql_report>

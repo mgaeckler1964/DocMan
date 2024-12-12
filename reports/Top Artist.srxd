@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="Top Artist" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select ARTIST, count(*) AS COUNTER 
+from I_EXIF_DATA 
+group by ARTIST 
+order by 2 desc</sql>
+<params />
+</query>
+<chart title="" legend="no" type="pie" subtype="" topAxisTitle="" leftAxisTitle="" rightAxisTitle="" bottomAxisTitle="" topAxisGrid="no" leftAxisGrid="no" rightAxisGrid="no" bottomAxisGrid="no">
+<data label="ARTIST" value="COUNTER" title="" type="" subtype="" color="" vaxis="" haxis="" explode="" others="2%" mark="labelPercent" legend="no" />
+</chart>
+</sql_report>

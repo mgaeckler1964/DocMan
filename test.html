@@ -1,0 +1,128 @@
+<!--
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd" >
+
+-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd" >
+<html>
+	<head>
+		<title>Test</title>
+		<style>
+			body
+			{
+				padding: 0;
+				margin: auto;
+				width: 800px;
+				background-color:silver;
+			}
+			div
+			{
+				padding: 0;
+				margin: 0;
+				border: 0px solid #000000;
+			}
+			div.layouter
+			{
+				width: 800px;
+				height: 100%;
+
+				position: fixed;
+				top; 0px;
+				bottom:0px;
+				background-color: #FFAAAA;
+			}
+			div.topLeft, div.left, div.bottomLeft
+			{
+				width: 100px;
+			}
+			div.top, div.content, div.bottom
+			{
+				width: 600px;
+			}
+			div.topRight, div.right, div.bottomRight
+			{
+				width: 100px;
+			}
+			div.topLeft, div.top, div.topRight
+			{
+				height: 100px;
+			}
+			div.bottomLeft, div.bottom, div.bottomRight
+			{
+				height: 100px;
+			}
+			
+			
+
+			
+			div.topLeft{
+				background-color:aqua;
+				position: relative;
+				top: 0px;
+				left: 0px;
+				
+			}
+			div.top{
+				background-color:yellow;
+				position: relative;
+				top: -100px;
+				left: 100px;
+			}
+			div.topRight{
+				background-color:red;
+				position: relative;
+				top: -200px;
+				left: 700px;
+			}
+			div.left{
+				background-color:blue;
+				position: fixed;
+				top: 100px;
+				bottom: 100px;
+			}
+			div.content{
+				background-color:white;
+				position: relative;
+				left: 100px;
+				top: -200px;
+				bottom: -100px;
+			}
+			div.right{
+				background-color:green;
+			}
+			div.bottomLeft{
+				background-color:lime;
+
+				position: fixed;
+				float: left;
+				bottom: 0px;
+			}
+			div.bottom{
+				background-color:purple;
+				position: fixed;
+				xfloat: left;
+				bottom: 0px;
+			}
+			div.bottomRight{
+				background-color:olive;
+
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layouter">
+			<div class="topLeft">topLeft</div>
+			<div class="top">top</div>
+			<div class="topRight">topRight</div>
+
+			<div class="left">Left</div>
+			<div class="content">content</div>
+			<div class="right">right</div>
+
+			<div class="bottomLeft">bottomLeft</div>
+			<div class="bottom">bottom</div>
+			<div class="bottomRight">bottomRight</div>
+		</div>
+	</body>

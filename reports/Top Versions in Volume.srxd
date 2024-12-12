@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select i.ID, p.NAME as PARENT, i.NAME, count(*) as COUNTER
+from ITEM_TREE i, I_FILE_VERS v, ITEM_TREE p
+where i.FILE_ID = v.FILE_ID
+and p.ID = i.PARENTID
+and i.VOLUME_ID = :theVolume
+group by i.ID, i.NAME, p.NAME
+order by 4 desc</sql>
+<params>
+<param name="theVolume" label="Volume" value="" type="query">
+<query>select ID, NAME from ITEM_TREE where PARENTID = -1 order by NAME</query>
+</param>
+</params>
+</query>
+</sql_report>

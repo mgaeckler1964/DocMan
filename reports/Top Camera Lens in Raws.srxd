@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="Top Camera and Lens Combination in Raws" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select e.CAMERA, e.LENS, min( e.ORIGINAL_DATE_TIME ) as OLDEST, max( e.ORIGINAL_DATE_TIME ) as NEWEST, count(*) AS COUNTER 
+from I_EXIF_DATA e, ITEM_TREE i 
+where e.ITEM_ID = i.ID
+and (i.name like '%.NEF' or i.name like '%.NRW')
+group by e.CAMERA, e.LENS  
+order by 5 desc</sql>
+<params />
+</query>
+<chart title="" legend="no" type="" subtype="" topAxisTitle="" leftAxisTitle="" rightAxisTitle="" bottomAxisTitle="" topAxisGrid="no" leftAxisGrid="no" rightAxisGrid="no" bottomAxisGrid="no" />
+</sql_report>

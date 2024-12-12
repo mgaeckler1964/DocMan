@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="Items with Mime Type" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select i.ID, i.NAME 
+from ITEM_TREE i, I_FILE_VERS iv
+where i.FILE_ID = iv.FILE_ID
+and iv.MIME_TYPE = :theMimeType</sql>
+<params>
+<param name="theMimeType" label="Mime Type" value="" type="query">
+<query>select distinct MIME_TYPE
+from I_FILE_VERS
+order by MIME_TYPE</query>
+</param>
+</params>
+</query>
+</sql_report>

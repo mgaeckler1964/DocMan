@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="Top Mime Types" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select MIME_TYPE, count(*) as COUNTER
+from I_FILE_VERS 
+group by MIME_TYPE
+order by 2 desc</sql>
+<params />
+</query>
+</sql_report>

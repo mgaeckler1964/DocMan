@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select it.ID, it.ITEM_TYPE, it.NAME, itp.NAME as PARENT_NAME
+from item_tree itp
+join item_tree it on itp.ID = it.parentId
+left join item_tree itc on it.id = itc.parentID
+where itc.ID is null
+and it.item_type in ( 0, 2, 3, 4, 11, 14, 15 )</sql>
+<params />
+</query>
+</sql_report>

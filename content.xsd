@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cresd.com/XML/DocMan">
+<element name="layout">
+<complexType>
+<all>
+<element name="title" type="string" />
+<element name="topLeft" type="html" />
+<element name="top" type="html" />
+<element name="topRight" type="html" />
+<element name="left" type="html" />
+<element name="content" type="html" />
+<element name="right" type="html" />
+<element name="bottomLeft" type="html" />
+<element name="bottom" type="html" />
+<element name="bottomRight" type="html" />
+</all>
+</complexType>
+</element>
+<complexType name="img">
+<attributeGroup ref="html" />
+<attribute name="src" type="string" />
+<attribute name="alt" type="string" />
+</complexType>
+<complexType name="SCRIPT">
+<simpleContent>
+<extension>
+<attribute name="LANGUAGE" type="string" />
+<attribute name="src" type="string" />
+<attribute name="type" type="string" />
+</extension>
+</simpleContent>
+</complexType>
+<complexType name="table">
+<sequence>
+<element name="tr" type="tr" />
+</sequence>
+<attributeGroup ref="html" />
+<attribute name="border" />
+<attribute name="cellpadding" />
+<attribute name="cellspacing" />
+</complexType>
+<complexType name="tr">
+<sequence>
+<element name="td" type="td" maxOccurs="unbounded" />
+</sequence>
+</complexType>
+<complexType name="td" mixed="true">
+<group ref="html" />
+<attributeGroup ref="html" />
+<attribute name="colspan" type="integer" />
+<attribute name="rowspan" type="integer" />
+</complexType>
+<complexType mixed="true" name="a">
+<group ref="html" />
+<attributeGroup ref="html" />
+<attribute name="href" type="string" />
+<attribute name="target" type="string" />
+</complexType>
+<complexType name="list"><sequence>
+<element name="li" type="html" />
+</sequence><attributeGroup ref="html" />
+
+
+
+</complexType>
+<complexType name="iframe">
+<attributeGroup ref="html" />
+<attribute name="src" type="string" />
+<attribute name="marginwidth" type="string" />
+<attribute name="marginheight" type="string" />
+<attribute name="scrolling" type="string" />
+<attribute name="frameborder" type="string" />
+<attribute name="allowfullscreen" type="integer" />
+</complexType>
+<complexType name="html" mixed="true">
+<group ref="html" />
+<attributeGroup ref="html" />
+</complexType>
+<attributeGroup name="html">
+<attribute name="action" type="string" />
+<attribute name="align" type="string" />
+<attribute name="class" type="string" />
+<attribute name="height" type="string" />
+<attribute name="name" type="string" />
+<attribute name="style" type="string" />
+<attribute name="type" type="string" />
+<attribute name="title" type="string" />
+<attribute name="valign" type="string" />
+<attribute name="value" type="string" />
+<attribute name="width" type="string" />
+</attributeGroup>
+<group name="html">
+<all>
+<element name="a" type="a" />
+<element name="b" type="html" />
+<element name="br" />
+<element name="center" type="html" />
+<element name="cite" type="html" />
+<element name="div" type="html" />
+<element name="form" type="html" />
+<element name="h1" type="html" />
+<element name="h2" type="html" />
+<element name="h3" type="html" />
+<element name="h4" type="html" />
+<element name="h5" type="html" />
+<element name="h6" type="html" />
+<element name="input" type="html" />
+<element name="iframe" type="iframe" />
+<element name="img" type="img" />
+<element name="ol" type="list" />
+<element name="p" type="html" />
+<element name="SCRIPT" type="SCRIPT" />
+<element name="small" type="html" />
+<element name="table" type="table" />
+<element name="textarea" type="html" />
+<element name="u" type="html" />
+<element name="ul" type="list" />
+</all>
+</group>
+</schema>

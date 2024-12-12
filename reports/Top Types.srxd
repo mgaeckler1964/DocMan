@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select ITEM_TYPE, count(*) as COUNTER
+from ITEM_TREE 
+group by ITEM_TYPE
+order by 2 desc</sql>
+<params />
+</query>
+</sql_report>

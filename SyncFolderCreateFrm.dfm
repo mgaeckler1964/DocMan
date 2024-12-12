@@ -1,0 +1,67 @@
+inherited SyncFolderCreateForm: TSyncFolderCreateForm
+  Left = 1540
+  Top = 170
+  Width = 512
+  Height = 310
+  Caption = 'SyncFolderCreateForm'
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label2: TLabel [1]
+    Left = 8
+    Top = 48
+    Width = 51
+    Height = 13
+    Caption = 'Local Path'
+  end
+  object SpeedButton: TSpeedButton [2]
+    Left = 457
+    Top = 48
+    Width = 23
+    Height = 22
+    Anchors = [akTop, akRight]
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000120B0000120B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
+      55555555FFFFFFFFFF55555000000000055555577777777775F55500B8B8B8B8
+      B05555775F555555575F550F0B8B8B8B8B05557F75F555555575550BF0B8B8B8
+      B8B0557F575FFFFFFFF7550FBF0000000000557F557777777777500BFBFBFBFB
+      0555577F555555557F550B0FBFBFBFBF05557F7F555555FF75550F0BFBFBF000
+      55557F75F555577755550BF0BFBF0B0555557F575FFF757F55550FB700007F05
+      55557F557777557F55550BFBFBFBFB0555557F555555557F55550FBFBFBFBF05
+      55557FFFFFFFFF7555550000000000555555777777777755555550FBFB055555
+      5555575FFF755555555557000075555555555577775555555555}
+    NumGlyphs = 2
+    OnClick = SpeedButtonClick
+  end
+  inherited Label12: TLabel
+    Top = 80
+  end
+  inherited EditName: TEdit
+    Left = 72
+    Width = 411
+  end
+  inherited ButtonOk: TButton
+    Top = 240
+    TabOrder = 1
+  end
+  inherited ButtonCancel: TButton
+    Top = 240
+  end
+  object EditLocalPath: TEdit [7]
+    Left = 72
+    Top = 48
+    Width = 385
+    Height = 21
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 2
+  end
+  inherited MemoDescription: TMemo
+    Left = 72
+    Top = 80
+    Width = 411
+    TabOrder = 4
+  end
+end

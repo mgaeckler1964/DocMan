@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select it1.NAME, count(*) as NUM_ITEMS
+from item_tree it1, item_tree it2
+where it1.ID = it2.VOLUME_ID
+group by it1.NAME
+order by 2 DESC</sql>
+<params />
+</query>
+<chart title="" legend="no" type="pie" topAxisTitle="" leftAxisTitle="" rightAxisTitle="" bottomAxisTitle="" topAxisGrid="no" leftAxisGrid="no" rightAxisGrid="no" bottomAxisGrid="no">
+<data label="NAME" value="NUM_ITEMS" title="" type="pie" subtype="" color="" vaxis="" haxis="" explode="" others="" mark="" legend="no" />
+</chart>
+</sql_report>

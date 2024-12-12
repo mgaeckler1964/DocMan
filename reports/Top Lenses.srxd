@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="Top Lenses" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select LENS, min( ORIGINAL_DATE_TIME ) as OLDEST, max( ORIGINAL_DATE_TIME ) as NEWEST, count(*) AS COUNTER 
+from I_EXIF_DATA 
+group by LENS 
+order by 4 desc</sql>
+<params />
+</query>
+<chart title="" legend="no" type="pie" subtype="" topAxisTitle="" leftAxisTitle="" rightAxisTitle="" bottomAxisTitle="" topAxisGrid="no" leftAxisGrid="no" rightAxisGrid="no" bottomAxisGrid="no">
+<data label="LENS" value="COUNTER" title="" type="" subtype="" color="" vaxis="" haxis="" explode="" others="" mark="labelPercent" legend="no" />
+</chart>
+</sql_report>

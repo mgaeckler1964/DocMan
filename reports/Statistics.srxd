@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select count(*) as Counter, 'Files Count  ' as Entry from i_files
+union
+select max(ID) as Counter,  'Files Max    ' as Entry from i_files
+union
+select count(*) as Counter, 'Storage Count' as Entry from i_storage
+union
+select max(ID) as Counter,  'Storage Max  ' as Entry from i_storage
+union
+select count(*) as Counter, 'Tree Count   ' as Entry from item_tree
+union
+select max(ID) as Counter,  'Tree Max     ' as Entry from item_tree
+union
+select count(*) as Counter, 'Values Count ' as Entry from c_attr_values
+union
+select max(ID) as Counter,  'Values Max   ' as Entry from c_attr_values
+order by 2</sql>
+<params />
+</query>
+</sql_report>

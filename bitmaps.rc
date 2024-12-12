@@ -1,0 +1,75 @@
+/*
+		Project:		DocMan
+		Module:			bitmaps.rc
+		Description:	Icons for the item types
+		Author:			Martin Gäckler
+		Address:		Freibadstr. 14, D-81543 München
+		Phone:			+49 - 89 - 65 30 95 63
+		Copyright:		CRESD GmbH
+		Date:			xx. xx. 20xx
+		History:
+*/
+
+/* --------------------------------------------------------------------- */
+/* ----- includes ------------------------------------------------------ */
+/* --------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- */
+/* ----- constants ----------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- */
+/* ----- icons --------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- */
+/* ----- bitmaps ------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+SPLASH_BITMAP			BITMAP	"splash.bmp"
+FOLDER_BITMAP			BITMAP	"folder.bmp"
+REMOTE_FOLDER_BITMAP	BITMAP	"remote_folder.bmp"
+PERSONAL_FOLDER_BITMAP	BITMAP	"personal_folder.bmp"
+PERSONAL_TRASH_BITMAP	BITMAP	"trash.bmp"
+BOOKMARK_FOLDER_BITMAP	BITMAP	"bookmark_folder.bmp"
+SYNC_FOLDER_BITMAP		BITMAP	"sync_folder.bmp"
+SOURCE_FOLDER_BITMAP	BITMAP	"source_folder.bmp"
+RELEASE_FOLDER_BITMAP	BITMAP	"release_folder.bmp"
+FOLDER_REF_BITMAP		BITMAP	"ref.bmp"
+ROOT_BITMAP				BITMAP	"root.bmp"
+TASKLIST_BITMAP			BITMAP	"tasklist.bmp"
+TASK_BITMAP				BITMAP	"task.bmp"
+ALIAS_BITMAP			BITMAP	"alias.bmp"
+RESERVED_BITMAP			BITMAP	"reserved.bmp"
+FILE_BITMAP				BITMAP	"file.bmp"
+CRYPTO_FILE_BITMAP		BITMAP	"crypto_file.bmp"
+LANGUAGE_DOC_BITMAP		BITMAP	"language_doc.bmp"
+WEB_FOLDER_BITMAP		BITMAP	"web_folder.bmp"
+WEB_MENU_FOLDER_BITMAP	BITMAP	"menu_folder.bmp"
+TEMPLATE_FOLDER_BITMAP	BITMAP	"template_folder.bmp"
+XSLT_FOLDER_BITMAP		BITMAP	"xslt_folder.bmp"
+COMPANY_FOLDER_BITMAP	BITMAP	"company_folder.bmp"
+TEST_FOLDER_BITMAP		BITMAP	"TestFolder.bmp"
+TEST_EXEC_FOLDER_BITMAP	BITMAP	"TestExecFolder.bmp"
+
+/* --------------------------------------------------------------------- */
+/* ----- cursors ------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- */
+/* ----- menus --------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- */
+/* ----- dialogs ------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- */
+/* ----- string tables ------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- */
+/* ----- accelerators -------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+

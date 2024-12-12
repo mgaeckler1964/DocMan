@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sql_report title="" table_name="" record_name="" USER_NAME="" PASSWORD="" DB_ALIAS="DOCMAN">
+<query>
+<sql>select it.ID, it.parentID, it.NAME
+from item_tree it
+left join item_tree itp on it.parentId = itp.ID
+where itp.ID is null
+and it.parentID &gt;= 0</sql>
+<params />
+</query>
+</sql_report>
