@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 <setup>
-<application title="Doc Manager" version="1.0.7.353" author="gak" />
+<application title="Doc Manager" version="1.0.7.354" author="gak" />
 <bde AliasName="DOCMAN" RESOURCE="0009" DataPath="" dbVersion="7" />
 <icons Group="Doc Manager">
 <icon title="Doc Manager" target="PROGRAM\DocMan.exe" main="true" dbUpd="" />

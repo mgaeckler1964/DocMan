@@ -1836,8 +1836,11 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 	if( compareFiles && (hasFile || !releaseCompared) )
 	{
 		DirectoryList	dirContent;
+		ArrayOfStrings	gitignore;
 
 		dirContent.dirlist( localPath );
+		STRING gitignorePath = localPath + DIRECTORY_DELIMITER_STRING ".gitignore";
+		gitignore.readFromFile(gitignorePath);
 
 		for(
 			DirectoryList::iterator	it = dirContent.begin(), endIT = dirContent.end();
@@ -1885,8 +1888,29 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 			}
 			else if( !theEntry.theFile )
 			{
-				theEntry.status = DB_MISSING;
-				theEntry.statusSTR += "Not in repository";
+				bool		ignore = false;
+				F_STRING	theName = theEntry.name;
+				for(
+					ArrayOfStrings::iterator	it = gitignore.begin(), endIT = gitignore.end();
+					it != endIT && !StatusForm->isTerminated();
+					++it
+				)
+				{
+					if( theName.match( *it ) )
+					{
+						ignore = true;
+/*v*/					break;						
+					}
+				}
+				if( ignore )
+				{
+					theList.removeElementAt( i );
+				}
+				else
+				{
+					theEntry.status = DB_MISSING;
+					theEntry.statusSTR += "Not in repository";
+				}
 			}
 			else if( !theEntry.inFS )
 			{
