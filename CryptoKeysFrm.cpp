@@ -133,7 +133,7 @@ void __fastcall TCryptoKeysForm::FormShow(TObject *)
 	{
 /*@*/	throw Exception( "Unable to download file" );
 	}
-	readFromFile( fileName, &crypto, cryptoMagic );
+	readFromBinaryFile( fileName, &crypto, cryptoMagic, cryptoVersion, false );
 
 	strRemove( fileName );
 
@@ -195,7 +195,7 @@ void __fastcall TCryptoKeysForm::ButtonAddClick(TObject *)
 
 void __fastcall TCryptoKeysForm::ButtonOKClick(TObject *)
 {
-	writeToFile( fileName, crypto, cryptoMagic );
+	writeToBinaryFile( fileName, crypto, cryptoMagic, cryptoVersion, owmOverwrite );
 
 	PTR_CRYPTO_FILE	theFile = theItem;
 	if( theFile )

@@ -128,7 +128,7 @@ STRING dowload( ITEM *theItem, int version, bool protect, const STRING &dest )
 
 	try
 	{
-		readFromFile( cryptedFile, &theCrypto, cryptoMagic );
+		readFromBinaryFile( cryptedFile, &theCrypto, cryptoMagic, cryptoVersion, false );
 
 		if( result.endsWith( ".crypted" ) )
 			result.cut( result.strlen()-8 );
@@ -172,7 +172,7 @@ void createVersion( ITEM *theItem, const STRING &filePath, const STRING &descrip
 		{
 			STRING		cryptedFile = theItem->downloadCrypted( 0, false, "" );
 
-			readFromFile( cryptedFile, &theCrypto, cryptoMagic );
+			readFromBinaryFile( cryptedFile, &theCrypto, cryptoMagic, cryptoVersion, false );
 			theCrypto.decryptAesKey( actUser, DocManMainForm->getPrivateKey() );
 			strRemove( cryptedFile );
 		}
@@ -184,7 +184,7 @@ void createVersion( ITEM *theItem, const STRING &filePath, const STRING &descrip
 		STRING cryptedFile = filePath + ".crypted";
 
 		theCrypto.encryptFile( filePath, actUser, publicKeyFile );
-		writeToFile( cryptedFile, theCrypto, cryptoMagic );
+		writeToBinaryFile( cryptedFile, theCrypto, cryptoMagic, cryptoVersion, owmOverwrite );
 
 		setModTime( cryptedFile, statBuff.st_mtime );
 		theItem->createCryptedVersion( cryptedFile, description );

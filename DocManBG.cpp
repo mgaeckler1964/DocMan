@@ -1,18 +1,18 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:
+		Description:
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
 		Copyright:		(c) 1988-2024 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
@@ -71,6 +71,9 @@ using namespace gak;
 // --------------------------------------------------------------------- //
 // ----- constants ----------------------------------------------------- //
 // --------------------------------------------------------------------- //
+
+static const uint32 indexMagic = 0x8456;
+static const uint16 indexVersion = 2;
 
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
@@ -678,7 +681,7 @@ void readDocManIndex( DocManIndex *index )
 	{
 		if( !strAccess( indexFile, 0 ) )
 		{
-			readFromFile( indexFile, index, 0x8456 );
+			readFromBinaryFile( indexFile, index, indexMagic, indexVersion, false );
 		}
 	}
 	catch( std::exception &e )
@@ -691,7 +694,7 @@ void readDocManIndex( DocManIndex *index )
 void writeDocManIndex( const DocManIndex &index )
 {
 	F_STRING indexFile = getIndexFileName();
-	writeToFile( indexFile, index, 0x8456, ovmShortDown );
+	writeToBinaryFile( indexFile, index, indexMagic, indexVersion, ovmShortDown );
 }
 
 void deleteDocManIndex()
