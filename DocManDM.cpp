@@ -1221,6 +1221,7 @@ void TDocManDataModule::loadStorageInfos( int storageID, StorageInfos *result )
 void TDocManDataModule::loadAllStorageInfos( int minStorageID, StorageInfos *result )
 {
 	QueryAllStorageItems->Params->Items[0]->AsInteger = minStorageID;
+	QueryAllStorageItems->Params->Items[1]->AsInteger = minStorageID+10000;
 	for(
 		QueryAllStorageItems->Open();
 		!QueryAllStorageItems->Eof;

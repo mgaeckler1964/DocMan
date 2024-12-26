@@ -1234,7 +1234,8 @@ object DocManDataModule: TDocManDataModule
       'join I_FILE_VERS v on v.STORAGE_ID = s.ID'
       'join ITEM_TREE i on v.FILE_ID = i.FILE_ID'
       'join I_FILES f on i.FILE_ID = f.ID'
-      'where s.ID > :storageID'
+      'where s.ID > :storageID and s.ID < :maxStorageID'
+      ' '
       ' '
       ' ')
     Left = 240
@@ -1245,6 +1246,11 @@ object DocManDataModule: TDocManDataModule
         Name = 'storageID'
         ParamType = ptInput
         Value = '0'
+      end
+      item
+        DataType = ftUnknown
+        Name = 'maxStorageID'
+        ParamType = ptUnknown
       end>
     object QueryAllStorageItemsITEM_ID: TIntegerField
       FieldName = 'ITEM_ID'
