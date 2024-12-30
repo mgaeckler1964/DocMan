@@ -1,6 +1,6 @@
 object DocManMainForm: TDocManMainForm
-  Left = 677
-  Top = 174
+  Left = 617
+  Top = 600
   Width = 775
   Height = 421
   Caption = 'Document Manager'
@@ -22,7 +22,7 @@ object DocManMainForm: TDocManMainForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 767
+    Width = 759
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -169,8 +169,8 @@ object DocManMainForm: TDocManMainForm
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 356
-    Width = 767
+    Top = 343
+    Width = 759
     Height = 19
     Panels = <>
     SimplePanel = True
@@ -201,6 +201,13 @@ object DocManMainForm: TDocManMainForm
       object RemoteUsers: TMenuItem
         Caption = '&Remote Users...'
         OnClick = RemoteUsersClick
+      end
+      object N4: TMenuItem
+        Caption = '-'
+      end
+      object Reminder1: TMenuItem
+        Caption = 'Reminder'
+        OnClick = Reminder1Click
       end
       object N6: TMenuItem
         Caption = '-'
@@ -355,11 +362,18 @@ object DocManMainForm: TDocManMainForm
   end
   object PopupMenuActions: TPopupMenu
     AutoPopup = False
-    Left = 16
-    Top = 32
+    Left = 8
+    Top = 16
     object test1: TMenuItem
       Caption = 'test'
       OnClick = ActionClick
     end
+  end
+  object ReminderTimer: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = ReminderTimerTimer
+    Left = 24
+    Top = 56
   end
 end

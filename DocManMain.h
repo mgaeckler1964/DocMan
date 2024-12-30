@@ -127,6 +127,9 @@ __published:	// IDE-managed Components
 	TMenuItem *ChangeDecryptionPassword;
 	TMenuItem *IdexSearch1;
 	TMenuItem *AdminReindexDatabase;
+	TMenuItem *Reminder1;
+	TMenuItem *N4;
+	TTimer *ReminderTimer;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall ComboBoxAddItemTypesChange(TObject *Sender);
@@ -169,6 +172,8 @@ __published:	// IDE-managed Components
 	void __fastcall ChangeDecryptionPasswordClick(TObject *Sender);
 	void __fastcall IdexSearch1Click(TObject *Sender);
 	void __fastcall AdminReindexDatabaseClick(TObject *Sender);
+	void __fastcall Reminder1Click(TObject *Sender);
+	void __fastcall ReminderTimerTimer(TObject *Sender);
 private:	// User declarations
 	typedef Array<const FACTORY_BASE *>	AddItemTypes;
 	typedef Array<ACTION_BASE *>		PopupActions;

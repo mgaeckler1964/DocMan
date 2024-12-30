@@ -83,7 +83,7 @@ USEFORM("PermApplyDownFrm.cpp", PermApplyDownForm);
 USEFORM("..\GAKLIB\Repository\PasswordDlg.cpp", PasswordForm);
 USEFORM("..\GAKLIB\Repository\ChangePasswordDlg.cpp", ChangePasswordForm);
 USEUNIT("Alias.cpp");
-USEFORM("OpenFilesFrm.cpp", OpenFilesForm);
+USEFORM("ReminderFilesFrm.cpp", ReminderFilesForm);
 USEFORM("MimeTypesFrm.cpp", MimeTypesForm);
 USEFORM("EditFrm.cpp", EditFileForm);
 USEFORM("EditPlainFileFrm.cpp", EditPlainFileForm);
@@ -136,6 +136,7 @@ USEFORM("..\XML_Edit\xmlEditFram.cpp", xmlEditorFrame); /* TFrame: File Type */
 USEFORM("..\XML_Edit\XmlViewerFrm.cpp", XmlViewerForm);
 USEFORM("..\XML_Edit\cssStyleFram.cpp", cssStyleFrame); /* TFrame: File Type */
 USEFORM("..\XML_Edit\cssStyleFrm.cpp", cssStyleForm);
+USEFORM("OpenFilesFrm.cpp", OpenFilesForm);
 //---------------------------------------------------------------------------
 #include "xmlEditFram.h"
 #include "file.h"
@@ -207,7 +208,7 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR cmdLine, int)
 		Application->CreateForm(__classid(TPermApplyDownForm), &PermApplyDownForm);
 		Application->CreateForm(__classid(TPasswordForm), &PasswordForm);
 		Application->CreateForm(__classid(TChangePasswordForm), &ChangePasswordForm);
-		Application->CreateForm(__classid(TOpenFilesForm), &OpenFilesForm);
+		Application->CreateForm(__classid(TReminderFilesForm), &ReminderFilesForm);
 		Application->CreateForm(__classid(TMimeTypesForm), &MimeTypesForm);
 		Application->CreateForm(__classid(TLanguageDocCreateForm), &LanguageDocCreateForm);
 		Application->CreateForm(__classid(TLanguageItemCreateForm), &LanguageItemCreateForm);
@@ -240,7 +241,9 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR cmdLine, int)
 		Application->CreateForm(__classid(TIndexForm), &IndexForm);
 		Application->CreateForm(__classid(TXmlViewerForm), &XmlViewerForm);
 		Application->CreateForm(__classid(TcssStyleForm), &cssStyleForm);
+		Application->CreateForm(__classid(TOpenFilesForm), &OpenFilesForm);
 		print2StartWindow( "%s", "Starting Application" );
+
 		Application->Run();
 	}
 	catch (Exception &exception)

@@ -455,8 +455,9 @@ void THE_ITEM::loadFields( TQuery *query )
 	setName( name );
 	oldName = query->FieldByName( "OLD_NAME" )->AsString.c_str();
 	createdBy = query->FieldByName( "CREATEDBY" )->AsInteger;
-	createdDate = query->FieldByName( "createdDate" )->AsDateTime;
-	modifiedDate = query->FieldByName( "modifiedDate" )->AsDateTime;
+	m_createdDate = query->FieldByName( "createdDate" )->AsDateTime;
+	m_modifiedDate = query->FieldByName( "modifiedDate" )->AsDateTime;
+	m_reminderDate = query->FieldByName( "reminderDate" )->AsInteger;
 	description = query->FieldByName( "description" )->AsString.c_str();
 	this->assignedTo = query->FieldByName( "assigned_to" )->AsInteger;
 
@@ -534,29 +535,33 @@ void THE_ITEM::updateDatabase( void )
 
 		if( id )
 		{
-			modifiedDate = TDateTime::CurrentDateTime();
+			m_modifiedDate = TDateTime::CurrentDateTime();
 			step = "updating";
 			theQuery->SQL->Add(
 				"update ITEM_TREE "
 				"set name = :name, parentId = :parentID, "
 					"old_name = :oldName, old_parent = :oldParentId, "
-					"modifiedDate = :mDate, description=:description, "
+					"modifiedDate = :mDate, "
+					"reminderDate = :rDate, "
+					"description=:description, "
 					"ordering = :theOrder, "
 					"volume_id = :volumeID, permission_id = :permissionID, "
 					"assigned_to = :assignedTo "
 				"where id=:theId"
 			);
-			theQuery->Params->Items[0]->AsString = (const char *)name;
-			theQuery->Params->Items[1]->AsInteger = parentID;
-			theQuery->Params->Items[2]->AsString = (const char *)oldName;
-			theQuery->Params->Items[3]->AsInteger = oldParentID;
-			theQuery->Params->Items[4]->AsDateTime = modifiedDate;
-			theQuery->Params->Items[5]->AsMemo = (const char *)description;
-			theQuery->Params->Items[6]->AsInteger = ordering;
-			theQuery->Params->Items[7]->AsInteger = volumeID;
-			theQuery->Params->Items[8]->AsInteger = permissionID;
-			theQuery->Params->Items[9]->AsInteger = assignedTo;
-			theQuery->Params->Items[10]->AsInteger = id;
+			unsigned i=0;
+			theQuery->Params->Items[i++]->AsString = (const char *)name;
+			theQuery->Params->Items[i++]->AsInteger = parentID;
+			theQuery->Params->Items[i++]->AsString = (const char *)oldName;
+			theQuery->Params->Items[i++]->AsInteger = oldParentID;
+			theQuery->Params->Items[i++]->AsDateTime = m_modifiedDate;
+			theQuery->Params->Items[i++]->AsInteger = m_reminderDate;
+			theQuery->Params->Items[i++]->AsMemo = (const char *)description;
+			theQuery->Params->Items[i++]->AsInteger = ordering;
+			theQuery->Params->Items[i++]->AsInteger = volumeID;
+			theQuery->Params->Items[i++]->AsInteger = permissionID;
+			theQuery->Params->Items[i++]->AsInteger = assignedTo;
+			theQuery->Params->Items[i++]->AsInteger = id;
 
 			isNew = false;
 		}
@@ -576,29 +581,33 @@ void THE_ITEM::updateDatabase( void )
 				"insert into ITEM_TREE "
 				"( "
 					"parentId, name, item_type, createdBy, id, "
-					"createdDate, modifiedDate, description, copyID, volume_id, "
+					"createdDate, modifiedDate, reminderDate, "
+					"description, copyID, volume_id, "
 					"permission_id, ordering, assigned_to "
 				") "
 				"values"
 				"( "
 					":newParentID, :newName, :theType, :createdBy, :theId, "
-					":createdDate, :modifiedDate, :description, :copyID, :volumeID, "
+					":createdDate, :modifiedDate, :reminderDate, "
+					":description, :copyID, :volumeID, "
 					":permissionID, :theOrder, :assignedTo "
 				")"
 			);
-			theQuery->Params->Items[0]->AsInteger = parentID;
-			theQuery->Params->Items[1]->AsString = (const char *)name;
-			theQuery->Params->Items[2]->AsInteger = getItemType();
-			theQuery->Params->Items[3]->AsInteger = createdBy;
-			theQuery->Params->Items[4]->AsInteger = id;
-			theQuery->Params->Items[5]->AsDateTime = createdDate;;
-			theQuery->Params->Items[6]->AsDateTime = modifiedDate;
-			theQuery->Params->Items[7]->AsMemo = (const char *)description;
-			theQuery->Params->Items[8]->AsInteger = copyID;
-			theQuery->Params->Items[9]->AsInteger = volumeID;
-			theQuery->Params->Items[10]->AsInteger = permissionID;
-			theQuery->Params->Items[11]->AsInteger = ordering;
-			theQuery->Params->Items[12]->AsInteger = assignedTo;
+			unsigned i=0;
+			theQuery->Params->Items[i++]->AsInteger = parentID;
+			theQuery->Params->Items[i++]->AsString = static_cast<const char *>(name);
+			theQuery->Params->Items[i++]->AsInteger = getItemType();
+			theQuery->Params->Items[i++]->AsInteger = createdBy;
+			theQuery->Params->Items[i++]->AsInteger = id;
+			theQuery->Params->Items[i++]->AsDateTime = m_createdDate;;
+			theQuery->Params->Items[i++]->AsDateTime = m_modifiedDate;
+			theQuery->Params->Items[i++]->AsInteger = m_reminderDate;
+			theQuery->Params->Items[i++]->AsMemo = static_cast<const char *>(description);
+			theQuery->Params->Items[i++]->AsInteger = copyID;
+			theQuery->Params->Items[i++]->AsInteger = volumeID;
+			theQuery->Params->Items[i++]->AsInteger = permissionID;
+			theQuery->Params->Items[i++]->AsInteger = ordering;
+			theQuery->Params->Items[i++]->AsInteger = assignedTo;
 
 			if( !aclChanged && !permissionID )
 			{
@@ -1651,8 +1660,10 @@ void THE_ITEM::createXMLattributes( xml::Element *theElement )
 {
 	theElement->setIntegerAttribute( "ID", getID() );
 	theElement->setStringAttribute( "name", getName() );
-	theElement->setStringAttribute( "created", createdDate.DateTimeString().c_str() );
-	theElement->setStringAttribute( "modified", modifiedDate.DateTimeString().c_str() );
+	theElement->setStringAttribute( "created", m_createdDate.DateTimeString().c_str() );
+	theElement->setStringAttribute( "modified", m_modifiedDate.DateTimeString().c_str() );
+	theElement->setIntegerAttribute( "reminder", m_reminderDate );
+
 	theElement->addObject(
 		new xml::Any( "description", description )
 	);

@@ -62,6 +62,19 @@ REFRESH_TYPE ACTION_GENERAL::perform( PTR_ITEM theItem )
 	{
 		theItem->setName( GeneralForm->EditName->Text.c_str() );
 		theItem->setDescription( GeneralForm->MemoDescription->Text.c_str() );
+
+		if( GeneralForm->ReminderEdit->Text.Length() )
+		{
+			TDateTime reminder1 = TDateTime(GeneralForm->ReminderEdit->Text);
+			gak::DateTime reminder2 = gak::DateTime(reminder1);
+			uint32 reminder3 = reminder2.getUtcUnixSeconds();
+			theItem->setReminderDate( reminder3 );
+		}
+		else
+		{
+			theItem->setReminderDate( 0 );
+		}
+
 		theItem->updateDatabase();
 		return REFRESH_RELOAD;
 	}
@@ -98,9 +111,21 @@ void __fastcall TGeneralForm::FormShow(TObject *Sender)
 
 	TDateTime createdDate = theItem->getCreatedDate();
 	TDateTime modifiedDate = theItem->getModifiedDate();
+	gak::uint32 reminderDate1 = theItem->getReminderDate();
 
 	LabelCreatedDate->Caption = createdDate.DateTimeString();
 	LabelModifiedDate->Caption = modifiedDate.DateTimeString();
+
+	if(reminderDate1)
+	{
+		gak::DateTime reminderDate2 = gak::DateTime(time_t(reminderDate1),0).calcLocalTime();
+		TDateTime reminderDate3 = reminderDate2;
+		ReminderEdit->Text = reminderDate3.DateTimeString();
+	}
+	else
+	{
+		ReminderEdit->Text = "";
+	}
 
 	LabelReserved->Visible = false;
 	LabelReservedFor->Visible = false;
@@ -119,3 +144,14 @@ void __fastcall TGeneralForm::FormShow(TObject *Sender)
 	vcl::bringWindowToFront( this );
 }
 //---------------------------------------------------------------------------
+void __fastcall TGeneralForm::ReminderEditEnter(TObject *Sender)
+{
+	if( ReminderEdit->Text.Length() == 0 )
+	{
+		gak::DateTime now;
+		TDateTime reminderDate = now;
+		ReminderEdit->Text = reminderDate.DateTimeString();
+	}
+}
+//---------------------------------------------------------------------------
+

@@ -90,10 +90,25 @@ inherited GeneralForm: TGeneralForm
     Height = 13
     Caption = 'LabelLocalPath'
   end
+  object Label7: TLabel [14]
+    Left = 208
+    Top = 288
+    Width = 45
+    Height = 13
+    Caption = 'Reminder'
+  end
   inherited ButtonOk: TButton
     Top = 320
   end
   inherited ButtonCancel: TButton
     Top = 320
+  end
+  object ReminderEdit: TEdit
+    Left = 280
+    Top = 288
+    Width = 161
+    Height = 21
+    TabOrder = 4
+    OnEnter = ReminderEditEnter
   end
 end

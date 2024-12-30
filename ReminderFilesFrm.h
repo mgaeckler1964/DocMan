@@ -31,40 +31,53 @@
 
 //---------------------------------------------------------------------------
 
-#ifndef GeneralFrmH
-#define GeneralFrmH
+#ifndef ReminderFilesFrmH
+#define ReminderFilesFrmH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "ItemCreateFrm.h"
-#include <ComCtrls.hpp>
+#include <DBCtrls.hpp>
+#include <ExtCtrls.hpp>
+#include <Db.hpp>
+#include <DBGrids.hpp>
+#include <DBTables.hpp>
+#include <Grids.hpp>
+#include <Buttons.hpp>
 //---------------------------------------------------------------------------
-class TGeneralForm : public TItemCreateForm
+class TReminderFilesForm : public TForm
 {
 __published:	// IDE-managed Components
-	TLabel *Label2;
-	TLabel *LabelType;
-	TLabel *Label3;
-	TLabel *LabelCreator;
-	TLabel *LabelReserved;
-	TLabel *LabelReservedFor;
-	TLabel *Label5;
-	TLabel *LabelCreatedDate;
-	TLabel *Label6;
-	TLabel *LabelModifiedDate;
-	TLabel *Label4;
-	TLabel *LabelLocalPath;
-	TLabel *Label7;
-	TEdit *ReminderEdit;
+	TPanel *Panel1;
+	TDBNavigator *DBNavigator1;
+	TDBGrid *DBGrid;
+	TDataSource *DataSource;
+	TQuery *QueryOpenFiles;
+	TIntegerField *QueryOpenFilesID;
+	TIntegerField *QueryOpenFilesParentID;
+	TStringField *QueryOpenFilesName;
+	TStringField *QueryOpenFilesPATH;
+	TSpeedButton *SpeedButton;
+	TIntegerField *QueryOpenFilesReminderDate;
+	TDateTimeField *QueryOpenFilesReminder;
+	void __fastcall FormHide(TObject *Sender);
+	void __fastcall QueryOpenFilesCalcFields(TDataSet *DataSet);
+	void __fastcall DBGridDblClick(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall ReminderEditEnter(TObject *Sender);
+	void __fastcall SpeedButtonClick(TObject *Sender);
 private:	// User declarations
+	void reloadQuery( bool allways );
+
 public:		// User declarations
-	__fastcall TGeneralForm(TComponent* Owner);
+	__fastcall TReminderFilesForm(TComponent* Owner);
+	void openChecked();
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TGeneralForm *GeneralForm;
+extern PACKAGE TReminderFilesForm *ReminderFilesForm;
 //---------------------------------------------------------------------------
+void showReminder();
+//---------------------------------------------------------------------------
+
 #endif

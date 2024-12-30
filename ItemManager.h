@@ -49,6 +49,7 @@
 #include <gak/shared.h>
 #include <gak/t_string.h>
 #include <gak/Map.h>
+#include <gak/types.h>
 
 #include "gaklib.h"
 
@@ -200,7 +201,8 @@ class THE_ITEM : public gak::SharedObject
 						permissionID, copyID, createdBy, ordering, numLinks,
 						assignedTo;
 	STRING				name, oldName, previousName, extension, description;
-	TDateTime			createdDate, modifiedDate;
+	TDateTime			m_createdDate, m_modifiedDate;
+	gak::uint32			m_reminderDate;
 
 	bool				ancestorsLoaded, contentLoaded, aclLoaded, aclChanged;
 	ITEM_CONTENT		content;
@@ -244,7 +246,8 @@ class THE_ITEM : public gak::SharedObject
 		parentID = -1;
 		oldVolumeID = volumeID = permissionID = 0;
 		assignedTo = 0;
-		createdDate = modifiedDate = TDateTime::CurrentDateTime();
+		m_createdDate = m_modifiedDate = TDateTime::CurrentDateTime();
+		m_reminderDate = 0;
 
 	}
 
@@ -346,27 +349,35 @@ class THE_ITEM : public gak::SharedObject
 	}
 	TDateTime getCreatedDate( void ) const
 	{
-		return createdDate;
+		return m_createdDate;
 	}
 	void setCreatedDate( TDateTime createdDate )
 	{
-		this->createdDate = createdDate;
+		m_createdDate = createdDate;
 	}
 	void setCreatedDate( time_t unixTime )
 	{
-		createdDate = gak::DateTime( unixTime ).calcOriginalTime();
+		m_createdDate = gak::DateTime( unixTime ).calcOriginalTime();
 	}
 	TDateTime getModifiedDate( void ) const
 	{
-		return modifiedDate;
+		return m_modifiedDate;
 	}
 	void setModifiedDate( TDateTime modifiedDate )
 	{
-		this->modifiedDate = modifiedDate;
+		m_modifiedDate = modifiedDate;
 	}
 	void setModifiedDate( time_t unixTime )
 	{
-		modifiedDate = gak::DateTime( unixTime ).calcOriginalTime();
+		m_modifiedDate = gak::DateTime( unixTime ).calcOriginalTime();
+	}
+	gak::uint32 getReminderDate( void ) const
+	{
+		return m_reminderDate;
+	}
+	void setReminderDate( gak::uint32 reminderDate )
+	{
+		m_reminderDate = reminderDate;
 	}
 	virtual STRING getSize( void );
 	int getOrder( void ) const

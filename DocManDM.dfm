@@ -457,6 +457,10 @@ object DocManDataModule: TDocManDataModule
         DataType = ftDateTime
       end
       item
+        Name = 'REMIINDERDATE'
+        DataType = ftInteger
+      end
+      item
         Name = 'OLD_PARENT'
         DataType = ftInteger
       end
@@ -577,6 +581,14 @@ object DocManDataModule: TDocManDataModule
       end
       item
         Name = 'ORDERING'
+        DataType = ftInteger
+      end
+      item
+        Name = 'REMOTE_SERVER_ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'REMOTE_ID'
         DataType = ftInteger
       end>
     IndexDefs = <
@@ -740,6 +752,15 @@ object DocManDataModule: TDocManDataModule
     object TableItemTreeMD5_CHECKSUM: TStringField
       FieldName = 'MD5_CHECKSUM'
       Size = 32
+    end
+    object TableItemTreeREMIINDERDATE: TIntegerField
+      FieldName = 'REMIINDERDATE'
+    end
+    object TableItemTreeREMOTE_SERVER_ID: TIntegerField
+      FieldName = 'REMOTE_SERVER_ID'
+    end
+    object TableItemTreeREMOTE_ID: TIntegerField
+      FieldName = 'REMOTE_ID'
     end
   end
   object TableIexifData: TTable

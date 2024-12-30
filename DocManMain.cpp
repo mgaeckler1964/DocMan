@@ -69,6 +69,7 @@
 #include "TaskTypesFrm.h"
 #include "TaskStatusFrm.h"
 #include "BrowseFram.h"
+#include "ReminderFilesFrm.h"
 #include "OpenFilesFrm.h"
 #include "OpenTasksFrm.h"
 #include "OpenTestsFrm.h"
@@ -89,6 +90,7 @@ using namespace vcl;
 TDocManMainForm *DocManMainForm;
 //---------------------------------------------------------------------------
 char registryKey[] = "\\Software\\gak\\DocMan";
+static const int DB_VERSION = 8;
 //---------------------------------------------------------------------------
 static int factoryCompare(
 	const FACTORY_BASE * e1,
@@ -266,7 +268,7 @@ void TDocManMainForm::fillParentItems( void )
 		ComboBoxParents->Items->Add( (const char *)theName );
 
 		ComboBoxParents->Visible = true;
-		ComboBoxParents->ItemIndex = ComboBoxParents->Items->Count-1; 
+		ComboBoxParents->ItemIndex = ComboBoxParents->Items->Count-1;
 		SpeedButtonUp->Visible = true;
 	}
 	else
@@ -486,7 +488,7 @@ void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 
 	Session->PrivateDir = (const char*)privateDir;
 
-	STRING errorText = ConfigDataModule->OpenDatabase( theDatabase );
+	STRING errorText = ConfigDataModule->OpenDatabase( theDatabase, DB_VERSION );
 	if( !errorText.isEmpty() )
 	{
 		errorText = STRING("Unable to connect to database.\n") + errorText;
@@ -526,7 +528,12 @@ void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 		performBackgroundTasks();
 		Application->Terminate();
 	}
+	else
+	{
+		ReminderTimer->Enabled = true;
+	}
 }
+
 //---------------------------------------------------------------------------
 void __fastcall TDocManMainForm::FormClose(TObject *,
 	  TCloseAction &)
@@ -1103,6 +1110,26 @@ void __fastcall TDocManMainForm::IdexSearch1Click(TObject *)
 void __fastcall TDocManMainForm::AdminReindexDatabaseClick(TObject *)
 {
 	deleteDocManIndex();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TDocManMainForm::Reminder1Click(TObject *Sender)
+{
+	ShowWindow( ReminderFilesForm );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TDocManMainForm::ReminderTimerTimer(TObject *Sender)
+{
+	if( ReminderFilesForm->Active )
+	{
+		ReminderTimer->Interval = 600000;
+	}
+	else if( !ReminderFilesForm->Visible )
+	{
+		ReminderTimer->Interval = 10000;
+	}
+	showReminder();
 }
 //---------------------------------------------------------------------------
 

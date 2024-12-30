@@ -28,8 +28,9 @@
       ..\..\object\DocMan\PermApplyDownFrm.obj 
       ..\..\object\DocMan\PasswordDlg.obj 
       ..\..\object\DocMan\ChangePasswordDlg.obj ..\..\object\DocMan\Alias.obj 
-      ..\..\object\DocMan\OpenFilesFrm.obj ..\..\object\DocMan\MimeTypesFrm.obj 
-      ..\..\object\DocMan\EditFrm.obj ..\..\object\DocMan\EditPlainFileFrm.obj 
+      ..\..\object\DocMan\ReminderFilesFrm.obj 
+      ..\..\object\DocMan\MimeTypesFrm.obj ..\..\object\DocMan\EditFrm.obj 
+      ..\..\object\DocMan\EditPlainFileFrm.obj 
       ..\..\object\DocMan\EditXmlFileFrm.obj ..\..\object\DocMan\File.obj 
       ..\..\object\DocMan\LanguageDocCreateFrm.obj 
       ..\..\object\DocMan\LanguageItemCreateFrm.obj 
@@ -57,7 +58,7 @@
       ..\..\object\DocMan\DocManBG.obj ..\..\object\DocMan\DocManThreads.obj 
       ..\..\object\DocMan\IndexFrm.obj ..\..\object\DocMan\xmlEditFram.obj 
       ..\..\object\DocMan\XmlViewerFrm.obj ..\..\object\DocMan\cssStyleFram.obj 
-      ..\..\object\DocMan\cssStyleFrm.obj"/>
+      ..\..\object\DocMan\cssStyleFrm.obj ..\..\object\DocMan\OpenFilesFrm.obj"/>
     <RESFILES value="DocMan.res ..\..\object\DocMan\bitmaps.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -72,7 +73,7 @@
       TaskTypesFrm.dfm ..\GAKLIB\Repository\StatusFrm.dfm BrowseFram.dfm 
       TasklistBrowserFram.dfm CheckInFrm.dfm OpenTestsFrm.dfm LocalDirsFrm.dfm 
       PermApplyDownFrm.dfm ..\GAKLIB\Repository\PasswordDlg.dfm 
-      ..\GAKLIB\Repository\ChangePasswordDlg.dfm OpenFilesFrm.dfm 
+      ..\GAKLIB\Repository\ChangePasswordDlg.dfm ReminderFilesFrm.dfm 
       MimeTypesFrm.dfm EditFrm.dfm EditPlainFileFrm.dfm EditXmlFileFrm.dfm 
       LanguageDocCreateFrm.dfm LanguageItemCreateFrm.dfm MultiActionFrm.dfm 
       XsltReportFrm.dfm TaskFilesFrm.dfm CheckOut.dfm ReferencesFrm.dfm 
@@ -84,7 +85,7 @@
       CryptoKeysFrm.dfm ..\GAKLIB\Repository\LoginDlg.dfm 
       ..\GAKLIB\Repository\AboutFrm.dfm ..\GAKLIB\Repository\AboutOpenSSLfrm.dfm 
       IndexFrm.dfm ..\XML_Edit\xmlEditFram.dfm ..\XML_Edit\XmlViewerFrm.dfm 
-      ..\XML_Edit\cssStyleFram.dfm ..\XML_Edit\cssStyleFrm.dfm"/>
+      ..\XML_Edit\cssStyleFram.dfm ..\XML_Edit\cssStyleFrm.dfm OpenFilesFrm.dfm"/>
     <LIBFILES value="..\..\Object\gaklib\gaklib_bcb.lib ..\..\Object\winlib\winlibBCB.lib 
       ..\..\Object\openssl.lib"/>
     <LIBRARIES value="Vclmid50.lib Vclx50.lib VCLBDE50.lib Vcldb50.lib Vcl50.lib"/>
@@ -131,8 +132,8 @@ IncludeVerInfo=1
 AutoIncBuild=1
 MajorVer=1
 MinorVer=0
-Release=7
-Build=354
+Release=8
+Build=361
 Debug=0
 PreRelease=0
 Special=0
@@ -144,7 +145,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Martin Gäckler
 FileDescription=Source Code Control, Document Management, Content Management
-FileVersion=1.0.7.354
+FileVersion=1.0.8.361
 InternalName=DocMan
 LegalCopyright=(c) 2011-2014 by Martin Gäckler / Linz / Austria
 LegalTrademarks=
@@ -207,7 +208,7 @@ Item1=..\..\object\DocMan\
 DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
-RunParams=BG
+RunParams=
 HostApplication=
 RemoteHost=
 RemotePath=
