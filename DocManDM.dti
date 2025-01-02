@@ -1,7 +1,7 @@
 [Designer]
 Version=1
-Left=355
-Top=276
+Left=198
+Top=163
 Width=1000
 Height=688
 Splitter=363
@@ -20,7 +20,7 @@ PrintToFile=0
 PrintBorders=1
 PrintSelected=0
 PrintVisible=0
-ExpandedItems=DocManDataModule\<DefaultSession>\<ImpliedDatabase>.docManDB\TableItemTree
+ExpandedItems=DocManDataModule\<DefaultSession>\theDatabase
 
 [DataDiagrams]
 Version=1

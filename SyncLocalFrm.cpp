@@ -39,7 +39,6 @@
 #include "Folder.h"
 #include "PermissionsFrm.h"
 #include "DirSelFrm.h"
-#include "DocManMain.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -73,7 +72,7 @@ REFRESH_TYPE ACTION_SYNCED_LOCAL_PATH::perform( PTR_ITEM theItem )
 
 	if( theFolder )
 	{
-		STRING machine = TDocManMainForm::getMachine();
+		STRING machine = TDocManDataModule::getMachine();
 		STRING oldPath = theFolder->getLocalPath();
 		SyncLocalForm->LabelMachine->Caption = (const char *)machine;
 		SyncLocalForm->EditLocalPath->Text = (const char *)oldPath;

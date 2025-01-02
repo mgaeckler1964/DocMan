@@ -41,7 +41,7 @@
 #include "File.h"
 #include "Folder.h"
 #include "Config.h"
-#include "DocManMain.h"
+#include "DocManDM.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

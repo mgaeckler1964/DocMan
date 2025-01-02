@@ -39,7 +39,6 @@
 
 #include "CreateVersionFrm.h"
 #include "PermissionsFrm.h"
-#include "DocManMain.h"
 #include "File.h"
 
 //---------------------------------------------------------------------------

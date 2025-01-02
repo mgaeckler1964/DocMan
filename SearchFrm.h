@@ -47,7 +47,6 @@
 
 #include <gak/array.h>
 
-#include "DocManMain.h"
 #include "DocManDM.h"
 
 //---------------------------------------------------------------------------

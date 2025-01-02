@@ -41,7 +41,6 @@
 #include "TestStepFrm.h"
 #include "TestPrepareFrm.h"
 #include "ActionManager.h"
-#include "DocManMain.h"
 #include "TargetBrowseFrm.h"
 #include "ItemManager.h"
 #include "Folder.h"
@@ -317,7 +316,7 @@ void __fastcall TTestPrepareForm::FormShow(TObject *)
 		ComboBoxAssignedTo, "docManDB",
 		ComboBoxAssignedTo->Tag
 			? ComboBoxAssignedTo->Tag
-			: DocManMainForm->getActUser()->ID
+			: DocManDataModule->getActUser()->ID
 	);
 }
 //---------------------------------------------------------------------------

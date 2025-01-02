@@ -40,7 +40,7 @@
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 
-#include "DocManBG.h"
+#include "DocManBGThread.h"
 #include <Grids.hpp>
 
 //---------------------------------------------------------------------------

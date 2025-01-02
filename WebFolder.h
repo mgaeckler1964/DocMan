@@ -133,6 +133,7 @@ class THE_WEB_FOLDER : public THE_LOCAL_FOLDER
 
 	void testDocument( Document *theDocument )
 	{
+#ifndef DOCMANBG
 		std::auto_ptr<XML_MY_SCHEMA_MANAGER>	theManager( new XML_MY_SCHEMA_MANAGER );
 		STRING errText = theManager->testDocument( theDocument );
 		if( !errText.isEmpty() )
@@ -142,6 +143,7 @@ class THE_WEB_FOLDER : public THE_LOCAL_FOLDER
 				' ' <<
 				errText << '\n'
 			;
+#endif
 	}
 	STRING transformXmlFile(
 		Document		*theSourceDoc,

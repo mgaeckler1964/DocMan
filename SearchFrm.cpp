@@ -40,7 +40,11 @@
 #include "SearchFrm.h"
 #include "ActionManager.h"
 #include "DocManDM.h"
+#ifdef DOCMANBG
+//#include "DocManBgMain.h"
+#else
 #include "DocManMain.h"
+#endif
 #include "ImageFrm.h"
 
 //---------------------------------------------------------------------------
@@ -472,9 +476,12 @@ void __fastcall TSearchForm::DBGridDblClick(TObject *)
 	PTR_ITEM	theItem = getItem( QuerySearchParentID->AsInteger );
 	if( theItem )
 	{
+#ifdef DOCMANBG
+#else
 		DocManMainForm->openItem( theItem, QuerySearchID->AsInteger );
 		DocManMainForm->BringToFront();
 		DocManMainForm->SetFocus();
+#endif
 	}
 }
 //---------------------------------------------------------------------------
@@ -643,6 +650,7 @@ void __fastcall TSearchForm::FormCreate(TObject *)
 
 void __fastcall TSearchForm::ButtonImagesClick(TObject *)
 {
+#ifndef DOCMANBG
 	if( QuerySearch->Active )
 	{
 		size_t numImages = 0;
@@ -693,6 +701,7 @@ void __fastcall TSearchForm::ButtonImagesClick(TObject *)
 			delete ImageBrowserForm;
 		}
 	}
+#endif
 }
 //---------------------------------------------------------------------------
 

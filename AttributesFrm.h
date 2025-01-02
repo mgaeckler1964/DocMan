@@ -46,7 +46,6 @@
 #include <gak/array.h>
 
 #include "DocManDM.h"
-#include "DocManMain.h"
 
 //---------------------------------------------------------------------------
 class TAttributesForm : public TForm

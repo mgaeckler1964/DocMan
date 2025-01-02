@@ -129,7 +129,6 @@ USEFORM("CryptoKeysFrm.cpp", CryptoKeysForm);
 USEFORM("..\GAKLIB\Repository\LoginDlg.cpp", LoginForm);
 USEFORM("..\GAKLIB\Repository\AboutFrm.cpp", AboutProgramForm);
 USEFORM("..\GAKLIB\Repository\AboutOpenSSLfrm.cpp", AboutOpenSSLForm);
-USEUNIT("DocManBG.cpp");
 USEUNIT("DocManThreads.cpp");
 USEFORM("IndexFrm.cpp", IndexForm);
 USEFORM("..\XML_Edit\xmlEditFram.cpp", xmlEditorFrame); /* TFrame: File Type */
@@ -137,6 +136,7 @@ USEFORM("..\XML_Edit\XmlViewerFrm.cpp", XmlViewerForm);
 USEFORM("..\XML_Edit\cssStyleFram.cpp", cssStyleFrame); /* TFrame: File Type */
 USEFORM("..\XML_Edit\cssStyleFrm.cpp", cssStyleForm);
 USEFORM("OpenFilesFrm.cpp", OpenFilesForm);
+USEUNIT("DocManBGThread.cpp");
 //---------------------------------------------------------------------------
 #include "xmlEditFram.h"
 #include "file.h"
@@ -159,7 +159,7 @@ static STRING getSchemaFile4Namespace( const STRING &nameSpace )
 }
 
 //---------------------------------------------------------------------------
-WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR cmdLine, int)
+WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 {
 	doDisableLog();
 	doEnterFunction( "WinMain" );
@@ -172,8 +172,6 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR cmdLine, int)
 	XML_MY_SCHEMA_MANAGER::setXmlDocLoadFunction( loadXmlDoc );
 	XML_MY_SCHEMA_MANAGER::setSchemaFile4NamespaceCB( getSchemaFile4Namespace );
 	TxmlEditorFrame::setPlainTextLoader( loadCssDoc );
-
-	Application->Tag = strcmpi( cmdLine, "BG" ) ? 0 : 1;
 	try
 	{
 		Application->Initialize();

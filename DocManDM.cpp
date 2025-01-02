@@ -35,6 +35,8 @@
 
 #include <vcl.h>
 
+#include <winlib/winlib.h>
+
 #include <gak/vcl_tools.h>
 #include <gak/md5.h>
 #include <gak/directory.h>
@@ -44,6 +46,8 @@
 #include "DocManDM.h"
 #include "File.h"
 #include "MimeTypesFrm.h"
+#include "LoginDlg.h"
+#include "PasswordDlg.h"
 
 //---------------------------------------------------------------------------
 using namespace gak;
@@ -51,6 +55,7 @@ using namespace gak;
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TDocManDataModule *DocManDataModule;
+char registryKey[] = "\\Software\\gak\\DocMan";
 //---------------------------------------------------------------------------
 
 const char *THREAD_CHECK_DB::getTitle( void ) const
@@ -1242,4 +1247,111 @@ void TDocManDataModule::loadAllStorageInfos( int minStorageID, StorageInfos *res
 	}
 	QueryAllStorageItems->Close();
 }
+
+//---------------------------------------------------------------------------
+
+const UserOrGroup *TDocManDataModule::login( void )
+{
+	doEnterFunction("TDocManDataModule::login");
+	bool	showLogin;
+
+	if( !m_actUser )	// first call
+	{
+		print2StartWindow( "%s", "Autologin" );
+
+		m_actUser = &gak::vcl::getActUser( theDatabase->DatabaseName );
+		showLogin = false;
+		if( m_actUser->ID )
+		{
+			STRING		publicKeyFile = THE_FILE::getExternalStorageBase();
+
+			if( !publicKeyFile.isEmpty() )
+			{
+				publicKeyFile += "keys" DIRECTORY_DELIMITER_STRING;
+				publicKeyFile += m_actUser->userName;
+
+				CryptoRSA	publicKey( true );
+				if( publicKey.hasKey() )
+				{
+					makePath( publicKeyFile );
+					publicKey.saveCypher( publicKeyFile );
+				}
+			}
+		}
+	}
+	else			// call from menu
+	{
+		showLogin = true;
+	}
+
+	do
+	{
+		if( showLogin )
+		{
+			if( LoginForm->ShowModal( "Doc Manager" ) == mrOk )
+			{
+				gak::vcl::actUser = vcl::loginUser(
+					theDatabase->DatabaseName,
+					LoginForm->EditUserName->Text,
+					LoginForm->EditPassword->Text
+				);
+			}
+			else
+			{
+/*v*/			break;
+			}
+		}
+
+		if( !m_actUser->ID )
+		{
+			Application->MessageBox( "Unknown User or Password", "Error", MB_ICONSTOP );
+		}
+
+		if( !m_actUser->permissions & vcl::USER_LOGIN_PERM )
+		{
+			Application->MessageBox( "Login Denied", "Error", MB_ICONSTOP );
+			m_actUser = NULL;
+		}
+
+		showLogin = true;
+	} while( !m_actUser || m_actUser->ID == 0 );
+
+	return m_actUser;
+}
+
+//---------------------------------------------------------------------------
+
+CryptoRSA &TDocManDataModule::getPrivateKey( void )
+{
+	if( !m_privateKey.hasKey() )
+	{
+		if( PasswordForm->ShowModal() == mrOk )
+		{
+			STRING	txtCypher = PasswordForm->EditPassword->Text.c_str();
+			m_privateKey.loadCryptedPersonalCypher( txtCypher );
+		}
+		else
+		{
+			throw EAbort( "Canceled" );
+		}
+	}
+
+	return m_privateKey;
+}
+//---------------------------------------------------------------------------
+const STRING &TDocManDataModule::getMachine( void )
+{
+	static STRING machine;
+	if( machine.isEmpty() )
+	{
+		char			computerName[MAX_COMPUTERNAME_LENGTH+2];
+		unsigned long	size = MAX_COMPUTERNAME_LENGTH+1;
+
+		GetComputerName( computerName, &size );
+		machine = computerName;
+	}
+
+	return machine;
+}
+
 

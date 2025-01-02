@@ -268,13 +268,18 @@ const char *FACTORY_TASK::getName( void ) const
 
 TItemCreateForm *FACTORY_TASK::getForm( void ) const
 {
+#ifndef DOCMANBG
 	return TaskForm;
+#else
+	return NULL;
+#endif
 }
 
 PTR_ITEM FACTORY_TASK::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_TASK	newTask = createItem( 0 );
 
+#ifndef DOCMANBG
 	(*newTask).setData(
 		parent,
 		TaskForm->EditName->Text.c_str(),
@@ -294,6 +299,7 @@ PTR_ITEM FACTORY_TASK::createItemFromForm( const PTR_ITEM &parent ) const
 		TaskForm->completed
 	);
 	(*newTask).updateDatabase();
+#endif
 
 	return newTask;
 }
@@ -447,12 +453,16 @@ STRING THE_TASKLIST::drawCell( int col, int row, TCanvas *canvas, TRect &Rect )
 
 TBrowserFrame *THE_TASKLIST::getFrame( void ) const
 {
+#ifndef DOCMANBG
 	static TTasklistBrowserFrame *theFrame = NULL;
 
 	if( !theFrame )
 		theFrame = new TTasklistBrowserFrame( NULL );
 
 	return theFrame;
+#else
+	return NULL;
+#endif
 }
 
 // --------------------------------------------------------------------- //
@@ -531,6 +541,7 @@ void THE_TASK::updateDatabase( void )
 
 void THE_TASK::open( void )
 {
+#ifndef DOCMANBG
 	TaskForm->setItem( this );
 
 	if( TaskForm->ShowModal() == mrOk )
@@ -554,6 +565,7 @@ void THE_TASK::open( void )
 
 		updateDatabase();
 	}
+#endif
 }
 
 void THE_TASK::createXMLattributes( xml::Element *theElement )

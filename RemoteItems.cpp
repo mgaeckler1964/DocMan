@@ -47,7 +47,9 @@
 #include "File.h"
 #include "RemoteFolderCreateFrm.h"
 #include "FileCreateFrm.h"
+#ifndef DOCMANBG
 #include "RemoteServerFrm.h"
+#endif
 #include "DocManService.h"
 #include "MimeTypesFrm.h"
 
@@ -690,7 +692,7 @@ bool THE_REMOTE_FILE::canUnreserve( bool ) const
 {
 	bool result;
 
-	if( getReservedOn() != DocManMainForm->getMachine() )
+	if( getReservedOn() != TDocManDataModule::getMachine() )
 		result = false;
 	else
 	{
@@ -1279,7 +1281,7 @@ STRING THE_REMOTE_FILE::download( int version, bool protect, const STRING &i_des
 		dest = getDownloadFile( dest );
 	}
 
-	if( version || !i_dest.isEmpty() || getReservedOn() != DocManMainForm->getMachine() )
+	if( version || !i_dest.isEmpty() || getReservedOn() != TDocManDataModule::getMachine() )
 	{
 		if( (version || hasChanged( dest )) && theService->Get( src ) )
 		{

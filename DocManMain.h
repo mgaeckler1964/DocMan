@@ -70,7 +70,6 @@ class TDocManMainForm : public TForm
 __published:	// IDE-managed Components
 	TPanel *Panel1;
 	TComboBox *ComboBoxAddItemTypes;
-	TDatabase *theDatabase;
 	TSpeedButton *SpeedButtonUp;
 	TComboBox *ComboBoxParents;
 	TMainMenu *MainMenu;
@@ -178,45 +177,27 @@ private:	// User declarations
 	typedef Array<const FACTORY_BASE *>	AddItemTypes;
 	typedef Array<ACTION_BASE *>		PopupActions;
 
-	gak::CryptoRSA			privateKey;
 	TBrowserFrame			*browserFrame;
-	const UserOrGroup		*m_actUser;
 	PTR_ITEM				currentItem,
 							selectedItem;
 	AddItemTypes			m_addItemTypes;
 	PopupActions			m_popupActions;
 	gak::Stack<PTR_ITEM>	history, forwardHistory;
-	bool					backgroundJob;
 
 	void fillCreateItems( void );
 	void fillParentItems( void );
 	void fillContents( int selectID );
-	void login( void );
+	const UserOrGroup *login( void );
 	void __fastcall ReportClick(TObject *Sender);
 	void __fastcall WmDropFiles(TWMDropFiles& Message);
 	void __fastcall AppWindowProc(TMessage &msg);
 	void __fastcall AppMinimize(TObject *Sender);
 
 	void initMenu( void );
-
-	void performBackgroundTasks( void );
-
 public:		// User declarations
 	void openItem( PTR_ITEM newItem, int selectID=-1, bool handleHistory=true );
 	__fastcall TDocManMainForm(TComponent* Owner);
-	const UserOrGroup *getActUser( void ) const
-	{
-		return m_actUser;
-	}
-	static const STRING &getMachine( void );
-	void getUserById( int userId, UserOrGroup *result ) const
-	{
-		::getUserById( theDatabase->DatabaseName, userId, result );
-	}
-	bool isBackgroundJob( void )
-	{
-		return backgroundJob;
-	}
+
 	virtual void __fastcall Dispatch(void *Message);
 	void ShowWindow( TForm *window )
 	{
@@ -225,11 +206,9 @@ public:		// User declarations
 		SetWindowPos( Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE	);
 		gak::vcl::bringWindowToFront( window );
 	}
-	gak::CryptoRSA &getPrivateKey( void );
 };
 
 //---------------------------------------------------------------------------
 extern PACKAGE TDocManMainForm *DocManMainForm;
-extern char registryKey[];
 //---------------------------------------------------------------------------
 #endif

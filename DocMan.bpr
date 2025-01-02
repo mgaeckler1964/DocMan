@@ -55,10 +55,10 @@
       ..\..\object\DocMan\RemoteItems.obj ..\..\object\DocMan\CryptoFile.obj 
       ..\..\object\DocMan\CryptoKeysFrm.obj ..\..\object\DocMan\LoginDlg.obj 
       ..\..\object\DocMan\AboutFrm.obj ..\..\object\DocMan\AboutOpenSSLfrm.obj 
-      ..\..\object\DocMan\DocManBG.obj ..\..\object\DocMan\DocManThreads.obj 
-      ..\..\object\DocMan\IndexFrm.obj ..\..\object\DocMan\xmlEditFram.obj 
-      ..\..\object\DocMan\XmlViewerFrm.obj ..\..\object\DocMan\cssStyleFram.obj 
-      ..\..\object\DocMan\cssStyleFrm.obj ..\..\object\DocMan\OpenFilesFrm.obj"/>
+      ..\..\object\DocMan\DocManThreads.obj ..\..\object\DocMan\IndexFrm.obj 
+      ..\..\object\DocMan\xmlEditFram.obj ..\..\object\DocMan\XmlViewerFrm.obj 
+      ..\..\object\DocMan\cssStyleFram.obj ..\..\object\DocMan\cssStyleFrm.obj 
+      ..\..\object\DocMan\OpenFilesFrm.obj ..\..\object\DocMan\DocManBGThread.obj"/>
     <RESFILES value="DocMan.res ..\..\object\DocMan\bitmaps.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -133,7 +133,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=8
-Build=361
+Build=362
 Debug=0
 PreRelease=0
 Special=0
@@ -145,7 +145,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Martin Gäckler
 FileDescription=Source Code Control, Document Management, Content Management
-FileVersion=1.0.8.361
+FileVersion=1.0.8.362
 InternalName=DocMan
 LegalCopyright=(c) 2011-2014 by Martin Gäckler / Linz / Austria
 LegalTrademarks=
@@ -196,8 +196,10 @@ Item1=NDEBUG;_DEBUG
 Item2=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
-Count=1
+Count=3
 Item0=..\..\object\DocMan
+Item1=..\..\object\DocMan\
+Item2=..\..\object\DocMan\Main
 
 [HistoryLists\hlFinalOutputDir]
 Count=2

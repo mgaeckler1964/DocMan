@@ -57,7 +57,7 @@
 #include "ItemManager.h"
 #include "ItemCreateFrm.h"
 #include "DocManDM.h"
-#include "DocManBG.h"
+#include "DocManBGThread.h"
 #include "XsltReportFrm.h"
 
 #include "PermissionsFrm.h"
@@ -89,7 +89,6 @@ using namespace vcl;
 #pragma resource "*.dfm"
 TDocManMainForm *DocManMainForm;
 //---------------------------------------------------------------------------
-char registryKey[] = "\\Software\\gak\\DocMan";
 static const int DB_VERSION = 8;
 //---------------------------------------------------------------------------
 static int factoryCompare(
@@ -107,77 +106,13 @@ __fastcall TDocManMainForm::TDocManMainForm(TComponent* Owner)
 {
 	browserFrame = NULL;
 	currentItem = NULL;
-	m_actUser = NULL;
-	backgroundJob = false;
 }
 //---------------------------------------------------------------------------
-void TDocManMainForm::login( void )
+const UserOrGroup *TDocManMainForm::login( void )
 {
 	doEnterFunction("TDocManMainForm::login");
-	bool	showLogin;
-
-	if( !m_actUser )	// first call
-	{
-		print2StartWindow( "%s", "Autologin" );
-
-		m_actUser = &::getActUser( theDatabase->DatabaseName );
-		showLogin = false;
-		if( m_actUser->ID )
-		{
-			STRING		publicKeyFile = THE_FILE::getExternalStorageBase();
-
-			if( !publicKeyFile.isEmpty() )
-			{
-				publicKeyFile += "keys" DIRECTORY_DELIMITER_STRING;
-				publicKeyFile += m_actUser->userName;
-
-				CryptoRSA	publicKey( true );
-				if( publicKey.hasKey() )
-				{
-					makePath( publicKeyFile );
-					publicKey.saveCypher( publicKeyFile );
-				}
-			}
-		}
-	}
-	else			// call from menu
-	{
-		showLogin = true;
-	}
-
-	do
-	{
-		if( showLogin )
-		{
-			if( LoginForm->ShowModal( "Doc Manager" ) == mrOk )
-			{
-				actUser = vcl::loginUser(
-					theDatabase->DatabaseName,
-					LoginForm->EditUserName->Text,
-					LoginForm->EditPassword->Text
-				);
-			}
-			else
-			{
-/*v*/			break;
-			}
-		}
-
-		if( !m_actUser->ID )
-		{
-			Application->MessageBox( "Unknown User or Password", "Error", MB_ICONSTOP );
-		}
-
-		if( !m_actUser->permissions & vcl::USER_LOGIN_PERM )
-		{
-			Application->MessageBox( "Login Denied", "Error", MB_ICONSTOP );
-			m_actUser = NULL;
-		}
-
-		showLogin = true;
-	} while( !m_actUser || m_actUser->ID == 0 );
-
-	if( m_actUser->ID )
+	const UserOrGroup *actUser = DocManDataModule->login();
+	if( actUser && actUser->ID )
 	{
 		Administration->Enabled = vcl::isSystemAdmin();
 
@@ -199,9 +134,9 @@ void TDocManMainForm::login( void )
 		print2StartWindow( "%s", "Loading Company Volume" );
 		PTR_ITEM	companyVolume = getCompanyVolume();
 
-		if( !isBackgroundJob() )
-			openItem( companyVolume );
+		openItem( companyVolume );
 	}
+	return actUser;
 }
 //---------------------------------------------------------------------------
 void TDocManMainForm::fillCreateItems( void )
@@ -325,10 +260,6 @@ void __fastcall TDocManMainForm::FormCreate(TObject *)
 //---------------------------------------------------------------------------
 void __fastcall TDocManMainForm::AppMinimize(TObject *)
 {
-	if( isBackgroundJob() )
-	{
-		::ShowWindow( Application->Handle, SW_HIDE );
-	}
 }
 
 //---------------------------------------------------------------------------
@@ -416,51 +347,6 @@ void TDocManMainForm::initMenu( void )
 }
 
 //---------------------------------------------------------------------------
-void TDocManMainForm::performBackgroundTasks( void )
-{
-	doEnterFunction( "TDocManMainForm::performBackgroundTasks(" );
-	NOTIFYICONDATA	IconData;
-
-	IconData.cbSize = sizeof(IconData);
-	IconData.hWnd = Handle;
-	IconData.uID = 100;
-	IconData.uFlags = NIF_MESSAGE + NIF_ICON + NIF_TIP;
-	IconData.uCallbackMessage = WM_USER + 1;
-	IconData.hIcon = Application->Icon->Handle;
-	strcpy( IconData.szTip, "DocMan Background Process" );
-
-	Shell_NotifyIcon(NIM_ADD, &IconData);
-
-	::ShowWindow( Application->Handle, SW_HIDE );
-	Application->Minimize();
-
-	SharedObjectPointer<ThreadBackground> theThread = new ThreadBackground;
-
-	theThread->StartThread( true, true );
-
-	while( theThread->isRunning && !Thread::waitForMsgThreads() )
-	{
-		doLogPosition();
-		idleLoop();
-	}
-
-	Shell_NotifyIcon(NIM_DELETE, &IconData);
-
-	const STRING &errorText = theThread->getError();
-	if( !errorText.isEmpty() )
-	{
-		::ShowWindow( Application->Handle, SW_SHOW );
-		Application->Restore();
-
-		StatusForm->WindowState = wsNormal;
-		StatusForm->Show();
-		StatusForm->SetFocus();
-
-		Application->MessageBox( errorText, "Doc Man", MB_OK|MB_ICONERROR );
-	}
-}
-
-//---------------------------------------------------------------------------
 void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 {
 	STRING		privateDir;
@@ -478,17 +364,11 @@ void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 		privateDir += "C:\\DocMan";
 	}
 
-	if( Application->Tag )
-	{
-		privateDir += "BG";
-		backgroundJob = true;
-	}
-
 	mkdir( privateDir );
 
 	Session->PrivateDir = (const char*)privateDir;
 
-	STRING errorText = ConfigDataModule->OpenDatabase( theDatabase, DB_VERSION );
+	STRING errorText = ConfigDataModule->OpenDatabase( DocManDataModule->theDatabase, DB_VERSION );
 	if( !errorText.isEmpty() )
 	{
 		errorText = STRING("Unable to connect to database.\n") + errorText;
@@ -510,28 +390,15 @@ void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 	STRING noProxy = ConfigDataModule->GetValue( "noProxy", "" );
 	net::HTTPrequest::setProxy( proxyServer, proxyPort, noProxy );
 
-	login();
-	if( !m_actUser->ID )					// sorry
+	const UserOrGroup *actUser = login();
+	if( !actUser || !actUser->ID )					// sorry
 	{
 		Application->Terminate();
 	}
 
-	if( !isBackgroundJob() )
-	{
-		initMenu();
-	}
-
+	initMenu();
 	closeStartup();
-
-	if( isBackgroundJob() )
-	{
-		performBackgroundTasks();
-		Application->Terminate();
-	}
-	else
-	{
-		ReminderTimer->Enabled = true;
-	}
+	ReminderTimer->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
@@ -539,7 +406,7 @@ void __fastcall TDocManMainForm::FormClose(TObject *,
 	  TCloseAction &)
 {
 	doEnterFunction("TDocManMainForm::FormClose");
-	theDatabase->Close();
+	DocManDataModule->theDatabase->Close();
 }
 //---------------------------------------------------------------------------
 
@@ -692,14 +559,16 @@ void __fastcall TDocManMainForm::ComboBoxParentsChange(TObject *)
 
 void __fastcall TDocManMainForm::FileUserClick(TObject *)
 {
-	UserDialog->ShowModalWithDB( theDatabase->DatabaseName );
+	UserDialog->ShowModalWithDB( DocManDataModule->theDatabase->DatabaseName );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TDocManMainForm::SpeedButtonPopupClick(TObject *)
 {
 	selectedItem = currentItem;
-	getItemActions( *m_actUser, selectedItem, &m_popupActions );
+
+	getItemActions( *DocManDataModule->getActUser(), selectedItem, &m_popupActions );
+
 	PopupMenuActions->Items->Clear();
 	int group=-1;
 	for( size_t i=0; i<m_popupActions.size(); i++ )
@@ -792,22 +661,6 @@ void __fastcall TDocManMainForm::AdminConfigureClick(TObject *)
 	}
 }
 //---------------------------------------------------------------------------
-const STRING &TDocManMainForm::getMachine( void )
-{
-	static STRING machine;
-	if( machine.isEmpty() )
-	{
-		char			computerName[MAX_COMPUTERNAME_LENGTH+2];
-		unsigned long	size = MAX_COMPUTERNAME_LENGTH+1;
-
-		GetComputerName( computerName, &size );
-		machine = computerName;
-	}
-
-	return machine;
-}
-
-//---------------------------------------------------------------------------
 void __fastcall TDocManMainForm::PersonalFolderClick(TObject *)
 {
 	openItem( getPersonalItem( TYPE_PERSONAL_FOLDER ) );
@@ -869,8 +722,8 @@ void __fastcall TDocManMainForm::WorkspaceClick(TObject *)
 
 void __fastcall TDocManMainForm::FileLoginClick(TObject *)
 {
-	login();
-	if( !m_actUser->ID )					// sorry
+	const UserOrGroup *actUser = login();
+	if( !actUser || !actUser->ID )					// sorry
 	{
 		Application->Terminate();
 	}
@@ -882,7 +735,7 @@ void __fastcall TDocManMainForm::ChangePasswordClick(TObject *)
 	if( ChangePasswordForm->ShowModal() == mrOk )
 	{
 		vcl::changePassword(
-			theDatabase->DatabaseName,
+			DocManDataModule->theDatabase->DatabaseName,
 			ChangePasswordForm->EditOldPassword->Text,
 			ChangePasswordForm->EditNewPassword->Text
 		);
@@ -1053,25 +906,6 @@ void __fastcall TDocManMainForm::RemoteServerClick(TObject *)
 }
 //---------------------------------------------------------------------------
 
-CryptoRSA &TDocManMainForm::getPrivateKey( void )
-{
-	if( !privateKey.hasKey() )
-	{
-		if( PasswordForm->ShowModal() == mrOk )
-		{
-			STRING	txtCypher = PasswordForm->EditPassword->Text.c_str();
-			privateKey.loadCryptedPersonalCypher( txtCypher );
-		}
-		else
-		{
-			throw EAbort( "Canceled" );
-		}
-	}
-
-	return privateKey;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TDocManMainForm::ChangeDecryptionPasswordClick(
 	  TObject *)
 {
@@ -1113,13 +947,13 @@ void __fastcall TDocManMainForm::AdminReindexDatabaseClick(TObject *)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TDocManMainForm::Reminder1Click(TObject *Sender)
+void __fastcall TDocManMainForm::Reminder1Click(TObject *)
 {
 	ShowWindow( ReminderFilesForm );
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TDocManMainForm::ReminderTimerTimer(TObject *Sender)
+void __fastcall TDocManMainForm::ReminderTimerTimer(TObject *)
 {
 	if( ReminderFilesForm->Active )
 	{

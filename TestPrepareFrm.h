@@ -39,6 +39,8 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 
+#include <gak/vcl_tools.h>
+
 #include "TaskList.h"
 
 //---------------------------------------------------------------------------

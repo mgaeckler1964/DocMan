@@ -41,6 +41,8 @@
 #include "file.h"
 #include "PermissionsFrm.h"
 #include "MimeTypesFrm.h"
+#include "DocManMain.h"
+#include "DocManDM.h"
 
 //---------------------------------------------------------------------------
 using namespace gak;
@@ -86,7 +88,7 @@ REFRESH_TYPE ACTION_EDIT::perform( PTR_ITEM theItem )
 	{
 		bool	createVersion;
 		STRING	sourceFile, destFile, content;
-		if( theFile->getReservedOn() != DocManMainForm->getMachine() )
+		if( theFile->getReservedOn() != TDocManDataModule::getMachine() )
 		{
 			sourceFile = theFile->getExternalFile();
 
@@ -160,7 +162,7 @@ void __fastcall TEditFileForm::FormClose(TObject *,
 
 void __fastcall TEditFileForm::Button2Click(TObject *)
 {
-	Close();	
+	Close();
 }
 //---------------------------------------------------------------------------
 

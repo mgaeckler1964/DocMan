@@ -39,7 +39,11 @@
 #include "ReminderFilesFrm.h"
 #include "ItemManager.h"
 #include "DocManDM.h"
+#ifdef DOCMANBG
+//#include "DocManBgMain.h"
+#else
 #include "DocManMain.h"
+#endif
 
 //---------------------------------------------------------------------------
 using namespace gak;
@@ -95,9 +99,12 @@ void __fastcall TReminderFilesForm::DBGridDblClick(TObject *)
 	theItemId = QueryOpenFilesID->AsInteger;
 	if( theParentItem )
 	{
+#ifdef DOCMANBG
+#else
 		DocManMainForm->openItem( theParentItem, theItemId );
 		DocManMainForm->BringToFront();
 		DocManMainForm->SetFocus();
+#endif
 	}
 }
 //---------------------------------------------------------------------------
@@ -108,14 +115,14 @@ void __fastcall TReminderFilesForm::FormCreate(TObject *)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TReminderFilesForm::FormShow(TObject *Sender)
+void __fastcall TReminderFilesForm::FormShow(TObject *)
 {
 	reloadQuery(false);
 	gak::vcl::bringWindowToFront( this );
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TReminderFilesForm::SpeedButtonClick(TObject *Sender)
+void __fastcall TReminderFilesForm::SpeedButtonClick(TObject *)
 {
 	reloadQuery(true);
 }

@@ -42,7 +42,6 @@
 #include "TaskFilesFrm.h"
 #include "ActionManager.h"
 #include "TaskList.h"
-#include "DocManMain.h"
 #include "PermissionsFrm.h"
 #include "File.h"
 
@@ -118,7 +117,8 @@ void TTaskFilesForm::refresh()
 void __fastcall TTaskFilesForm::FormShow(TObject *)
 {
 	OpenQuery->ParamByName( "actUser" )->AsInteger = vcl::getActUserID();
-	OpenQuery->ParamByName( "actMachine" )->AsString = static_cast<const char *>(TDocManMainForm::getMachine());
+	OpenQuery->ParamByName( "actMachine" )->AsString = static_cast<const char *>(TDocManDataModule::getMachine());
+
 	OpenQuery->Open();
 
 	SelectedQuery->ParamByName( "actTask" )->AsInteger = theItem->getID();

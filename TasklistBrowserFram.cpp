@@ -37,7 +37,6 @@
 
 #include "TasklistBrowserFram.h"
 #include "DocManDM.h"
-#include "DocManMain.h"
 #include "TaskList.h"
 
 //---------------------------------------------------------------------------
@@ -46,6 +45,7 @@ using namespace gak;
 #pragma package(smart_init)
 #pragma link "BrowseFram"
 #pragma resource "*.dfm"
+
 TTasklistBrowserFrame *TasklistBrowserFrame;
 
 //---------------------------------------------------------------------------

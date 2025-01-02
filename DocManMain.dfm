@@ -1,6 +1,6 @@
 object DocManMainForm: TDocManMainForm
-  Left = 617
-  Top = 600
+  Left = 137
+  Top = 237
   Width = 775
   Height = 421
   Caption = 'Document Manager'
@@ -174,13 +174,6 @@ object DocManMainForm: TDocManMainForm
     Height = 19
     Panels = <>
     SimplePanel = True
-  end
-  object theDatabase: TDatabase
-    AliasName = 'DOCMAN'
-    DatabaseName = 'docManDB'
-    SessionName = 'Default'
-    Left = 16
-    Top = 320
   end
   object MainMenu: TMainMenu
     Left = 88

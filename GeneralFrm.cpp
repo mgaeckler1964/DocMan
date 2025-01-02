@@ -39,7 +39,6 @@
 #include "ItemManager.h"
 #include "File.h"
 #include "UserDlg.h"
-#include "DocManMain.h"
 
 //---------------------------------------------------------------------------
 using namespace gak;
@@ -106,7 +105,7 @@ void __fastcall TGeneralForm::FormShow(TObject *Sender)
 	LabelLocalPath->Caption = (const char *)theItem->getDownloadPath();
 
 	creatorId = theItem->getCreator();
-	DocManMainForm->getUserById( creatorId, &creator );
+	DocManDataModule->getUserById( creatorId, &creator );
 	LabelCreator->Caption = (const char *)creator.userName;
 
 	TDateTime createdDate = theItem->getCreatedDate();
@@ -135,7 +134,7 @@ void __fastcall TGeneralForm::FormShow(TObject *Sender)
 		int reservedBy = theFile->getReservedBy();
 		if( reservedBy )
 		{
-			DocManMainForm->getUserById( reservedBy, &reservedFor );
+			DocManDataModule->getUserById( reservedBy, &reservedFor );
 			LabelReserved->Visible = true;
 			LabelReservedFor->Visible = true;
 			LabelReservedFor->Caption = (const char *)reservedFor.userName;
@@ -144,7 +143,7 @@ void __fastcall TGeneralForm::FormShow(TObject *Sender)
 	vcl::bringWindowToFront( this );
 }
 //---------------------------------------------------------------------------
-void __fastcall TGeneralForm::ReminderEditEnter(TObject *Sender)
+void __fastcall TGeneralForm::ReminderEditEnter(TObject *)
 {
 	if( ReminderEdit->Text.Length() == 0 )
 	{

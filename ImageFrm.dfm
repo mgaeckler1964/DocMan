@@ -1,6 +1,6 @@
 object ImageBrowserForm: TImageBrowserForm
-  Left = 299
-  Top = 392
+  Left = 571
+  Top = 380
   Width = 589
   Height = 415
   Caption = 'ImageBrowserForm'
@@ -19,8 +19,8 @@ object ImageBrowserForm: TImageBrowserForm
   object ScrollBox: TScrollBox
     Left = 0
     Top = 57
-    Width = 581
-    Height = 331
+    Width = 573
+    Height = 319
     Align = alClient
     TabOrder = 0
     OnResize = ScrollBoxResize
@@ -28,7 +28,7 @@ object ImageBrowserForm: TImageBrowserForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 581
+    Width = 573
     Height = 57
     Align = alTop
     Caption = 'Panel1'

@@ -46,7 +46,10 @@
 
 #include "ItemManager.h"
 #include "UserDlg.h"
+#ifndef DOCMANBG
 #include "DocManMain.h"
+#endif
+
 #include "PermissionsFrm.h"
 #include "StatusFrm.h"
 #include "BrowseFram.h"
@@ -355,7 +358,7 @@ void THE_ITEM::createPersonalName( void )
 {
 	STRING name = getItemTypeString();
 	name += " of ";
-	const UserOrGroup	*actUser = DocManMainForm->getActUser();
+	const UserOrGroup	*actUser = DocManDataModule->getActUser();
 	name += actUser->userName;
 
 	setName( name );
@@ -471,7 +474,7 @@ int THE_ITEM::loadPermissions( void )
 {
 	doEnterFunction( "THE_ITEM::loadPermissions()" );
 
-	const UserOrGroup *actUser = DocManMainForm->getActUser();
+	const UserOrGroup *actUser = DocManDataModule->getActUser();
 	if( actUser->permissions & vcl::USER_SYSTEM_PERM )
 		userPermissions = -1;
 	else if( !id )
@@ -767,12 +770,16 @@ STRING THE_ITEM::getSize( void )
 
 TBrowserFrame *THE_ITEM::getFrame( void ) const
 {
+#ifndef DOCMANBG
 	static TBrowserFrame *theFrame = NULL;
 
 	if( !theFrame )
 		theFrame = new TBrowserFrame( NULL );
 
 	return theFrame;
+#else
+	return NULL;
+#endif
 }
 
 int THE_ITEM::getColCount( void ) const
@@ -907,7 +914,9 @@ STRING THE_ITEM::drawCell( int col, int row, TCanvas *canvas, TRect &Rect )
 
 void THE_ITEM::open( void )
 {
+#ifndef DOCMANBG
 	DocManMainForm->openItem( this );
+#endif
 }
 
 void THE_ITEM::openItem( int itemIdx )
@@ -1717,8 +1726,7 @@ STRING THE_ITEM::getAssignedToUserName( void ) const
 {
 	UserOrGroup	theUser;
 
-	DocManMainForm->getUserById( assignedTo, &theUser );
-
+	DocManDataModule->getUserById( assignedTo, &theUser );
 	return theUser.userName;
 }
 // --------------------------------------------------------------------- //

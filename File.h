@@ -47,7 +47,6 @@
 #include <graphix/magic.h>
 
 #include "ItemManager.h"
-#include "DocManMain.h"
 #include "DocManDM.h"
 
 // --------------------------------------------------------------------- //
@@ -248,7 +247,7 @@ class THE_FILE_BASE : public THE_ITEM
 	{
 		setTask( taskID );
 		reservedBy = gak::vcl::getActUserID();
-		reservedOn = DocManMainForm->getMachine();
+		reservedOn = TDocManDataModule::getMachine();
 		setStatus( "reserved" );
 	}
 	void setTask( int taskID=0 )

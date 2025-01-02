@@ -1,18 +1,18 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:
+		Description:
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
 		Copyright:		(c) 1988-2024 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
@@ -52,10 +52,14 @@
 #include <gak/fieldSet.h>
 #include <gak/iostream.h>
 #include <gak/DirectoryEntry.h>
+#include <gak/vcl_tools.h>
+#include <gak/rsa.h>
 
 #include "DocManThreads.h"
 #include "ItemManager.h"
 
+//---------------------------------------------------------------------------
+typedef Array<TTabSheet*>	TTabSheets;
 //---------------------------------------------------------------------------
 enum AttributeType
 {
@@ -313,6 +317,7 @@ __published:	// IDE-managed Components
 	TIntegerField *TableItemTreeREMIINDERDATE;
 	TIntegerField *TableItemTreeREMOTE_SERVER_ID;
 	TIntegerField *TableItemTreeREMOTE_ID;
+	TDatabase *theDatabase;
 	void __fastcall TableTaskTypesBeforePost(TDataSet *DataSet);
 private:	// User declarations
 	gak::IntStrMap 	idPathMapping;
@@ -325,8 +330,24 @@ private:	// User declarations
 	);
 	bool updateExifData( const gak::ImageMetaData *metaData );
 
+	const UserOrGroup		*m_actUser;
+	gak::CryptoRSA			m_privateKey;
+
 public:		// User declarations
 	__fastcall TDocManDataModule(TComponent* Owner);
+
+	gak::CryptoRSA &getPrivateKey( void );
+
+	const UserOrGroup *login( void );
+	const UserOrGroup *getActUser( void ) const
+	{
+		return m_actUser;
+	}
+	void getUserById( int userId, UserOrGroup *result ) const
+	{
+		gak::vcl::getUserById( theDatabase->DatabaseName, userId, result );
+	}
+
 	// static STRING md5Str( unsigned char md5[16] );
 	static STRING md5file( const STRING &filePath );
 
@@ -389,6 +410,8 @@ public:		// User declarations
 
 	void loadStorageInfos( int storageID, StorageInfos *result );
 	void loadAllStorageInfos( int storageID, StorageInfos *result );
+
+	static const STRING &getMachine( void );
 };
 //---------------------------------------------------------------------------
 #pragma option -RT-
@@ -415,5 +438,6 @@ class THREAD_REFRESH_MIME_TYPES : public ThreadDocMan
 #pragma option -RT+
 //---------------------------------------------------------------------------
 extern PACKAGE TDocManDataModule *DocManDataModule;
+extern char registryKey[];
 //---------------------------------------------------------------------------
 #endif

@@ -50,15 +50,16 @@
 
 #include "File.h"
 #include "ItemManager.h"
-#include "DocManMain.h"
 #include "FileCreateFrm.h"
 #include "Folder.h"
 #include "WebFolder.h"
 #include "PermissionsFrm.h"
 #include "StatusFrm.h"
 #include "MimeTypesFrm.h"
+#ifndef DOCMANBG
 #include "LanguageDocCreateFrm.h"
 #include "LanguageItemCreateFrm.h"
+#endif
 #include "ActionManager.h"
 #include "Config.h"
 
@@ -476,12 +477,16 @@ TItemCreateForm *FACTORY_FILE_REF::getForm( void ) const
 
 TItemCreateForm *FACTORY_LANGUAGE_DOC::getForm( void ) const
 {
+#ifndef DOCMANBG
 	return LanguageDocCreateForm;
+#endif
 }
 
 TItemCreateForm *FACTORY_LANGUAGE_ITEM::getForm( void ) const
 {
+#ifndef DOCMANBG
 	return LanguageItemCreateForm;
+#endif
 }
 
 PTR_ITEM FACTORY_FILE::createItemFromForm( const PTR_ITEM &parent ) const
@@ -540,13 +545,15 @@ PTR_ITEM FACTORY_FILE_REF::createItemFromForm( const PTR_ITEM &parent ) const
 PTR_ITEM FACTORY_LANGUAGE_DOC::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	THE_LANGUAGE_DOC *newDoc = new THE_LANGUAGE_DOC( 0, this );
+#ifndef DOCMANBG
 	newDoc->setData(
 		parent,
 		LanguageDocCreateForm->EditName->Text.c_str(),
 		LanguageDocCreateForm->MemoDescription->Text.c_str()
 	);
+#endif
 	newDoc->updateDatabase();
-
+#ifndef DOCMANBG
 	PTR_ITEM newItem = theLanguageItemFactory.createItem( 0 );
 	THE_LANGUAGE_ITEM *newLI = static_cast<THE_LANGUAGE_ITEM *>(
 		static_cast<THE_ITEM*>(newItem)
@@ -561,13 +568,14 @@ PTR_ITEM FACTORY_LANGUAGE_DOC::createItemFromForm( const PTR_ITEM &parent ) cons
 		newLI->reserve();
 
 	newLI->updateDatabase();
-
+#endif
 	return newDoc;
 }
 
 PTR_ITEM FACTORY_LANGUAGE_ITEM::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	THE_FILE	*newFile = new THE_FILE( 0, this );
+#ifndef DOCMANBG
 	newFile->setData(
 		parent,
 		LanguageItemCreateForm->EditName->Text.c_str(),
@@ -576,7 +584,7 @@ PTR_ITEM FACTORY_LANGUAGE_ITEM::createItemFromForm( const PTR_ITEM &parent ) con
 	);
 	if( LanguageItemCreateForm->CheckBoxReserve->Checked )
 		newFile->reserve();
-
+#endif
 	newFile->updateDatabase();
 
 	return newFile;
@@ -998,7 +1006,7 @@ bool THE_FILE::canUnreserve( bool noAdminCheck ) const
 	if( reservedBy != vcl::getActUserID() )
 /***/	return false;
 
-	if( !getReservedOn().isEmpty() && getReservedOn() != DocManMainForm->getMachine() )
+	if( !getReservedOn().isEmpty() && getReservedOn() != TDocManDataModule::getMachine() )
 /***/	return false;
 
 	int perms = getUserPermissions();
@@ -2170,7 +2178,7 @@ STRING THE_FILE::download( int version, bool protect, const STRING &i_dest )
 				dest = getDownloadFile( dest );
 			}
 
-			if( version || getReservedOn() != DocManMainForm->getMachine() )
+			if( version || getReservedOn() != TDocManDataModule::getMachine() )
 			{
 				struct stat localStat;
 				strStat( dest, &localStat );

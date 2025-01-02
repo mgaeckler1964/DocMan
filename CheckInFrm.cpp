@@ -36,8 +36,6 @@
 
 #include "CheckInFrm.h"
 #include "PermissionsFrm.h"
-#include "DocManMain.h"
-
 #include "File.h"
 #include "Folder.h"
 

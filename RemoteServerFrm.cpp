@@ -39,7 +39,7 @@
 #include "DocManService.h"
 #include "Config.h"
 #include "LoginDlg.h"
-#include "DocManMain.h"
+#include "DocManDM.h"
 
 //---------------------------------------------------------------------------
 using namespace gak;

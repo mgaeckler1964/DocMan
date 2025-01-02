@@ -263,7 +263,7 @@ void __fastcall TTaskForm::FormShow(TObject *Sender)
 				itemIndex = i;
 			}
 		}
-		else if( user.id == DocManMainForm->getActUser()->ID )
+		else if( user.id == DocManDataModule->getActUser()->ID )
 		{
 			itemIndex = i;
 		}

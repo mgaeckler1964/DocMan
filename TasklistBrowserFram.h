@@ -55,7 +55,7 @@ __published:	// IDE-managed Components
 	TComboBox *ComboBoxTypeFilter;
 	void __fastcall FilterChange(TObject *Sender);
 	void __fastcall DrawGridContentMouseUp(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
+		  TMouseButton Button, TShiftState Shift, int X, int Y);
 private:	// User declarations
 	gak::ArrayOfInts	visibleItems;
 

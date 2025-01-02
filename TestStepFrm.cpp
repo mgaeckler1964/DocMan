@@ -36,6 +36,8 @@
 #pragma hdrstop
 
 #include "TestStepFrm.h"
+#include "DocManDM.h"
+
 //---------------------------------------------------------------------------
 using namespace gak;
 //---------------------------------------------------------------------------
@@ -218,7 +220,7 @@ void __fastcall TTestStepForm::FormShow(TObject *Sender)
 		ComboBoxAssignedTo, "docManDB",
 		ComboBoxAssignedTo->Tag
 			? ComboBoxAssignedTo->Tag
-			: DocManMainForm->vcl::getActUser()->ID
+			: DocManDataModule->getActUser()->ID
 	);
 }
 //---------------------------------------------------------------------------

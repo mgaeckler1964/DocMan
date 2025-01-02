@@ -34,7 +34,6 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "DocManMain.h"
 #include "BrowseFram.h"
 #include "ItemManager.h"
 #include "ActionManager.h"
@@ -91,7 +90,7 @@ void __fastcall TBrowserFrame::DrawGridContentMouseDown(TObject *,
 			selectedItem = (*currentItem).getContentItem( itemIndex );
 			if( selectedItem )
 			{
-				getItemActions( *DocManMainForm->getActUser(), selectedItem, &popupActions );
+				getItemActions( *DocManDataModule->getActUser(), selectedItem, &popupActions );
 				PopupMenuActions->Items->Clear();
 				for( size_t i=0; i<popupActions.size(); i++ )
 				{

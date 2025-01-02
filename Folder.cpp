@@ -52,7 +52,6 @@
 #include "ReleaseFrm.h"
 #include "SyncFolderCreateFrm.h"
 #include "SourceFolderCreateFrm.h"
-#include "DocManMain.h"
 #include "ActionManager.h"
 #include "PermissionsFrm.h"
 #include "DocManDM.h"
@@ -841,7 +840,7 @@ void THE_LOCAL_FOLDER::loadFields( TQuery *query )
 {
 	THE_FOLDER::loadFields( query );
 
-	STRING machine = TDocManMainForm::getMachine();
+	STRING machine = TDocManDataModule::getMachine();
 
 	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
@@ -908,7 +907,7 @@ void THE_LOCAL_FOLDER::updateDatabase( void )
 
 	if( !localPath.isEmpty() )
 	{
-		STRING machine = TDocManMainForm::getMachine();
+		STRING machine = TDocManDataModule::getMachine();
 		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 		theQuery->DatabaseName = "docManDB";
 

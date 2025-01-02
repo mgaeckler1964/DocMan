@@ -1,7 +1,7 @@
 object DocManDataModule: TDocManDataModule
   OldCreateOrder = False
-  Left = 355
-  Top = 276
+  Left = 198
+  Top = 163
   Height = 688
   Width = 1000
   object TableTaskTypes: TTable
@@ -1306,5 +1306,12 @@ object DocManDataModule: TDocManDataModule
       FieldName = 'FILE_PATH'
       Size = 255
     end
+  end
+  object theDatabase: TDatabase
+    AliasName = 'DOCMAN'
+    DatabaseName = 'docManDB'
+    SessionName = 'Default'
+    Left = 40
+    Top = 504
   end
 end

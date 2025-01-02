@@ -138,8 +138,8 @@ void __fastcall TCryptoKeysForm::FormShow(TObject *)
 	strRemove( fileName );
 
 	crypto.decryptAesKey(
-		DocManMainForm->getActUser()->userName,
-		DocManMainForm->getPrivateKey()
+		DocManDataModule->getActUser()->userName,
+		DocManDataModule->getPrivateKey()
 	);
 
 	Array<STRING>	keyList = crypto.getKeyList();

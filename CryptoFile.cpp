@@ -41,7 +41,6 @@
 #include <gak/cryptoShared.h>
 
 #include "CryptoFile.h"
-#include "DocManMain.h"
 
 // --------------------------------------------------------------------- //
 // ----- imported datas ------------------------------------------------ //
@@ -134,8 +133,8 @@ STRING dowload( ITEM *theItem, int version, bool protect, const STRING &dest )
 			result.cut( result.strlen()-8 );
 		chmod( result, S_IREAD|S_IWRITE );
 		theCrypto.decryptFile(
-			DocManMainForm->getActUser()->userName,
-			DocManMainForm->getPrivateKey(),
+			DocManDataModule->getActUser()->userName,
+			DocManDataModule->getPrivateKey(),
 			result
 		);
 
@@ -165,7 +164,7 @@ void createVersion( ITEM *theItem, const STRING &filePath, const STRING &descrip
 	if( !strStat( filePath, &statBuff ) )
 	{
 		CryptoShared	theCrypto;
-		STRING			actUser = DocManMainForm->getActUser()->userName;
+		STRING			actUser = DocManDataModule->getActUser()->userName;
 		STRING			publicKeyFile = THE_FILE::getExternalStorageBase() + DIRECTORY_DELIMITER_STRING "keys" DIRECTORY_DELIMITER_STRING + actUser;
 
 		try
@@ -173,7 +172,7 @@ void createVersion( ITEM *theItem, const STRING &filePath, const STRING &descrip
 			STRING		cryptedFile = theItem->downloadCrypted( 0, false, "" );
 
 			readFromBinaryFile( cryptedFile, &theCrypto, cryptoMagic, cryptoVersion, false );
-			theCrypto.decryptAesKey( actUser, DocManMainForm->getPrivateKey() );
+			theCrypto.decryptAesKey( actUser, DocManDataModule->getPrivateKey() );
 			strRemove( cryptedFile );
 		}
 		catch( ... )
