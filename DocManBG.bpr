@@ -98,7 +98,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=8
-Build=364
+Build=365
 Debug=0
 PreRelease=0
 Special=0
@@ -110,7 +110,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Martin Gäckler
 FileDescription=Source Code Control, Document Management, Content Management
-FileVersion=1.0.8.364
+FileVersion=1.0.8.365
 InternalName=DocMan
 LegalCopyright=(c) 2011-2014 by Martin Gäckler / Linz / Austria
 LegalTrademarks=
@@ -132,11 +132,12 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=4
+Count=5
 Item0=NDEBUG;DOCMANBG
-Item1=NDEBUG
-Item2=NDEBUG;_DEBUG
-Item3=_DEBUG
+Item1=NDEBUG;DOCMANBG;_DEBUG
+Item2=NDEBUG
+Item3=NDEBUG;_DEBUG
+Item4=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=1

@@ -457,7 +457,7 @@ object DocManDataModule: TDocManDataModule
         DataType = ftDateTime
       end
       item
-        Name = 'REMIINDERDATE'
+        Name = 'REMINDERDATE'
         DataType = ftInteger
       end
       item
@@ -753,14 +753,14 @@ object DocManDataModule: TDocManDataModule
       FieldName = 'MD5_CHECKSUM'
       Size = 32
     end
-    object TableItemTreeREMIINDERDATE: TIntegerField
-      FieldName = 'REMIINDERDATE'
-    end
     object TableItemTreeREMOTE_SERVER_ID: TIntegerField
       FieldName = 'REMOTE_SERVER_ID'
     end
     object TableItemTreeREMOTE_ID: TIntegerField
       FieldName = 'REMOTE_ID'
+    end
+    object TableItemTreeREMINDERDATE: TIntegerField
+      FieldName = 'REMINDERDATE'
     end
   end
   object TableIexifData: TTable
@@ -1309,6 +1309,7 @@ object DocManDataModule: TDocManDataModule
   end
   object theDatabase: TDatabase
     AliasName = 'DOCMAN'
+    Connected = True
     DatabaseName = 'docManDB'
     SessionName = 'Default'
     Left = 40

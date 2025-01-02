@@ -314,10 +314,10 @@ __published:	// IDE-managed Components
 	TStringField *QueryAllStorageItemsMIME_TYPE;
 	TIntegerField *QueryAllStorageItemsSTORAGE_ID;
 	TStringField *QueryAllStorageItemsFILE_PATH;
-	TIntegerField *TableItemTreeREMIINDERDATE;
 	TIntegerField *TableItemTreeREMOTE_SERVER_ID;
 	TIntegerField *TableItemTreeREMOTE_ID;
 	TDatabase *theDatabase;
+	TIntegerField *TableItemTreeREMINDERDATE;
 	void __fastcall TableTaskTypesBeforePost(TDataSet *DataSet);
 private:	// User declarations
 	gak::IntStrMap 	idPathMapping;
