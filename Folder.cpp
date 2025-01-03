@@ -575,7 +575,11 @@ TItemCreateForm *FACTORY_SOURCE_FOLDER::getForm( void ) const
 
 TItemCreateForm *FACTORY_RELEASE_FOLDER::getForm( void ) const
 {
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return ReleaseForm;
+#endif
 }
 
 PTR_ITEM FACTORY_SYNC_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
@@ -638,6 +642,7 @@ PTR_ITEM FACTORY_SOURCE_FOLDER::createItemFromForm( const PTR_ITEM &parent ) con
 PTR_ITEM FACTORY_RELEASE_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_ITEM newFolder = createItem( 0 );
+#ifndef DOCMANBG
 	THE_RELEASE_FOLDER *fp
 		= (THE_RELEASE_FOLDER *)static_cast<THE_ITEM *>(newFolder)
 	;
@@ -651,7 +656,7 @@ PTR_ITEM FACTORY_RELEASE_FOLDER::createItemFromForm( const PTR_ITEM &parent ) co
 		ReleaseForm->UpDownPatch->Position
 	);
 	fp->updateDatabase();
-
+#endif
 	return newFolder;
 }
 

@@ -72,7 +72,6 @@ USEUNIT("..\GRAPHIX\MAGIC.C");
 USERC("bitmaps.rc");
 USEUNIT("Archive.cpp");
 USELIB("..\..\Object\winlib\winlibBCB.lib");
-USEFORM("WebServerFrm.cpp", WebServerForm);
 USEUNIT("TestFolder.cpp");
 USEUNIT("DocManService.cpp");
 USEFORM("SourceFolderCreateFrm.cpp", SourceFolderCreateForm);
@@ -83,9 +82,7 @@ USEFORM("..\GAKLIB\Repository\LoginDlg.cpp", LoginForm);
 USEUNIT("DocManThreads.cpp");
 USEUNIT("DocManBGThread.cpp");
 USEFORM("..\GAKLIB\Repository\AboutFrm.cpp", AboutProgramForm);
-USEFORM("..\GAKLIB\Repository\AboutOpenSSLfrm.cpp", AboutOpenSSLForm);
 USEFORM("..\GAKLIB\Repository\PasswordDlg.cpp", PasswordForm);
-USEFORM("ReleaseFrm.cpp", ReleaseForm);
 USEFORM("RemoteServerFrm.cpp", RemoteServerForm);
 //---------------------------------------------------------------------------
 #include "xmlEditFram.h"
@@ -143,14 +140,11 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 		Application->CreateForm(__classid(TReminderFilesForm), &ReminderFilesForm);
 		Application->CreateForm(__classid(TMimeTypesForm), &MimeTypesForm);
 		Application->CreateForm(__classid(TSearchForm), &SearchForm);
-		Application->CreateForm(__classid(TWebServerForm), &WebServerForm);
 		Application->CreateForm(__classid(TSourceFolderCreateForm), &SourceFolderCreateForm);
 		Application->CreateForm(__classid(TLoginForm), &LoginForm);
-		Application->CreateForm(__classid(TAboutProgramForm), &AboutProgramForm);
-		Application->CreateForm(__classid(TAboutOpenSSLForm), &AboutOpenSSLForm);
 		Application->CreateForm(__classid(TPasswordForm), &PasswordForm);
-		Application->CreateForm(__classid(TReleaseForm), &ReleaseForm);
 		Application->CreateForm(__classid(TRemoteServerForm), &RemoteServerForm);
+		Application->CreateForm(__classid(TAboutProgramForm), &AboutProgramForm);
 		print2StartWindow( "%s", "Starting Application" );
 
 		Application->Run();

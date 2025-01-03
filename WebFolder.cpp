@@ -131,8 +131,19 @@ inline void setupCopyrightNote( void )
 	if( copyrightNote.isEmpty() )
 	{
 		copyrightNote =
-			(STRING)"\nCreated with DocMan " + AboutOpenSSLForm->getVersionString() + ".\n" +
-			AboutOpenSSLForm->getLegalCopyRight() + ".\n"
+			STRING("\nCreated with DocMan ") +
+#ifdef DOCMANBG
+			AboutProgramForm->getVersionString()
+#else
+			AboutOpenSSLForm->getVersionString()
+#endif
+			+ ".\n" +
+#ifdef DOCMANBG
+			AboutProgramForm->getLegalCopyRight()
+#else
+			AboutOpenSSLForm->getLegalCopyRight()
+#endif
+			+ ".\n"
 			"https://www.gaeckler.at/\n"
 			"====================\n"
 			"DO NOT EDIT\n"
@@ -1413,7 +1424,7 @@ STRING THE_WEB_FOLDER::generateWebFolder(
 	if( exportedFile.endsWithI( ".xml" ) )
 		mimeType = "text/xml";
 	else if( exportedFile.endsWithI( ".html" ) )
- 		mimeType = "text/html";
+		mimeType = "text/html";
 
 	delete theMenuDoc;
 
@@ -1440,4 +1451,5 @@ STRING THE_WEB_FOLDER::generateWebFolder(
 #	pragma option -a.
 #	pragma option -p.
 #endif
+
 

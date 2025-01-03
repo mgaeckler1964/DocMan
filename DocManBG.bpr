@@ -23,7 +23,6 @@
       ..\..\object\DocMan\BG\MimeTypesFrm.obj ..\..\object\DocMan\BG\File.obj 
       ..\..\object\DocMan\BG\WebFolder.obj ..\..\object\DocMan\BG\SearchFrm.obj 
       ..\..\object\DocMan\BG\MAGIC.obj ..\..\object\DocMan\BG\Archive.obj 
-      ..\..\object\DocMan\BG\WebServerFrm.obj 
       ..\..\object\DocMan\BG\TestFolder.obj 
       ..\..\object\DocMan\BG\DocManService.obj 
       ..\..\object\DocMan\BG\SourceFolderCreateFrm.obj 
@@ -31,10 +30,7 @@
       ..\..\object\DocMan\BG\CryptoFile.obj ..\..\object\DocMan\BG\LoginDlg.obj 
       ..\..\object\DocMan\BG\DocManThreads.obj 
       ..\..\object\DocMan\BG\DocManBGThread.obj 
-      ..\..\object\DocMan\BG\AboutFrm.obj 
-      ..\..\object\DocMan\BG\AboutOpenSSLfrm.obj 
-      ..\..\object\DocMan\BG\PasswordDlg.obj 
-      ..\..\object\DocMan\BG\ReleaseFrm.obj 
+      ..\..\object\DocMan\BG\AboutFrm.obj ..\..\object\DocMan\BG\PasswordDlg.obj 
       ..\..\object\DocMan\BG\RemoteServerFrm.obj"/>
     <RESFILES value="DocManBG.res ..\..\object\DocMan\BG\bitmaps.res"/>
     <IDLFILES value=""/>
@@ -45,10 +41,9 @@
       SyncFolderCreateFrm.dfm RemoteFolderCreateFrm.dfm GeneralFrm.dfm 
       FileCreateFrm.dfm DocManDM.dfm ..\GAKLIB\Repository\StatusFrm.dfm 
       ..\GAKLIB\Repository\ChangePasswordDlg.dfm ReminderFilesFrm.dfm 
-      MimeTypesFrm.dfm SearchFrm.dfm WebServerFrm.dfm SourceFolderCreateFrm.dfm 
+      MimeTypesFrm.dfm SearchFrm.dfm SourceFolderCreateFrm.dfm 
       ..\GAKLIB\Repository\LoginDlg.dfm ..\GAKLIB\Repository\AboutFrm.dfm 
-      ..\GAKLIB\Repository\AboutOpenSSLfrm.dfm 
-      ..\GAKLIB\Repository\PasswordDlg.dfm ReleaseFrm.dfm RemoteServerFrm.dfm"/>
+      ..\GAKLIB\Repository\PasswordDlg.dfm RemoteServerFrm.dfm"/>
     <LIBFILES value="..\..\Object\gaklib\gaklib_bcb.lib ..\..\Object\winlib\winlibBCB.lib 
       ..\..\Object\openssl.lib"/>
     <LIBRARIES value="Vclmid50.lib Vclx50.lib VCLBDE50.lib Vcldb50.lib Vcl50.lib"/>
@@ -98,7 +93,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=8
-Build=365
+Build=366
 Debug=0
 PreRelease=0
 Special=0
@@ -110,9 +105,9 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Martin Gäckler
 FileDescription=Source Code Control, Document Management, Content Management
-FileVersion=1.0.8.365
+FileVersion=1.0.8.366
 InternalName=DocMan
-LegalCopyright=(c) 2011-2014 by Martin Gäckler / Linz / Austria
+LegalCopyright=(c) 2011-2025 by Martin Gäckler / Linz / Austria
 LegalTrademarks=
 OriginalFilename=
 ProductName=DocMan
