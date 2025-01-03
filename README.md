@@ -17,3 +17,6 @@ https://www.gaeckler.at/Software/software.htm
 
 The archive also contains the required tables.
 
+## Screenshot
+
+![screen](https://github.com/user-attachments/assets/edc96487-d280-469a-b342-b690952a210f)
