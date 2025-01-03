@@ -10,7 +10,7 @@ https://www.gaeckler.at/Software/software.htm
 
 Das Archiv enthält auch die notwendigen Tabellen.
 
-##English
+## English
 To compile you need Borland C++ Builder 5. A setup can be downloaded from my website
 
 https://www.gaeckler.at/Software/software.htm
