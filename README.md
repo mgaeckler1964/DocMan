@@ -6,7 +6,7 @@ Document Management, Content Management, Colaboration, Source Control, Tests, Re
 
 Zum Übersetzen benötigst Du den Borland C++ Builder 5. Eine Installation kann von meiner Seite geladen werden:
 
-https://www.gaeckler.at/Software/software.htm
+https://www.gaeckler.at/Software/software.htm#DocMan
 
 Das Archiv enthält auch die notwendigen Tabellen.
 
@@ -16,7 +16,7 @@ http://www.bigtown-music.de/homepage.html
 ## English
 To compile you need Borland C++ Builder 5. A setup can be downloaded from my website
 
-https://www.gaeckler.at/Software/software.htm
+https://www.gaeckler.at/Software/software.htm#DocMan
 
 The archive also contains the required tables.
 
