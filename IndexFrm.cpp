@@ -68,6 +68,7 @@ void __fastcall TIndexForm::FormShow(TObject *)
 
 void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 {
+	doEnterFunctionEx(gakLogging::llInfo, "TIndexForm::ButtonSearchClick");
 	ButtonSearch->Enabled = false;
 
 	DocManSearchResult result = m_globalIndex.getRelevantHits(
@@ -95,7 +96,7 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 
 	if( hitCount )
 	{
-		bool		currentVersion = CheckBoxCurrentVersion->Checked; 
+		bool		currentVersion = CheckBoxCurrentVersion->Checked;
 		PTR_ITEM 	volume;
 		if( RadioButtonCompany->Checked )
 			volume = getCompanyVolume();
@@ -117,6 +118,9 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 			}
 			if( currentVersion && storage.curVersion != storage.version )
 			{
+				doLogValueEx( gakLogging::llInfo, storage.itemID );
+				doLogValueEx( gakLogging::llInfo, storage.version );
+				doLogValueEx( gakLogging::llInfo, storage.curVersion );
 /*^*/			continue;
 			}
 
@@ -125,6 +129,10 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 			{
 				if( currentVersion && hit->getVersionNum() != storage.curVersion )
 				{
+					doLogValueEx( gakLogging::llInfo, storage.itemID );
+					doLogValueEx( gakLogging::llInfo, hit->getName() );
+					doLogValueEx( gakLogging::llInfo, hit->getVersionNum() );
+					doLogValueEx( gakLogging::llInfo, storage.curVersion );
 /*^*/				continue;
 				}
 				if( volume && volume->getID() != hit->getVolumeID() )
@@ -133,6 +141,9 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 				}
 
 				int i=0;
+				doLogValueEx( gakLogging::llInfo, storage.itemID );
+				doLogValueEx( gakLogging::llInfo, hit->getName() );
+
 				GridResult->Cells[i++][++row] = hit->getName();
 				GridResult->Cells[i++][row] = static_cast<const char*>(
 					hit->getParent()->getPath()
@@ -146,6 +157,13 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 				{
 /*v*/				break;
 				}
+			}
+			else
+			{
+				doLogMessageEx( gakLogging::llWarn, "Search Hit not found" );
+				doLogValueEx( gakLogging::llWarn, storage.itemID );
+				doLogValueEx( gakLogging::llWarn, storage.version );
+				doLogValueEx( gakLogging::llWarn, storage.curVersion );
 			}
 		}
 	}	// if( hitCount )

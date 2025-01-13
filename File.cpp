@@ -477,14 +477,18 @@ TItemCreateForm *FACTORY_FILE_REF::getForm( void ) const
 
 TItemCreateForm *FACTORY_LANGUAGE_DOC::getForm( void ) const
 {
-#ifndef DOCMANBG
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return LanguageDocCreateForm;
 #endif
 }
 
 TItemCreateForm *FACTORY_LANGUAGE_ITEM::getForm( void ) const
 {
-#ifndef DOCMANBG
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return LanguageItemCreateForm;
 #endif
 }
@@ -602,7 +606,7 @@ void THE_FILE_BASE::loadFields( TQuery *query )
 
 void THE_FILE::loadFields( TQuery *query )
 {
-	doEnterFunction( "THE_FILE::loadFields" );
+	doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::loadFields" );
 
 	THE_FILE_BASE::loadFields( query );
 
@@ -617,8 +621,7 @@ void THE_FILE::loadFields( TQuery *query )
 
 void THE_FILE_REF::loadFields( TQuery *query )
 {
-	doEnableLog();
-	doEnterFunction( "THE_FILE_REF::loadFields" );
+	doEnterFunctionEx(gakLogging::llDetail, "THE_FILE_REF::loadFields" );
 	THE_ITEM::loadFields( query );
 
 	m_md5CheckSum = query->FieldByName( "md5_checksum" )->AsString.c_str();
@@ -638,8 +641,7 @@ void THE_FILE_REF::loadFields( TQuery *query )
 
 void THE_FILE_REF::updateDatabase( void )
 {
-	doEnableLog();
-	doEnterFunction( "THE_FILE_REF::loadFields" );
+	doEnterFunctionEx( gakLogging::llInfo, "THE_FILE_REF::updateDatabase" );
 	TDateTime	createdDate = getCreatedDate();
 	TDateTime	modifiedDate = getModifiedDate();
 
@@ -909,7 +911,7 @@ STRING THE_FILE_BASE::getDownloadFile( const STRING &downloadPath )
 
 STRING THE_FILE_BASE::getDownloadPath( PTR_ITEM parent )
 {
-	doEnterFunction("THE_FILE_BASE::getDownloadPath");
+	doEnterFunctionEx(gakLogging::llDetail,"THE_FILE_BASE::getDownloadPath");
 
 	STRING		downloadPath;
 

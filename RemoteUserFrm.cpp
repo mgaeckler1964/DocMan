@@ -52,7 +52,6 @@ __fastcall TRemoteUserForm::TRemoteUserForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void TRemoteUserForm::loadTable( void )
 {
-	doEnableLog();
 	ClientDataSetUserTableID->ReadOnly = false;
 	ClientDataSetUserTable->Tag = 1;
 	ClientDataSetUserTable->EmptyDataSet();
@@ -130,7 +129,6 @@ void TRemoteUserForm::loadTable( void )
 
 void __fastcall TRemoteUserForm::FormShow(TObject *Sender)
 {
-//	doEnableLog();
 	RemoteServerForm->FillCombobox( ComboBoxRemoteServer );
 	ComboBoxRemoteServerChange( Sender );
 }

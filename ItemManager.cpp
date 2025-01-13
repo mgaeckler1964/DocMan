@@ -445,7 +445,7 @@ PTR_ITEM FACTORY_BASE::createItemFromTemplate(
 
 void THE_ITEM::loadFields( TQuery *query )
 {
-	doEnterFunction( "THE_ITEM::loadFields" );
+	doEnterFunctionEx( gakLogging::llDetail, "THE_ITEM::loadFields" );
 
 	oldVolumeID = volumeID = query->FieldByName( "VOLUME_ID" )->AsInteger;
 	permissionID = query->FieldByName( "PERMISSION_ID" )->AsInteger;
@@ -472,7 +472,7 @@ void THE_ITEM::loadFields( TQuery *query )
 
 int THE_ITEM::loadPermissions( void )
 {
-	doEnterFunction( "THE_ITEM::loadPermissions()" );
+	doEnterFunctionEx( gakLogging::llDetail, "THE_ITEM::loadPermissions()" );
 
 	const UserOrGroup *actUser = DocManDataModule->getActUser();
 	if( actUser->permissions & vcl::USER_SYSTEM_PERM )
@@ -930,7 +930,7 @@ void THE_ITEM::openItem( int itemIdx )
 
 STRING THE_ITEM::getDownloadPath( PTR_ITEM parent )
 {
-	doEnterFunction("THE_ITEM::getDownloadPath");
+	doEnterFunctionEx(gakLogging::llDetail, "THE_ITEM::getDownloadPath");
 	if( !pathLoaded )
 	{
 		if( !parent )
@@ -1146,7 +1146,7 @@ TGraphic *THE_ROOT::getItemPicture( void ) const
 
 ITEM_CONTENT *THE_ITEM::loadContent( void )
 {
-	doEnterFunction( "THE_ITEM::loadContent()" );
+	doEnterFunctionEx( gakLogging::llInfo, "THE_ITEM::loadContent()" );
 
 	if( isContainer() )
 	{
@@ -1792,7 +1792,7 @@ PTR_ITEM createItem( int itemType, int id )
 
 PTR_ITEM getItem( int id )
 {
-	doEnterFunction("PTR_ITEM getItem( int id )");
+	doEnterFunctionEx(gakLogging::llDetail, "PTR_ITEM getItem( int id )");
 	PTR_ITEM	newItem;
 /* TODO 1 -cDB : perm check??? */
 	if( id>0 )

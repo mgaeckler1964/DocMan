@@ -215,9 +215,7 @@ static const int IDLE_TIMEOUT = 60000;
 
 void ThreadBackground::updateIndex( void )
 {
-	doEnableLog();
-	doEnterFunction("ThreadBackground::updateIndex");
-	doDisableLog();
+	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::updateIndex");
 
 	static const char STATUS_VERB[] = "Update Index";
 	StatusForm->pushStatus( STATUS_VERB, STATUS_VERB );

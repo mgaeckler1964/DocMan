@@ -45,7 +45,8 @@ USELIB("..\..\Object\winlib\winlibBCB.lib");
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	doEnableLog();
+	doEnableLogEx(gakLogging::llInfo);
+	doEnterFunctionEx(gakLogging::llInfo, "WinMain");
 	try
 	{
 		Application->Initialize();

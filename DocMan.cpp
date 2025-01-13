@@ -161,8 +161,8 @@ static STRING getSchemaFile4Namespace( const STRING &nameSpace )
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 {
-	doDisableLog();
-	doEnterFunction( "WinMain" );
+	doEnableLogEx(gakLogging::llInfo);
+	doEnterFunctionEx(gakLogging::llInfo, "WinMain");
 
 	openStartup( NULL, "SPLASH_BITMAP" );
 

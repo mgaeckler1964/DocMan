@@ -265,11 +265,11 @@ void __fastcall TDocManMainForm::AppMinimize(TObject *)
 //---------------------------------------------------------------------------
 void __fastcall TDocManMainForm::AppWindowProc(TMessage &msg)
 {
-	doEnterFunction( "TDocManMainForm::AppWindowProc" );
+	doEnterFunctionEx( gakLogging::llDetail, "TDocManMainForm::AppWindowProc" );
 
 	try
 	{
-		doLogValue( msg.Msg );
+		doLogValueEx( gakLogging::llDetail, msg.Msg );
 
 		if( msg.Msg == WM_USER + 1 )
 		{

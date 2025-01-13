@@ -991,7 +991,7 @@ void THE_RELEASE_FOLDER::updateDatabase( void )
 
 STRING THE_LOCAL_FOLDER::getDownloadPath( PTR_ITEM parent )
 {
-	doEnterFunction("THE_LOCAL_FOLDER::getDownloadPath");
+	doEnterFunctionEx(gakLogging::llDetail, "THE_LOCAL_FOLDER::getDownloadPath");
 
 	STRING	downloadPath = localPath;
 	if( downloadPath.isEmpty() )
@@ -1002,7 +1002,7 @@ STRING THE_LOCAL_FOLDER::getDownloadPath( PTR_ITEM parent )
 
 STRING THE_RELEASE_FOLDER::getDownloadPath( PTR_ITEM parent )
 {
-	doEnterFunction("THE_RELEASE_FOLDER::getDownloadPath");
+	doEnterFunctionEx(gakLogging::llDetail, "THE_RELEASE_FOLDER::getDownloadPath");
 
 	STRING	downloadPath = getLocalPath();
 	if( downloadPath.isEmpty() )

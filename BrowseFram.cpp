@@ -173,7 +173,7 @@ void TBrowserFrame::selectItem( int selectID )
 //---------------------------------------------------------------------------
 void TBrowserFrame::fillContents( PTR_ITEM currentItem, int selectID )
 {
-	doEnterFunction( "TBrowserFrame::fillContents()" );
+	doEnterFunctionEx(gakLogging::llDetail, "TBrowserFrame::fillContents()" );
 
 	::SetCursor( LoadCursor( NULL, IDC_WAIT ) );
 

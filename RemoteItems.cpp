@@ -1117,9 +1117,8 @@ void THE_REMOTE_FILE::updateDatabase( void )
 	}
 	catch( std::exception &e )
 	{
-		doEnableLog();
-		doLogValue( theService->getBody() );
-		doDisableLog();
+		doLogValueEx( gakLogging::llError, theService->getBody() );
+		doLogValueEx( gakLogging::llError, e.what() );
 /*@*/	throw Exception( e.what() );
 	}
 
