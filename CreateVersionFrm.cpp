@@ -86,7 +86,7 @@ const char *ACTION_ADD_VERSION::getLabel( void ) const
 //---------------------------------------------------------------------------
 bool ACTION_ADD_VERSION::acceptItem( THE_ITEM *theItem )
 {
-	doEnterFunction("ACTION_ADD_VERSION::acceptItem");
+	doEnterFunctionEx(gakLogging::llDetail, "ACTION_ADD_VERSION::acceptItem");
 	bool	accepted = false;
 
 	const THE_FILE_BASE *theFile = dynamic_cast<const THE_FILE_BASE *>(theItem);

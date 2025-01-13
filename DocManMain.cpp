@@ -110,7 +110,7 @@ __fastcall TDocManMainForm::TDocManMainForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 const UserOrGroup *TDocManMainForm::login( void )
 {
-	doEnterFunction("TDocManMainForm::login");
+	doEnterFunctionEx(gakLogging::llInfo, "TDocManMainForm::login");
 	const UserOrGroup *actUser = DocManDataModule->login();
 	if( actUser && actUser->ID )
 	{
@@ -225,7 +225,7 @@ void TDocManMainForm::fillParentItems( void )
 //---------------------------------------------------------------------------
 void TDocManMainForm::fillContents( int selectID )
 {
-	doEnterFunction("TDocManMainForm::fillContents");
+	doEnterFunctionEx(gakLogging::llDetail, "TDocManMainForm::fillContents");
 
 	::SetCursor( LoadCursor( NULL, IDC_WAIT ) );
 //	Cursor = crHourGlass;
@@ -405,7 +405,7 @@ void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 void __fastcall TDocManMainForm::FormClose(TObject *,
 	  TCloseAction &)
 {
-	doEnterFunction("TDocManMainForm::FormClose");
+	doEnterFunctionEx(gakLogging::llDetail, "TDocManMainForm::FormClose");
 	DocManDataModule->theDatabase->Close();
 }
 //---------------------------------------------------------------------------
@@ -472,7 +472,7 @@ void __fastcall TDocManMainForm::WmDropFiles(TWMDropFiles& Message)
 
 void TDocManMainForm::openItem( PTR_ITEM newItem, int selectID, bool handleHistory )
 {
-	doEnterFunction("TDocManMainForm::openItem");
+	doEnterFunctionEx(gakLogging::llInfo, "TDocManMainForm::openItem");
 
 	if( newItem != currentItem
 	&& (!currentItem || newItem->getID() != currentItem->getID()) )

@@ -339,7 +339,6 @@ void ThreadBackground::updateIndex( void )
 		}
 	}
 	StatusForm->restore();
-	doDisableLog();
 }
 
 void ThreadBackground::updateSyncFolders( void )

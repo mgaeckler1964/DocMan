@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -523,7 +523,7 @@ int THE_ITEM::loadPermissions( void )
 
 void THE_ITEM::updateDatabase( void )
 {
-	doEnterFunction("THE_ITEM::updateDatabase");
+	doEnterFunctionEx(gakLogging::llInfo, "THE_ITEM::updateDatabase");
 
 	const char	*step = "retrieving parent";
 	STRING		errMsg;
@@ -957,8 +957,8 @@ STRING THE_ITEM::getDownloadPath( PTR_ITEM parent )
 
 void THE_ITEM::getItemFactories( Array<const FACTORY_BASE*> *factory ) const
 {
-	doEnterFunction("FACTORY_BASE::getItemFactories");
-	doLogValue( theItemFactory->size() );
+	doEnterFunctionEx(gakLogging::llDetail, "FACTORY_BASE::getItemFactories");
+	doLogValueEx( gakLogging::llDetail, theItemFactory->size() );
 
 	factory->clear();
 	for(
@@ -1033,10 +1033,10 @@ bool THE_ITEM::acceptChildType(
 
 bool THE_ITEM::acceptDropFiles( void ) const
 {
-	doEnterFunction("FACTORY_BASE::acceptDropFiles");
+	doEnterFunctionEx(gakLogging::llDetail, "FACTORY_BASE::acceptDropFiles");
 	bool	acceptFiles = false;
 
-	doLogValue( theItemFactory->size() );
+	doLogValueEx( gakLogging::llDetail, theItemFactory->size() );
 
 	for(
 		ItemFactory::const_iterator it = theItemFactory->cbegin(),
@@ -1325,7 +1325,7 @@ void THE_ITEM::archive( void )
 
 STRING THE_ITEM::getPath( void ) const
 {
-	doEnterFunction("THE_ITEM::getPath");
+	doEnterFunctionEx(gakLogging::llDetail, "THE_ITEM::getPath");
 	STRING	path;
 
 	if( getParentID() > 0 )
@@ -1845,7 +1845,7 @@ PTR_ITEM getItem( int id )
 
 PTR_ITEM getItemByName( int id, const char *name )
 {
-	doEnterFunction("getItemByName( int id - const char *name )");
+	doEnterFunctionEx(gakLogging::llDetail, "getItemByName( int id - const char *name )");
 
 	PTR_ITEM	newItem;
 /* TODO 1 -cDB : perm check??? */
@@ -1886,7 +1886,7 @@ PTR_ITEM getItemByName( int id, const char *name )
 
 PTR_ITEM getItemByPath( T_STRING path )
 {
-	doEnterFunction("getItemByPath( T_STRING path )");
+	doEnterFunctionEx(gakLogging::llDetail, "getItemByPath( T_STRING path )");
 
 	int			parentId = -1;
 	PTR_ITEM	newItem;
@@ -1915,7 +1915,7 @@ PTR_ITEM getItemByPath( T_STRING path )
 
 PTR_ITEM getPersonalItem( int itemType )
 {
-	doEnterFunction("getPersonalItem");
+	doEnterFunctionEx(gakLogging::llDetail, "getPersonalItem");
 
 	PTR_ITEM	newItem;
 
@@ -1952,7 +1952,7 @@ PTR_ITEM getPersonalItem( int itemType )
 
 PTR_ITEM getPublicVolume( int itemType )
 {
-	doEnterFunction("getPublicVolume");
+	doEnterFunctionEx(gakLogging::llDetail, "getPublicVolume");
 	PTR_ITEM	newItem;
 
 	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );

@@ -451,7 +451,7 @@ class THE_FILE : public THE_FILE_BASE
 
 	STRING getCSScontent( void )
 	{
-		doEnterFunction("THE_FILE::getCSScontent");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getCSScontent");
 
 		STRING	mimeType = getMimeType();
 		STRING	content = mimeType == "text/css" ? getContent() : (STRING)"";
@@ -462,7 +462,7 @@ class THE_FILE : public THE_FILE_BASE
 	}
 	gak::xml::Document *getXmlDocument( void )
 	{
-		doEnterFunction("THE_FILE::getXmlDocument");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getXmlDocument");
 		gak::xml::Document *result = NULL;
 		STRING mimeType = getMimeType();
 
@@ -481,7 +481,7 @@ class THE_FILE : public THE_FILE_BASE
 	}
 	gak::html::Document *getHtmlDocument( void )
 	{
-		doEnterFunction("THE_FILE::getHtmlDocument");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getHtmlDocument");
 
 		gak::html::Document	*result = NULL;
 		STRING 				mimeType = getMimeType();
@@ -506,7 +506,7 @@ class THE_FILE : public THE_FILE_BASE
 
 	bool loadImageMetaData( gak::ImageMetaData *metaData, int theVersionNum )
 	{
-		doEnterFunction("THE_FILE::loadImageMetaData");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::loadImageMetaData");
 
 		bool	success = false;
 		STRING	fileName = getExternalFile( theVersionNum );
@@ -529,7 +529,7 @@ class THE_FILE : public THE_FILE_BASE
 	}
 	bool updateImageMetaData( gak::ImageMetaData *metaData, int theVersionNum )
 	{
-		doEnterFunction("THE_FILE::updateImageMetaData");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::updateImageMetaData");
 
 		bool success = loadImageMetaData( metaData, theVersionNum );
 		if( success )
@@ -565,7 +565,7 @@ class THE_FILE_REF : public THE_ITEM
 		const gak::DateTime	&modifiedDate
 	)
 	{
-		doEnterFunction("THE_FILE_REF::setData");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE_REF::setData");
 		doLogValue(m_previousFilePath);
 		THE_ITEM::setData(
 			parent,
@@ -597,7 +597,7 @@ class THE_FILE_REF : public THE_ITEM
 	}
 	bool loadImageMetaData( gak::ImageMetaData *metaData )
 	{
-		doEnterFunction("THE_FILE_REF::loadImageMetaData");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE_REF::loadImageMetaData");
 
 		bool	success = false;
 		STRING	fileName = getDownloadPath();
@@ -619,7 +619,7 @@ class THE_FILE_REF : public THE_ITEM
 	}
 	bool updateImageMetaData( gak::ImageMetaData *metaData )
 	{
-		doEnterFunction("THE_FILE_REF::updateImageMetaData");
+		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE_REF::updateImageMetaData");
 		bool success = loadImageMetaData( metaData );
 		if( success )
 		{

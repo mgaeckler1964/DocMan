@@ -669,7 +669,7 @@ void TDocManDataModule::refreshTaskStatus( TStrings *items )
 //---------------------------------------------------------------------------
 STRING TDocManDataModule::getPathForID( int theID )
 {
-	doEnterFunction("TDocManDataModule::getPathForID");
+	doEnterFunctionEx(gakLogging::llDetail, "TDocManDataModule::getPathForID");
 	STRING thePath = idPathMapping[theID];
 
 	if( thePath.isEmpty() )
@@ -813,7 +813,7 @@ bool TDocManDataModule::updateExifData( const ImageMetaData *metaData )
 //---------------------------------------------------------------------------
 bool TDocManDataModule::updateExifData( const PTR_ITEM &theItem, int version, const ImageMetaData *metaData )
 {
-	doEnterFunction("TDocManDataModule::updateExifData");
+	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::updateExifData");
 	int itemID = (*theItem).getID();
 
 	if( !version )
@@ -850,7 +850,7 @@ bool TDocManDataModule::updateExifData( const PTR_ITEM &theItem, int version, co
 //---------------------------------------------------------------------------
 void TDocManDataModule::refreshExifs( void )
 {
-	doEnterFunction("TDocManDataModule::refreshExifs");
+	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::refreshExifs");
 	PTR_FILE		theFile;
 	PTR_FILE_REF	theFileRef;
 	ImageMetaData 	*metaData = NULL;
@@ -990,7 +990,7 @@ void TDocManDataModule::refreshExifs( void )
 //---------------------------------------------------------------------------
 void TDocManDataModule::refreshMimeTypes( void )
 {
-	doEnterFunction("TDocManDataModule::refreshMimeTypes");
+	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::refreshMimeTypes");
 	STRING fileName, oldMimeType, newMimeType;
 	for(
 		TableIfileVersions->Open();
@@ -1144,7 +1144,7 @@ void TDocManDataModule::copyAttributeValues(
 	int srcID, int srcVersion, int destID, int destVersion
 )
 {
-	doEnterFunction("TDocManDataModule::copyAttributeValues");
+	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::copyAttributeValues");
 
 	QueryAttrValues->Params->Items[0]->AsInteger = srcID;
 	QueryAttrValues->Params->Items[1]->AsInteger = srcVersion;
@@ -1252,7 +1252,7 @@ void TDocManDataModule::loadAllStorageInfos( int minStorageID, StorageInfos *res
 
 const UserOrGroup *TDocManDataModule::login( void )
 {
-	doEnterFunction("TDocManDataModule::login");
+	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::login");
 	bool	showLogin;
 
 	if( !m_actUser )	// first call

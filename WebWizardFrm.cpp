@@ -447,7 +447,7 @@ __fastcall TWebWizardForm::TWebWizardForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 bool ACTION_WEB_WIZARD::acceptItem( THE_ITEM *theItem )
 {
-	doEnterFunction("ACTION_WEB_WIZARD::acceptItem");
+	doEnterFunctionEx(gakLogging::llDetail, "ACTION_WEB_WIZARD::acceptItem");
 
 	bool			acceptable;
 	THE_WEB_FOLDER	*theFolder = dynamic_cast<THE_WEB_FOLDER *>(theItem);

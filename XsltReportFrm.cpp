@@ -94,7 +94,7 @@ static ACTION_REPORT theAction;
 //---------------------------------------------------------------------------
 bool ACTION_REPORT::acceptItem( THE_ITEM *theItem )
 {
-	doEnterFunction("ACTION_REPORT::acceptItem");
+	doEnterFunctionEx(gakLogging::llInfo, "ACTION_REPORT::acceptItem");
 
 	bool		acceptable = false;
 	int			sourceType = theItem->getItemType();
@@ -227,7 +227,7 @@ __fastcall TXsltReportForm::TXsltReportForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void initXsltVolume( void )
 {
-	doEnterFunction("initXsltVolume");
+	doEnterFunctionEx(gakLogging::llInfo, "initXsltVolume");
 
 	STRING		name;
 	PTR_ITEM	theXsltVolume = getPublicVolume( TYPE_XSLT_FOLDER );
@@ -238,7 +238,7 @@ void initXsltVolume( void )
 		{
 			name = getItemTypeString( theAllowedTypes[i] );
 			print2StartWindow( "XSL %s", (const char *)name );
-			doLogValue( name );
+			doLogValueEx( gakLogging::llInfo, name );
 
 			PTR_ITEM	child = theXsltVolume->getContentItem( name );
 			if( !child )

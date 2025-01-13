@@ -194,7 +194,7 @@ STRING THE_FILE::s_externalStorage;
 
 THE_FILE_VERSION::THE_FILE_VERSION( int fileID, int version )
 {
-	doEnterFunction( "THE_FILE_VERSION::THE_FILE_VERSION(int fileID, int version)" );
+	doEnterFunctionEx( gakLogging::llInfo, "THE_FILE_VERSION::THE_FILE_VERSION(int fileID, int version)" );
 
 	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
@@ -1506,7 +1506,7 @@ REFRESH_TYPE ACTION_DOWNLOAD::perform( PTR_ITEM theItem )
 //---------------------------------------------------------------------------
 bool ACTION_BRANCH_FILE::acceptItem( THE_ITEM *theItem )
 {
-	doEnterFunction("ACTION_BRANCH_FILE::acceptItem");
+	doEnterFunctionEx(gakLogging::llInfo, "ACTION_BRANCH_FILE::acceptItem");
 	bool	accepted = false;
 
 	const THE_FILE *theFile = dynamic_cast<const THE_FILE *>(theItem);
@@ -1551,7 +1551,7 @@ REFRESH_TYPE ACTION_BRANCH_FILE::perform( PTR_ITEM theItem )
 //---------------------------------------------------------------------------
 bool ACTION_GENERATE::acceptItem( THE_ITEM *theItem )
 {
-	doEnterFunction("ACTION_GENERATE::acceptItem");
+	doEnterFunctionEx(gakLogging::llInfo, "ACTION_GENERATE::acceptItem");
 
 	bool		acceptable = false;
 	THE_FILE	*theFile = dynamic_cast<THE_FILE *>(theItem);
@@ -2159,7 +2159,7 @@ STRING THE_FILE::download( int version, bool protect, const STRING &i_dest )
 {
 	STRING		dest = i_dest;
 
-	doEnterFunction("THE_FILE::download");
+	doEnterFunctionEx(gakLogging::llInfo, "THE_FILE::download");
 
 	STRING		src = getExternalStorageBase();
 
@@ -2253,7 +2253,7 @@ STRING THE_FILE::generateWebFile( bool forWebServer, STRING &mimeType )
 
 xml::Document *loadXmlDoc( const STRING &xmlFile )
 {
-	doEnterFunction("loadXmlDoc( const STRING &xmlFile )");
+	doEnterFunctionEx(gakLogging::llInfo, "loadXmlDoc( const STRING &xmlFile )");
 
 	xml::Document	*theDoc = NULL;
 	PTR_FILE		theFile = getItemByPath( xmlFile );
@@ -2268,7 +2268,7 @@ xml::Document *loadXmlDoc( const STRING &xmlFile )
 
 STRING loadCssDoc( const STRING &cssFile )
 {
-	doEnterFunction("loadCssDoc( const STRING &xmlFile )");
+	doEnterFunctionEx(gakLogging::llInfo, "loadCssDoc( const STRING &xmlFile )");
 
 	STRING		css;
 	PTR_FILE	theFile = getItemByPath( cssFile );

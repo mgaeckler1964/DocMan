@@ -155,7 +155,7 @@ ACTION_BASE::ACTION_BASE()
 
 bool ACTION_BASE::acceptItem( THE_ITEM *theItem )
 {
-	doEnterFunction( "ACTION_BASE::acceptItem()" );
+	doEnterFunctionEx( gakLogging::llInfo, "ACTION_BASE::acceptItem()" );
 
 	return theItem->getID() && !theItem->isDeleted();
 }
@@ -204,8 +204,8 @@ void getItemActions(
 	Array<ACTION_BASE *> *actions
 )
 {
-	doEnterFunction( "getItemActions()" );
-	doLogValue( allActions->size() );
+	doEnterFunctionEx( gakLogging::llDetail, "getItemActions()" );
+	doLogValueEx( gakLogging::llDetail, allActions->size() );
 
 	actions->clear();
 

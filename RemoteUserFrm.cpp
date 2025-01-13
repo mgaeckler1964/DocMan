@@ -103,27 +103,26 @@ void TRemoteUserForm::loadTable( void )
 		}
 		ClientDataSetUserTable->Tag = 0;
 		ClientDataSetUserTableID->ReadOnly = true;
-		doDisableLog();
+		doLogMessageEx( gakLogging::llError, errText );
 /*@*/	throw EDatabaseError( (const char *)errText );
 	}
 	catch( std::exception &e )
 	{
 		ClientDataSetUserTable->Tag = 0;
 		ClientDataSetUserTableID->ReadOnly = true;
-		doDisableLog();
+		doLogMessageEx( gakLogging::llError, e.what() );
 /*@*/	throw Exception( e.what() );
 	}
 	catch( ... )
 	{
 		ClientDataSetUserTable->Tag = 0;
 		ClientDataSetUserTableID->ReadOnly = true;
-		doDisableLog();
+		doLogMessageEx( gakLogging::llError, "Unknown error" );
 /*@*/	throw;
 	}
 	ClientDataSetUserTable->Tag = 0;
 	ClientDataSetUserTableID->ReadOnly = true;
 	ClientDataSetUserTable->First();
-	doDisableLog();
 }
 //---------------------------------------------------------------------------
 
