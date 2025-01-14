@@ -104,8 +104,8 @@ struct StorageKey
 	int		versionID;
 	int		storageID;
 	int		volumeID;
-	int		curVersion;
-	int		version;
+	int		curVersion;			// I_FILES.version
+	int		version;			// I_FILE_VERS..VERSION
 
 	int compare( const StorageKey &other ) const
 	{

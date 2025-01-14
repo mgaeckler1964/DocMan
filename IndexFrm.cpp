@@ -119,8 +119,8 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 			if( currentVersion && storage.curVersion != storage.version )
 			{
 				doLogValueEx( gakLogging::llInfo, storage.itemID );
-				doLogValueEx( gakLogging::llInfo, storage.version );
-				doLogValueEx( gakLogging::llInfo, storage.curVersion );
+				doLogValueEx( gakLogging::llInfo, storage.xversion );
+				doLogValueEx( gakLogging::llInfo, storage.xcurVersion );
 /*^*/			continue;
 			}
 
@@ -140,15 +140,17 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 /*^*/				continue;
 				}
 
-				int i=0;
 				doLogValueEx( gakLogging::llInfo, storage.itemID );
 				doLogValueEx( gakLogging::llInfo, hit->getName() );
+				doLogValueEx( gakLogging::llInfo, storage.curVersion );
+				doLogValueEx( gakLogging::llInfo, hit->getVersionNum() );
 
+				int i=0;
 				GridResult->Cells[i++][++row] = hit->getName();
 				GridResult->Cells[i++][row] = static_cast<const char*>(
 					hit->getParent()->getPath()
 				);
-				GridResult->Cells[i++][row] = storage.curVersion;
+				GridResult->Cells[i++][row] = hit->getVersionNum();
 				GridResult->Cells[i++][row] = storage.version;
 				GridResult->Cells[i++][row] = it->m_positions.size();
 				GridResult->Cells[i][row] = it->m_relevance*100;
