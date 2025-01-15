@@ -1,6 +1,7 @@
 inherited GeneralForm: TGeneralForm
-  Left = 133
-  Top = 148
+  Left = 693
+  Top = 532
+  Width = 461
   Height = 392
   Caption = 'GeneralForm'
   OldCreateOrder = True
@@ -92,10 +93,13 @@ inherited GeneralForm: TGeneralForm
   end
   object Label7: TLabel [14]
     Left = 208
-    Top = 288
+    Top = 216
     Width = 45
     Height = 13
     Caption = 'Reminder'
+  end
+  inherited EditName: TEdit
+    Width = 352
   end
   inherited ButtonOk: TButton
     Top = 320
@@ -103,9 +107,12 @@ inherited GeneralForm: TGeneralForm
   inherited ButtonCancel: TButton
     Top = 320
   end
+  inherited MemoDescription: TMemo
+    Width = 352
+  end
   object ReminderEdit: TEdit
     Left = 280
-    Top = 288
+    Top = 208
     Width = 161
     Height = 21
     TabOrder = 4
