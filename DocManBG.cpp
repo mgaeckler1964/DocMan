@@ -50,7 +50,6 @@ USE("DocManBG.todo", ToDo);
 USEUNIT("ActionManager.cpp");
 USEUNIT("Folder.cpp");
 USEFORM("..\GAKLIB\Repository\Config.cpp", ConfigDataModule); /* TDataModule: File Type */
-USEFORM("ConfigFrm.cpp", ConfigForm);
 USEFORM("TargetBrowseFrm.cpp", TargetBrowseForm);
 USEFORM("..\GAKLIB\Repository\DirSelFrm.cpp", DirectorySelector);
 USEFORM("ItemCreateFrm.cpp", ItemCreateForm);
@@ -61,7 +60,6 @@ USEFORM("GeneralFrm.cpp", GeneralForm);
 USEFORM("FileCreateFrm.cpp", FileCreateForm);
 USEFORM("DocManDM.cpp", DocManDataModule); /* TDataModule: File Type */
 USEFORM("..\GAKLIB\Repository\StatusFrm.cpp", StatusForm);
-USEFORM("..\GAKLIB\Repository\ChangePasswordDlg.cpp", ChangePasswordForm);
 USEUNIT("Alias.cpp");
 USEFORM("ReminderFilesFrm.cpp", ReminderFilesForm);
 USEFORM("MimeTypesFrm.cpp", MimeTypesForm);
@@ -126,7 +124,6 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 		Application->Title = "Doc Manager";
 		Application->CreateForm(__classid(TDocManBgMainForm), &DocManBgMainForm);
 		Application->CreateForm(__classid(TConfigDataModule), &ConfigDataModule);
-		Application->CreateForm(__classid(TConfigForm), &ConfigForm);
 		Application->CreateForm(__classid(TTargetBrowseForm), &TargetBrowseForm);
 		Application->CreateForm(__classid(TDirectorySelector), &DirectorySelector);
 		Application->CreateForm(__classid(TItemCreateForm), &ItemCreateForm);
@@ -136,7 +133,6 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 		Application->CreateForm(__classid(TFileCreateForm), &FileCreateForm);
 		Application->CreateForm(__classid(TDocManDataModule), &DocManDataModule);
 		Application->CreateForm(__classid(TStatusForm), &StatusForm);
-		Application->CreateForm(__classid(TChangePasswordForm), &ChangePasswordForm);
 		Application->CreateForm(__classid(TReminderFilesForm), &ReminderFilesForm);
 		Application->CreateForm(__classid(TMimeTypesForm), &MimeTypesForm);
 		Application->CreateForm(__classid(TSearchForm), &SearchForm);
