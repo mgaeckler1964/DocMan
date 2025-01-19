@@ -249,6 +249,7 @@ const char *FACTORY_REMOTE_FILE::getName( void ) const
 PTR_ITEM FACTORY_REMOTE_FILE::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_REMOTE_FILE newFile =  createItem( 0 );
+#ifndef DOCMANBG
 	PTR_FILE		source = FileCreateForm->getTemplate();
 	STRING src = source
 		? source->getExternalFile()
@@ -272,7 +273,7 @@ PTR_ITEM FACTORY_REMOTE_FILE::createItemFromForm( const PTR_ITEM &parent ) const
 	if( FileCreateForm->CheckBoxReserve->Checked )
 		newFile->reserve();
 	newFile->updateDatabase();
-
+#endif
 	return newFile;
 }
 
@@ -294,12 +295,17 @@ const char *FACTORY_REMOTE_FOLDER::getName( void ) const
 
 TItemCreateForm *FACTORY_REMOTE_FOLDER::getForm( void ) const
 {
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return RemoteFolderCreateForm;
+#endif
 }
 
 PTR_ITEM FACTORY_REMOTE_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_ITEM			newFolder = createItem( 0 );
+#ifndef DOCMANBG
 	PTR_REMOTE_FOLDER	fp = newFolder;
 	PTR_REMOTE_FOLDER	remoteParent = parent;
 	int					RemoteFolderID;
@@ -325,7 +331,7 @@ PTR_ITEM FACTORY_REMOTE_FOLDER::createItemFromForm( const PTR_ITEM &parent ) con
 		RemoteFolderID
 	);
 	fp->updateDatabase();
-
+#endif
 	return newFolder;
 }
 

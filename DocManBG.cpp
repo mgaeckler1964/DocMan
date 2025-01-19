@@ -50,14 +50,9 @@ USE("DocManBG.todo", ToDo);
 USEUNIT("ActionManager.cpp");
 USEUNIT("Folder.cpp");
 USEFORM("..\GAKLIB\Repository\Config.cpp", ConfigDataModule); /* TDataModule: File Type */
-USEFORM("TargetBrowseFrm.cpp", TargetBrowseForm);
-USEFORM("..\GAKLIB\Repository\DirSelFrm.cpp", DirectorySelector);
 USEFORM("ItemCreateFrm.cpp", ItemCreateForm);
 USEUNIT("TaskList.cpp");
-USEFORM("SyncFolderCreateFrm.cpp", SyncFolderCreateForm);
-USEFORM("RemoteFolderCreateFrm.cpp", RemoteFolderCreateForm);
 USEFORM("GeneralFrm.cpp", GeneralForm);
-USEFORM("FileCreateFrm.cpp", FileCreateForm);
 USEFORM("DocManDM.cpp", DocManDataModule); /* TDataModule: File Type */
 USEFORM("..\GAKLIB\Repository\StatusFrm.cpp", StatusForm);
 USEUNIT("Alias.cpp");
@@ -72,7 +67,6 @@ USEUNIT("Archive.cpp");
 USELIB("..\..\Object\winlib\winlibBCB.lib");
 USEUNIT("TestFolder.cpp");
 USEUNIT("DocManService.cpp");
-USEFORM("SourceFolderCreateFrm.cpp", SourceFolderCreateForm);
 USEUNIT("RemoteItems.cpp");
 USEUNIT("CryptoFile.cpp");
 USELIB("..\..\Object\openssl.lib");
@@ -124,19 +118,13 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 		Application->Title = "Doc Manager";
 		Application->CreateForm(__classid(TDocManBgMainForm), &DocManBgMainForm);
 		Application->CreateForm(__classid(TConfigDataModule), &ConfigDataModule);
-		Application->CreateForm(__classid(TTargetBrowseForm), &TargetBrowseForm);
-		Application->CreateForm(__classid(TDirectorySelector), &DirectorySelector);
 		Application->CreateForm(__classid(TItemCreateForm), &ItemCreateForm);
-		Application->CreateForm(__classid(TSyncFolderCreateForm), &SyncFolderCreateForm);
-		Application->CreateForm(__classid(TRemoteFolderCreateForm), &RemoteFolderCreateForm);
 		Application->CreateForm(__classid(TGeneralForm), &GeneralForm);
-		Application->CreateForm(__classid(TFileCreateForm), &FileCreateForm);
 		Application->CreateForm(__classid(TDocManDataModule), &DocManDataModule);
 		Application->CreateForm(__classid(TStatusForm), &StatusForm);
 		Application->CreateForm(__classid(TReminderFilesForm), &ReminderFilesForm);
 		Application->CreateForm(__classid(TMimeTypesForm), &MimeTypesForm);
 		Application->CreateForm(__classid(TSearchForm), &SearchForm);
-		Application->CreateForm(__classid(TSourceFolderCreateForm), &SourceFolderCreateForm);
 		Application->CreateForm(__classid(TLoginForm), &LoginForm);
 		Application->CreateForm(__classid(TPasswordForm), &PasswordForm);
 		Application->CreateForm(__classid(TRemoteServerForm), &RemoteServerForm);
@@ -147,10 +135,10 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 	}
 	catch (Exception &exception)
 	{
-		doLogPosition();
+		doLogPositionEx(gakLogging::llFatal);
 		closeStartup();
 		Application->ShowException(&exception);
-		doLogPosition();
+		doLogPositionEx(gakLogging::llFatal);
 	}
 
 	return 0;

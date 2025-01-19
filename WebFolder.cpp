@@ -1200,12 +1200,17 @@ const char *FACTORY_WEB_MENU_FOLDER::getName( void ) const
 
 TItemCreateForm *FACTORY_WEB_FOLDER::getForm( void ) const
 {
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return SyncFolderCreateForm;
+#endif
 }
 
 PTR_ITEM FACTORY_WEB_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_ITEM newFolder = createItem( 0 );
+#ifndef DOCMANBG
 	THE_WEB_FOLDER *fp
 		= (THE_WEB_FOLDER *)static_cast<THE_ITEM *>(newFolder)
 	;
@@ -1217,7 +1222,7 @@ PTR_ITEM FACTORY_WEB_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 		SyncFolderCreateForm->EditLocalPath->Text.c_str()
 	);
 	fp->updateDatabase();
-
+#endif
 	return newFolder;
 }
 

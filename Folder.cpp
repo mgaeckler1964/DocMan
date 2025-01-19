@@ -565,12 +565,20 @@ const char *FACTORY_BOOKMARK_FOLDER::getName( void ) const
 
 TItemCreateForm *FACTORY_SYNC_FOLDER::getForm( void ) const
 {
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return SyncFolderCreateForm;
+#endif
 }
 
 TItemCreateForm *FACTORY_SOURCE_FOLDER::getForm( void ) const
 {
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return SourceFolderCreateForm;
+#endif
 }
 
 TItemCreateForm *FACTORY_RELEASE_FOLDER::getForm( void ) const
@@ -585,6 +593,7 @@ TItemCreateForm *FACTORY_RELEASE_FOLDER::getForm( void ) const
 PTR_ITEM FACTORY_SYNC_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_ITEM newFolder = createItem( 0 );
+#ifndef DOCMANBG
 	THE_SYNC_FOLDER *fp
 		= (THE_SYNC_FOLDER *)static_cast<THE_ITEM *>(newFolder)
 	;
@@ -596,13 +605,14 @@ PTR_ITEM FACTORY_SYNC_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 		SyncFolderCreateForm->EditLocalPath->Text.c_str()
 	);
 	fp->updateDatabase();
-
+#endif
 	return newFolder;
 }
 
 PTR_ITEM FACTORY_SOURCE_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_ITEM newFolder = createItem( 0 );
+#ifndef DOCMANBG
 	THE_SOURCE_FOLDER *fp
 		= (THE_SOURCE_FOLDER *)static_cast<THE_ITEM *>(newFolder)
 	;
@@ -635,7 +645,7 @@ PTR_ITEM FACTORY_SOURCE_FOLDER::createItemFromForm( const PTR_ITEM &parent ) con
 		newRelease->setData( newFolder, name, "", major, minor, patch );
 		newRelease->updateDatabase();
 	}
-
+#endif
 	return newFolder;
 }
 

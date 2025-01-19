@@ -467,7 +467,11 @@ const char *FACTORY_LANGUAGE_ITEM::getName( void ) const
 
 TItemCreateForm *FACTORY_FILE::getForm( void ) const
 {
+#ifdef DOCMANBG
+	return NULL;
+#else
 	return FileCreateForm;
+#endif
 }
 
 TItemCreateForm *FACTORY_FILE_REF::getForm( void ) const
@@ -495,8 +499,9 @@ TItemCreateForm *FACTORY_LANGUAGE_ITEM::getForm( void ) const
 
 PTR_ITEM FACTORY_FILE::createItemFromForm( const PTR_ITEM &parent ) const
 {
-	THE_ITEM::ItemsCopiedMap	itemsCopied;
 	PTR_FILE					newFile;
+#ifndef DOCMANBG
+	THE_ITEM::ItemsCopiedMap	itemsCopied;
 	PTR_FILE					source = FileCreateForm->getTemplate();
 
 	if( !source )
@@ -525,7 +530,7 @@ PTR_ITEM FACTORY_FILE::createItemFromForm( const PTR_ITEM &parent ) const
 		newFile->reserve();
 
 	newFile->updateDatabase();
-
+#endif
 	return newFile;
 }
 

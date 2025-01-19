@@ -7,15 +7,8 @@
     <OBJFILES value="..\..\object\DocMan\BG\DocManBG.obj 
       ..\..\object\DocMan\BG\DocManBgMain.obj ..\..\object\DocMan\BG\ItemManager.obj 
       ..\..\object\DocMan\BG\ActionManager.obj ..\..\object\DocMan\BG\Folder.obj 
-      ..\..\object\DocMan\BG\Config.obj 
-      ..\..\object\DocMan\BG\TargetBrowseFrm.obj 
-      ..\..\object\DocMan\BG\DirSelFrm.obj 
-      ..\..\object\DocMan\BG\ItemCreateFrm.obj 
-      ..\..\object\DocMan\BG\TaskList.obj 
-      ..\..\object\DocMan\BG\SyncFolderCreateFrm.obj 
-      ..\..\object\DocMan\BG\RemoteFolderCreateFrm.obj 
-      ..\..\object\DocMan\BG\GeneralFrm.obj 
-      ..\..\object\DocMan\BG\FileCreateFrm.obj 
+      ..\..\object\DocMan\BG\Config.obj ..\..\object\DocMan\BG\ItemCreateFrm.obj 
+      ..\..\object\DocMan\BG\TaskList.obj ..\..\object\DocMan\BG\GeneralFrm.obj 
       ..\..\object\DocMan\BG\DocManDM.obj ..\..\object\DocMan\BG\StatusFrm.obj 
       ..\..\object\DocMan\BG\Alias.obj 
       ..\..\object\DocMan\BG\ReminderFilesFrm.obj 
@@ -24,7 +17,6 @@
       ..\..\object\DocMan\BG\MAGIC.obj ..\..\object\DocMan\BG\Archive.obj 
       ..\..\object\DocMan\BG\TestFolder.obj 
       ..\..\object\DocMan\BG\DocManService.obj 
-      ..\..\object\DocMan\BG\SourceFolderCreateFrm.obj 
       ..\..\object\DocMan\BG\RemoteItems.obj 
       ..\..\object\DocMan\BG\CryptoFile.obj ..\..\object\DocMan\BG\LoginDlg.obj 
       ..\..\object\DocMan\BG\DocManThreads.obj 
@@ -36,11 +28,9 @@
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) DocManBgMain.dfm ..\GAKLIB\Repository\Config.dfm 
-      TargetBrowseFrm.dfm ..\GAKLIB\Repository\DirSelFrm.dfm ItemCreateFrm.dfm 
-      SyncFolderCreateFrm.dfm RemoteFolderCreateFrm.dfm GeneralFrm.dfm 
-      FileCreateFrm.dfm DocManDM.dfm ..\GAKLIB\Repository\StatusFrm.dfm 
-      ReminderFilesFrm.dfm MimeTypesFrm.dfm SearchFrm.dfm 
-      SourceFolderCreateFrm.dfm ..\GAKLIB\Repository\LoginDlg.dfm 
+      ItemCreateFrm.dfm GeneralFrm.dfm DocManDM.dfm 
+      ..\GAKLIB\Repository\StatusFrm.dfm ReminderFilesFrm.dfm MimeTypesFrm.dfm 
+      SearchFrm.dfm ..\GAKLIB\Repository\LoginDlg.dfm 
       ..\GAKLIB\Repository\AboutFrm.dfm ..\GAKLIB\Repository\PasswordDlg.dfm 
       RemoteServerFrm.dfm"/>
     <LIBFILES value="..\..\Object\gaklib\gaklib_bcb.lib ..\..\Object\winlib\winlibBCB.lib 
