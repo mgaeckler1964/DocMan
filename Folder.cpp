@@ -83,6 +83,8 @@ using namespace gak;
 // ----- constants ----------------------------------------------------- //
 // --------------------------------------------------------------------- //
 
+static char GITIGNORE[] = ".gitignore";
+
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
 // --------------------------------------------------------------------- //
@@ -873,7 +875,7 @@ void THE_LOCAL_FOLDER::loadFields( TQuery *query )
 	theQuery->Open();
 	if( !theQuery->Eof )
 	{
-		id = theQuery->Fields->Fields[0]->AsInteger;
+		m_id = theQuery->Fields->Fields[0]->AsInteger;
 		setLocalPath( theQuery->Fields->Fields[1]->AsString.c_str() );
 	}
 
@@ -884,9 +886,9 @@ void THE_RELEASE_FOLDER::loadFields( TQuery *query )
 {
 	THE_LOCAL_FOLDER::loadFields( query );
 
-	release.major = query->FieldByName( "major_release" )->AsInteger;
-	release.minor = query->FieldByName( "minor_release" )->AsInteger;
-	release.patch = query->FieldByName( "patch_release" )->AsInteger;
+	m_release.major = query->FieldByName( "major_release" )->AsInteger;
+	m_release.minor = query->FieldByName( "minor_release" )->AsInteger;
+	m_release.patch = query->FieldByName( "patch_release" )->AsInteger;
 }
 
 void THE_FOLDER::updateDatabase( void )
@@ -920,15 +922,15 @@ void THE_LOCAL_FOLDER::updateDatabase( void )
 {
 	THE_FOLDER::updateDatabase();
 
-	if( !localPath.isEmpty() )
+	if( !m_localPath.isEmpty() )
 	{
 		STRING machine = TDocManDataModule::getMachine();
 		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 		theQuery->DatabaseName = "docManDB";
 
-		if( !id )
+		if( !m_id )
 		{
-			id = ConfigDataModule->getNewMaxValue(
+			m_id = ConfigDataModule->getNewMaxValue(
 				"i_local_folder", "ID"
 			);
 			theQuery->SQL->Add(
@@ -938,19 +940,19 @@ void THE_LOCAL_FOLDER::updateDatabase( void )
 				"( :id, :folder_id, :user_id, :machine, :local_path )"
 			);
 
-			theQuery->Params->Items[0]->AsInteger = id;
+			theQuery->Params->Items[0]->AsInteger = m_id;
 			theQuery->Params->Items[1]->AsInteger = getID();
 			theQuery->Params->Items[2]->AsInteger = vcl::getActUserID();
 			theQuery->Params->Items[3]->AsString = static_cast<const char *>(machine);
-			theQuery->Params->Items[4]->AsMemo = static_cast<const char *>(localPath);
+			theQuery->Params->Items[4]->AsMemo = static_cast<const char *>(m_localPath);
 		}
-		else if( id )
+		else if( m_id )
 		{
 			theQuery->SQL->Add(
 				"update i_local_folder set local_path = :newPath where id=:oldId"
 			);
-			theQuery->Params->Items[0]->AsMemo = (const char *)localPath;
-			theQuery->Params->Items[1]->AsInteger = id;
+			theQuery->Params->Items[0]->AsMemo = (const char *)m_localPath;
+			theQuery->Params->Items[1]->AsInteger = m_id;
 		}
 
 		theQuery->ExecSQL();
@@ -991,9 +993,9 @@ void THE_RELEASE_FOLDER::updateDatabase( void )
 			"patch_release = :patch "
 		"where id=:Id"
 	);
-	theQuery->Params->Items[0]->AsInteger = release.major;
-	theQuery->Params->Items[1]->AsInteger = release.minor;
-	theQuery->Params->Items[2]->AsInteger = release.patch;
+	theQuery->Params->Items[0]->AsInteger = m_release.major;
+	theQuery->Params->Items[1]->AsInteger = m_release.minor;
+	theQuery->Params->Items[2]->AsInteger = m_release.patch;
 	theQuery->Params->Items[3]->AsInteger = getID();
 
 	theQuery->ExecSQL();
@@ -1003,7 +1005,7 @@ STRING THE_LOCAL_FOLDER::getDownloadPath( PTR_ITEM parent )
 {
 	doEnterFunctionEx(gakLogging::llDetail, "THE_LOCAL_FOLDER::getDownloadPath");
 
-	STRING	downloadPath = localPath;
+	STRING	downloadPath = m_localPath;
 	if( downloadPath.isEmpty() )
 		downloadPath = THE_FOLDER::getDownloadPath( parent );
 
@@ -1118,10 +1120,16 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 /*@*/	throw Exception( "Don't know local path" );
 	}
 
+	ArrayOfStrings	gitignore;
 	DirectoryList	dirContent;
 	ITEM_CONTENT	*theContent = getContent();
+	STRING			gitignorePath = localPath + GITIGNORE;
 
+	doLogValueEx( gakLogging::llInfo, gitignorePath );
+	gitignore.readFromFile(gitignorePath);
+	doLogValueEx( gakLogging::llInfo, gitignore.size() );
 	dirContent.dirlist( localPath );
+	doLogValueEx( gakLogging::llInfo, dirContent.size() );
 
 	for(
 		DirectoryList::iterator it=dirContent.begin(), endIT = dirContent.end();
@@ -1172,44 +1180,61 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 		}
 		else
 		{
-			if( !dirEntry.directory )
+			bool ignore = false;
+			for(
+				ArrayOfStrings::iterator	it = gitignore.begin(), endIT = gitignore.end();
+				it != endIT && !StatusForm->isTerminated();
+				++it
+			)
 			{
-				ImageMetaData	metaData;
-				PTR_FILE_REF	newFile = createItem( TYPE_FILE_REF );
-				newFile->setData(
-					this,
-					fileFound,
-					"",
-					TDocManDataModule::md5file( filePath ),
-					dirEntry.creationDate.calcOriginalTime(),
-					dirEntry.modifiedDate.calcOriginalTime()
-				);
-				doLogValue( dirEntry.modifiedDate.getOriginalTime() );
-				newFile->updateDatabase();
-				newFile->updateImageMetaData( &metaData );
-
-				if( stream )
-					*stream << "File Created: " << newFile->getPath() << '\n';
-				hasChanged = true;
+				if( fileFound.match( *it ) )
+				{
+					ignore = true;
+/*v*/				break;
+				}
 			}
-			else if( dirEntry.directory
-			&& fileFound != "."
-			&& fileFound != ".." )
-			{
-				PTR_FOLDER_REF newFolder = createItem( TYPE_FOLDER_REF );
-				newFolder->setData(
-					this,
-					fileFound,
-					"",
-					dirEntry.creationDate.calcOriginalTime(),
-					dirEntry.modifiedDate.calcOriginalTime()
-				);
-				newFolder->updateDatabase();
 
-				newFolder->refresh();
-				if( stream )
-					*stream << "Folder Created: " << newFolder->getPath() << '\n';
-				hasChanged = true;
+			if( !ignore )
+			{
+				if( !dirEntry.directory )
+				{
+					ImageMetaData	metaData;
+					PTR_FILE_REF	newFile = createItem( TYPE_FILE_REF );
+					newFile->setData(
+						this,
+						fileFound,
+						"",
+						TDocManDataModule::md5file( filePath ),
+						dirEntry.creationDate.calcOriginalTime(),
+						dirEntry.modifiedDate.calcOriginalTime()
+					);
+					doLogValue( dirEntry.modifiedDate.getOriginalTime() );
+					newFile->updateDatabase();
+					newFile->updateImageMetaData( &metaData );
+
+					if( stream )
+						*stream << "File Created: " << newFile->getPath() << '\n';
+					hasChanged = true;
+				}
+				else if( dirEntry.directory
+				&& fileFound != "."
+				&& fileFound != ".." )
+				{
+					PTR_FOLDER_REF newFolder = createItem( TYPE_FOLDER_REF );
+					newFolder->setData(
+						this,
+						fileFound,
+						"",
+						dirEntry.creationDate.calcOriginalTime(),
+						dirEntry.modifiedDate.calcOriginalTime()
+					);
+					newFolder->updateDatabase();
+
+					newFolder->refresh();
+					if( stream )
+						*stream << "Folder Created: " << newFolder->getPath() << '\n';
+					hasChanged = true;
+				}
 			}
 		}
 
@@ -1853,7 +1878,7 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 		ArrayOfStrings	gitignore;
 
 		dirContent.dirlist( localPath );
-		STRING gitignorePath = localPath + DIRECTORY_DELIMITER_STRING ".gitignore";
+		STRING gitignorePath = localPath + GITIGNORE;
 		gitignore.readFromFile(gitignorePath);
 
 		for(

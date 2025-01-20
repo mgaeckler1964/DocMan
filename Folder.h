@@ -219,8 +219,8 @@ typedef PTR_TEMPLATE<THE_FOLDER_REF> PTR_FOLDER_REF;
 
 class THE_LOCAL_FOLDER : public THE_FOLDER_REF
 {
-	int		id;
-	STRING	localPath;
+	int		m_id;
+	STRING	m_localPath;
 
 	protected:
 	static int itemCompare( const PTR_ITEM &e1, const PTR_ITEM &e2, int crit );
@@ -231,7 +231,7 @@ class THE_LOCAL_FOLDER : public THE_FOLDER_REF
 		int flags=ITEM_IS_CONTAINER|ITEM_IS_BROWSEABLE|ITEM_IS_MOVEABLE|ITEM_IS_COPYABLE
 	) : THE_FOLDER_REF( id, theFactory, flags )
 	{
-		this->id = 0;
+		m_id = 0;
 	}
 	void setData(
 		const PTR_ITEM &parent, const STRING &name, const STRING &description,
@@ -246,14 +246,16 @@ class THE_LOCAL_FOLDER : public THE_FOLDER_REF
 
 	STRING getLocalPath( void ) const
 	{
-		return localPath;
+		return m_localPath;
 	}
 	void setLocalPath( const STRING &newPath )
 	{
-		localPath = newPath;
-		size_t	len = localPath.strlen();
-		if( len && localPath[len-1] != DIRECTORY_DELIMITER )
-			localPath += DIRECTORY_DELIMITER;
+		m_localPath = newPath;
+		size_t	len = m_localPath.strlen();
+		if( len && m_localPath[len-1] != DIRECTORY_DELIMITER )
+		{
+			m_localPath += DIRECTORY_DELIMITER;
+		}
 	}
 	virtual STRING getDownloadPath( PTR_ITEM parent=PTR_ITEM() );
 	virtual void purgeItem( void );
@@ -335,12 +337,12 @@ class THE_RELEASE
 
 class THE_RELEASE_FOLDER : public THE_SOURCE_FOLDER
 {
-	THE_RELEASE	release;
+	THE_RELEASE	m_release;
 
 	public:
 	THE_RELEASE_FOLDER( int id, const FACTORY_BASE *theFactory ) : THE_SOURCE_FOLDER( id, theFactory )
 	{
-		release.major = release.minor = release.patch = 0;
+		m_release.major = m_release.minor = m_release.patch = 0;
 	}
 	void setData( const PTR_ITEM &parent, const STRING &name, const STRING &description, int major, int minor, int patch )
 	{
@@ -349,25 +351,25 @@ class THE_RELEASE_FOLDER : public THE_SOURCE_FOLDER
 	}
 	void setRelease( int major, int minor, int patch )
 	{
-		release.major = major;
-		release.minor = minor;
-		release.patch = patch;
+		m_release.major = major;
+		m_release.minor = minor;
+		m_release.patch = patch;
 	}
 	int getMajor( void ) const
 	{
-		return release.major;
+		return m_release.major;
 	}
 	int getMinor( void ) const
 	{
-		return release.minor;
+		return m_release.minor;
 	}
 	int getPatch( void ) const
 	{
-		return release.patch;
+		return m_release.patch;
 	}
 	const THE_RELEASE &getRelease( void ) const
 	{
-		return release;
+		return m_release;
 	}
 	virtual TGraphic *getItemPicture( void ) const;
 	virtual void loadFields( TQuery *query );
@@ -440,7 +442,7 @@ class FACTORY_LOCAL_FOLDER : public FACTORY_FOLDER
 // --------------------------------------------------------------------- //
 // ----- class virtuals ------------------------------------------------ //
 // --------------------------------------------------------------------- //
-   
+
 // --------------------------------------------------------------------- //
 // ----- class publics ------------------------------------------------- //
 // --------------------------------------------------------------------- //

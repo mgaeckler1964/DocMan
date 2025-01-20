@@ -119,8 +119,8 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *)
 			if( currentVersion && storage.curVersion != storage.version )
 			{
 				doLogValueEx( gakLogging::llInfo, storage.itemID );
-				doLogValueEx( gakLogging::llInfo, storage.xversion );
-				doLogValueEx( gakLogging::llInfo, storage.xcurVersion );
+				doLogValueEx( gakLogging::llInfo, storage.version );
+				doLogValueEx( gakLogging::llInfo, storage.curVersion );
 /*^*/			continue;
 			}
 
