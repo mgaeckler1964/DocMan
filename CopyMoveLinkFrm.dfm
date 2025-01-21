@@ -1,8 +1,8 @@
 object CopyMoveLinkForm: TCopyMoveLinkForm
   Left = 587
   Top = 150
-  Width = 611
-  Height = 126
+  Width = 626
+  Height = 133
   Caption = 'CopyMoveLinkForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -32,16 +32,16 @@ object CopyMoveLinkForm: TCopyMoveLinkForm
   object EditTarget: TEdit
     Left = 80
     Top = 32
-    Width = 435
+    Width = 450
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
   end
   object ButtonBrowse: TButton
-    Left = 522
+    Left = 530
     Top = 32
     Width = 71
-    Height = 25
+    Height = 21
     Anchors = [akTop, akRight]
     Caption = 'Browse'
     TabOrder = 2
@@ -50,7 +50,7 @@ object CopyMoveLinkForm: TCopyMoveLinkForm
   object EditName: TEdit
     Left = 80
     Top = 8
-    Width = 435
+    Width = 450
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
