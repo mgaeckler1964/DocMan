@@ -52,6 +52,14 @@ object ReminderFilesForm: TReminderFilesForm
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
       TabOrder = 0
     end
+    object NextWeekCheckBox: TCheckBox
+      Left = 136
+      Top = 16
+      Width = 97
+      Height = 17
+      Caption = 'Next Week'
+      TabOrder = 1
+    end
   end
   object DBGrid: TDBGrid
     Left = 0

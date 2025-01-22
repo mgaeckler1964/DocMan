@@ -48,6 +48,7 @@
 
 #include "DocManBGThread.h"
 #include "DocManDM.h"
+#include "ReminderFilesFrm.h"
 #include "folder.h"
 #include "config.h"
 
@@ -152,7 +153,7 @@ namespace gak
 		}
 		void process( const IndexSourcePtr &indexSource )
 		{
-			doEnterFunction("ProcessorType<IndexSourcePtr>::process");
+			doEnterFunctionEx(gakLogging::llDetail,"ProcessorType<IndexSourcePtr>::process");
 			assert( m_resultQueue );
 			assert( m_stopWords );
 
@@ -343,7 +344,7 @@ void ThreadBackground::updateIndex( void )
 
 void ThreadBackground::updateSyncFolders( void )
 {
-	doEnterFunction("ThreadBackground::updateSyncFolders");
+	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::updateSyncFolders");
 
 	gak::DateTime	now;
 	STRING			localPath;
@@ -416,7 +417,7 @@ order by it.parentID, it.ID
 				}
 				catch( ... )
 				{
-					doLogValue( localPath );
+					doLogValueEx(gakLogging::llError, localPath );
 				}
 			}
 		}
@@ -570,6 +571,18 @@ order by it.parentID, it.ID
 	}
 }
 
+void ThreadBackground::reminderCheck( void )
+{
+	STRING oldState = m_state;
+
+	m_state = "openChecked";
+	if( ReminderFilesForm->openChecked() )
+	{
+		Application->MessageBox("There are files to keep in mind.", "Doc Man", MB_OK);
+	}
+	m_state = oldState;
+}
+
 // --------------------------------------------------------------------- //
 // ----- class protected ----------------------------------------------- //
 // --------------------------------------------------------------------- //
@@ -585,7 +598,7 @@ const char *ThreadBackground::getTitle( void ) const
 
 void ThreadBackground::perform( void )
 {
-	doEnterFunction("ThreadBackground::perform");
+	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::perform");
 
 	STRING						dateTime, inputTime;
 	TDateTime					lastCheck = 0;
@@ -603,17 +616,25 @@ void ThreadBackground::perform( void )
 	{
 		while( !StatusForm->isTerminated() )
 		{
+			reminderCheck();
+
+			m_state = "updateIndex";
 			updateIndex();
 			if( StatusForm->isTerminated() )
 			{
 /*v*/			break;
 			}
 
+			reminderCheck();
+
+			m_state = "updateSyncFolders";
 			updateSyncFolders();
 			if( StatusForm->isTerminated() )
 			{
 /*v*/			break;
 			}
+
+			reminderCheck();
 
 			m_state = "checkDB";
 			if( (int(TDateTime::CurrentDate()) - int(lastCheck)) >= 7 )
@@ -630,6 +651,8 @@ void ThreadBackground::perform( void )
 			}
 			clearItemCache();
 
+			reminderCheck();
+
 			m_state = "Sleep";
 			StatusForm->pushStatus( "Sleeping", "" );
 			do
@@ -641,7 +664,8 @@ void ThreadBackground::perform( void )
 				inputTime = inpTime.toString();
 
 				StatusForm->pushStatus( "Sleeping", dateTime + " Idle for: " + inputTime );
-				Sleep( 600000 );
+				Sleep( 60000 );
+				reminderCheck();
 				StatusForm->restore();
 			}
 			while( GetLastInputTime() > 600000 && !StatusForm->isTerminated() );

@@ -64,7 +64,14 @@ void TReminderFilesForm::reloadQuery( bool allways )
 		gak::DateTime now;
 
 		QueryOpenFiles->Close();
-		QueryOpenFiles->Params->Items[0]->AsInteger = now.getUtcUnixSeconds();
+		time_t nowSec = now.getUtcUnixSeconds();
+#ifndef DOCMANBG
+		if( NextWeekCheckBox->Checked )
+		{
+			nowSec += 7*24*3600;
+		}
+#endif
+		QueryOpenFiles->Params->Items[0]->AsInteger = nowSec;
 
 		QueryOpenFiles->Open();
 	}
@@ -92,6 +99,7 @@ void __fastcall TReminderFilesForm::QueryOpenFilesCalcFields(TDataSet *)
 
 void __fastcall TReminderFilesForm::DBGridDblClick(TObject *)
 {
+#ifndef DOCMANBG
 	PTR_ITEM	theParentItem;
 	int			theItemId;
 
@@ -99,13 +107,11 @@ void __fastcall TReminderFilesForm::DBGridDblClick(TObject *)
 	theItemId = QueryOpenFilesID->AsInteger;
 	if( theParentItem )
 	{
-#ifdef DOCMANBG
-#else
 		DocManMainForm->openItem( theParentItem, theItemId );
 		DocManMainForm->BringToFront();
 		DocManMainForm->SetFocus();
-#endif
 	}
+#endif
 }
 //---------------------------------------------------------------------------
 
@@ -128,19 +134,23 @@ void __fastcall TReminderFilesForm::SpeedButtonClick(TObject *)
 }
 //---------------------------------------------------------------------------
 
-void TReminderFilesForm::openChecked()
+bool TReminderFilesForm::openChecked()
 {
 	reloadQuery(false);
 	if( QueryOpenFiles->Bof && QueryOpenFiles->Eof )
 	{
 		QueryOpenFiles->Close();
+		return false;
 	}
 	else
 	{
+#ifndef DOCMANBG
 		Show();
 		gak::vcl::bringWindowToFront( this );
 		BringToFront();
 		SetFocus();
+#endif
+		return true;
 	}
 }
 
@@ -148,8 +158,7 @@ void TReminderFilesForm::openChecked()
 
 void showReminder()
 {
-	ReminderFilesForm->openChecked();
-	if( ReminderFilesForm->Visible )
+	if( ReminderFilesForm->openChecked() )
 	{
 		gak::vcl::bringWindowToFront( ReminderFilesForm );
 		ReminderFilesForm->SetFocus();

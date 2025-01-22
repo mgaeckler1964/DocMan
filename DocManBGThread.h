@@ -92,6 +92,7 @@ class ThreadBackground : public ThreadDocMan
 	STRING		m_state;
 	STRING		m_errorText;
 
+	void reminderCheck( void );
 	void updateSyncFolders( void );
 	void updateIndex( void );
 

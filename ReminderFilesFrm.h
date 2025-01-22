@@ -61,6 +61,7 @@ __published:	// IDE-managed Components
 	TSpeedButton *SpeedButton;
 	TIntegerField *QueryOpenFilesReminderDate;
 	TDateTimeField *QueryOpenFilesReminder;
+	TCheckBox *NextWeekCheckBox;
 	void __fastcall FormHide(TObject *Sender);
 	void __fastcall QueryOpenFilesCalcFields(TDataSet *DataSet);
 	void __fastcall DBGridDblClick(TObject *Sender);
@@ -72,7 +73,7 @@ private:	// User declarations
 
 public:		// User declarations
 	__fastcall TReminderFilesForm(TComponent* Owner);
-	void openChecked();
+	bool openChecked();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TReminderFilesForm *ReminderFilesForm;
