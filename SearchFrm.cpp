@@ -73,7 +73,6 @@ class ACTION_SEARCH : public ACTION_BASE_PROPERTIES
 //---------------------------------------------------------------------------
 REFRESH_TYPE ACTION_SEARCH::perform( PTR_ITEM theItem )
 {
-//	GeneralForm->setItem( theItem );
 	SearchForm->Show();
 	SearchForm->BringToFront();
 	SearchForm->SetFocus();

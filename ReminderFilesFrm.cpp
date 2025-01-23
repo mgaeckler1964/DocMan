@@ -136,6 +136,8 @@ void __fastcall TReminderFilesForm::SpeedButtonClick(TObject *)
 
 bool TReminderFilesForm::openChecked()
 {
+	doEnterFunctionEx( gakLogging::llInfo, "TReminderFilesForm::openChecked" );
+
 	reloadQuery(false);
 	if( QueryOpenFiles->Bof && QueryOpenFiles->Eof )
 	{
@@ -149,6 +151,8 @@ bool TReminderFilesForm::openChecked()
 		gak::vcl::bringWindowToFront( this );
 		BringToFront();
 		SetFocus();
+#else
+		QueryOpenFiles->Close();
 #endif
 		return true;
 	}

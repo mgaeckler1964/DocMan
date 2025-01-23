@@ -140,6 +140,11 @@ void __fastcall TGeneralForm::FormShow(TObject *Sender)
 			LabelReservedFor->Caption = (const char *)reservedFor.userName;
 		}
 	}
+	int requiredWidth = LabelLocalPath->Width + LabelLocalPath->Left + 32;
+	if( requiredWidth > Width )
+	{
+		Width = requiredWidth;
+	}
 	vcl::bringWindowToFront( this );
 }
 //---------------------------------------------------------------------------

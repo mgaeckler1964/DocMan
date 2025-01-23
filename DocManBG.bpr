@@ -8,9 +8,8 @@
       ..\..\object\DocMan\BG\DocManBgMain.obj ..\..\object\DocMan\BG\ItemManager.obj 
       ..\..\object\DocMan\BG\ActionManager.obj ..\..\object\DocMan\BG\Folder.obj 
       ..\..\object\DocMan\BG\Config.obj ..\..\object\DocMan\BG\ItemCreateFrm.obj 
-      ..\..\object\DocMan\BG\TaskList.obj ..\..\object\DocMan\BG\GeneralFrm.obj 
-      ..\..\object\DocMan\BG\DocManDM.obj ..\..\object\DocMan\BG\StatusFrm.obj 
-      ..\..\object\DocMan\BG\Alias.obj 
+      ..\..\object\DocMan\BG\TaskList.obj ..\..\object\DocMan\BG\DocManDM.obj 
+      ..\..\object\DocMan\BG\StatusFrm.obj ..\..\object\DocMan\BG\Alias.obj 
       ..\..\object\DocMan\BG\ReminderFilesFrm.obj 
       ..\..\object\DocMan\BG\MimeTypesFrm.obj ..\..\object\DocMan\BG\File.obj 
       ..\..\object\DocMan\BG\WebFolder.obj ..\..\object\DocMan\BG\SearchFrm.obj 
@@ -28,11 +27,10 @@
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) DocManBgMain.dfm ..\GAKLIB\Repository\Config.dfm 
-      ItemCreateFrm.dfm GeneralFrm.dfm DocManDM.dfm 
-      ..\GAKLIB\Repository\StatusFrm.dfm ReminderFilesFrm.dfm MimeTypesFrm.dfm 
-      SearchFrm.dfm ..\GAKLIB\Repository\LoginDlg.dfm 
-      ..\GAKLIB\Repository\AboutFrm.dfm ..\GAKLIB\Repository\PasswordDlg.dfm 
-      RemoteServerFrm.dfm"/>
+      ItemCreateFrm.dfm DocManDM.dfm ..\GAKLIB\Repository\StatusFrm.dfm 
+      ReminderFilesFrm.dfm MimeTypesFrm.dfm SearchFrm.dfm 
+      ..\GAKLIB\Repository\LoginDlg.dfm ..\GAKLIB\Repository\AboutFrm.dfm 
+      ..\GAKLIB\Repository\PasswordDlg.dfm RemoteServerFrm.dfm"/>
     <LIBFILES value="..\..\Object\gaklib\gaklib_bcb.lib ..\..\Object\winlib\winlibBCB.lib 
       ..\..\Object\openssl.lib"/>
     <LIBRARIES value="Vclmid50.lib Vclx50.lib VCLBDE50.lib Vcldb50.lib Vcl50.lib"/>

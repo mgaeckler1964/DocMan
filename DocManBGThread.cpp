@@ -573,6 +573,7 @@ order by it.parentID, it.ID
 
 void ThreadBackground::reminderCheck( void )
 {
+	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::reminderCheck" );
 	STRING oldState = m_state;
 
 	m_state = "openChecked";

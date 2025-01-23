@@ -52,7 +52,6 @@ USEUNIT("Folder.cpp");
 USEFORM("..\GAKLIB\Repository\Config.cpp", ConfigDataModule); /* TDataModule: File Type */
 USEFORM("ItemCreateFrm.cpp", ItemCreateForm);
 USEUNIT("TaskList.cpp");
-USEFORM("GeneralFrm.cpp", GeneralForm);
 USEFORM("DocManDM.cpp", DocManDataModule); /* TDataModule: File Type */
 USEFORM("..\GAKLIB\Repository\StatusFrm.cpp", StatusForm);
 USEUNIT("Alias.cpp");
@@ -119,7 +118,6 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 		Application->CreateForm(__classid(TDocManBgMainForm), &DocManBgMainForm);
 		Application->CreateForm(__classid(TConfigDataModule), &ConfigDataModule);
 		Application->CreateForm(__classid(TItemCreateForm), &ItemCreateForm);
-		Application->CreateForm(__classid(TGeneralForm), &GeneralForm);
 		Application->CreateForm(__classid(TDocManDataModule), &DocManDataModule);
 		Application->CreateForm(__classid(TStatusForm), &StatusForm);
 		Application->CreateForm(__classid(TReminderFilesForm), &ReminderFilesForm);
