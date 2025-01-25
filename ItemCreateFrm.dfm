@@ -1,8 +1,8 @@
 object ItemCreateForm: TItemCreateForm
-  Left = 447
-  Top = 178
+  Left = 476
+  Top = 516
   Width = 635
-  Height = 280
+  Height = 288
   Caption = 'ItemCreateForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -33,7 +33,7 @@ object ItemCreateForm: TItemCreateForm
   object EditName: TEdit
     Left = 88
     Top = 16
-    Width = 526
+    Width = 523
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
@@ -62,7 +62,7 @@ object ItemCreateForm: TItemCreateForm
   object MemoDescription: TMemo
     Left = 88
     Top = 48
-    Width = 526
+    Width = 523
     Height = 153
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1

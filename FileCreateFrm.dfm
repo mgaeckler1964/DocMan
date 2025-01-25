@@ -1,7 +1,7 @@
 inherited FileCreateForm: TFileCreateForm
   Left = 482
   Top = 140
-  Height = 358
+  Height = 367
   Caption = ''
   OldCreateOrder = True
   PixelsPerInch = 96
@@ -31,14 +31,14 @@ inherited FileCreateForm: TFileCreateForm
   object EditFilePath: TEdit
     Left = 88
     Top = 208
-    Width = 441
+    Width = 438
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     ReadOnly = True
     TabOrder = 2
   end
   object ButtonBrowse: TButton
-    Left = 536
+    Left = 533
     Top = 208
     Width = 75
     Height = 25
@@ -58,7 +58,7 @@ inherited FileCreateForm: TFileCreateForm
   object ComboBoxTemplate: TComboBox
     Left = 88
     Top = 240
-    Width = 526
+    Width = 523
     Height = 21
     Style = csDropDownList
     Anchors = [akLeft, akTop, akRight]
