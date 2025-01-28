@@ -74,7 +74,7 @@ using namespace gak;
 // --------------------------------------------------------------------- //
 
 static const uint32 indexMagic = 0x8456;
-static const uint16 indexVersion = 2;
+static const uint16 indexVersion = 3;
 
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
@@ -601,7 +601,6 @@ void ThreadBackground::perform( void )
 {
 	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::perform");
 
-	STRING						dateTime, inputTime;
 	TDateTime					lastCheck = 0;
 	std::auto_ptr<TRegistry>	registry( new TRegistry );
 
@@ -656,20 +655,20 @@ void ThreadBackground::perform( void )
 
 			m_state = "Sleep";
 			StatusForm->pushStatus( "Sleeping", "" );
+			gak::DateTime	now;
+			STRING dateTime = now.getLocalTime();
 			do
 			{
-				gak::DateTime	now;
-				dateTime = now.getLocalTime();
+				gak::Time	inpTime( GetLastInputTime() );
+				STRING		inputTime = inpTime.toString();
 
-				gak::Time		inpTime( GetLastInputTime() );
-				inputTime = inpTime.toString();
-
-				StatusForm->pushStatus( "Sleeping", dateTime + " Idle for: " + inputTime );
+				StatusForm->pushStatus( "Sleeping since ", dateTime + " Idle for: " + inputTime );
 				Sleep( 60000 );
 				reminderCheck();
 				StatusForm->restore();
 			}
 			while( GetLastInputTime() > 600000 && !StatusForm->isTerminated() );
+
 
 			StatusForm->restore();
 		}
