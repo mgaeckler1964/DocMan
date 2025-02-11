@@ -44,6 +44,14 @@
 #include <gak/array.h>
 
 //---------------------------------------------------------------------------
+enum FormMode
+{
+	CHECKOUT_FILE,
+	CHECKOUT_TREE,
+	CHANGE_TASK
+};
+
+//---------------------------------------------------------------------------
 class TCheckOutForm : public TForm
 {
 __published:	// IDE-managed Components
@@ -52,24 +60,28 @@ __published:	// IDE-managed Components
 	TLabel *Label1;
 	TComboBox *ComboBoxTasks;
 	TQuery *QueryOpenTasks;
-	TCheckBox *CheckBoxIncludeExtensions;
+	TCheckBox *CheckBoxFlag;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ButtonOKClick(TObject *Sender);
 private:	// User declarations
-	gak::ArrayOfInts	ids;
-	int		   	lastTaskID;
+	gak::ArrayOfInts	m_ids;
+	int		   	m_lastTaskID;
+	char		*m_regKey;
 public:		// User declarations
 	__fastcall TCheckOutForm(TComponent* Owner);
 	int getSelectedTaskID( void )
 	{
 		if( ComboBoxTasks->ItemIndex >= 0 )
-			return ids[ComboBoxTasks->ItemIndex];
+		{
+			return m_ids[ComboBoxTasks->ItemIndex];
+		}
 
 		return 0;
 	}
+	int ShowModal( FormMode mode );
 	void setLastTask( taskID )
 	{
-		lastTaskID = taskID;
+		m_lastTaskID = taskID;
 	}
 };
 //---------------------------------------------------------------------------

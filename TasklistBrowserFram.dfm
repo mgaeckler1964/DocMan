@@ -1,12 +1,12 @@
 inherited TasklistBrowserFrame: TTasklistBrowserFrame
   inherited DrawGridContent: TDrawGrid
     Top = 33
-    Height = 244
+    Height = 240
   end
   object Panel1: TPanel [1]
     Left = 0
     Top = 0
-    Width = 443
+    Width = 439
     Height = 33
     Align = alTop
     TabOrder = 1

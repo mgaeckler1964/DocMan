@@ -633,7 +633,7 @@ bool THE_REMOTE_FOLDER::refresh( bool recursive, ostream * )
 		{
 			if( refreshFiles
 			&&  !file->canUnreserve( true )
-			&&  file->calcStatus( false ) != "OK" )
+			&&  file->calcStatus( false ) != STATUS_OK )
 			{
 				STRING	path = file->getPath();
 				STRING	name = file->getName();
@@ -755,7 +755,7 @@ bool THE_REMOTE_FILE::hasChanged(
 	return result;
 }
 
-void THE_REMOTE_FILE::reserve( int reserveFor )
+void THE_REMOTE_FILE::reserve( int reserveFor, bool doNotOverwrite )
 {
 	if( !canReserve() )
 /*@*/	throw Exception( "Item cannot be reserved" );

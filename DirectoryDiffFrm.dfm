@@ -19,8 +19,8 @@ object DirectoryDiffForm: TDirectoryDiffForm
   object StringGrid: TStringGrid
     Left = 0
     Top = 0
-    Width = 875
-    Height = 294
+    Width = 883
+    Height = 306
     Align = alClient
     DefaultRowHeight = 20
     FixedCols = 0

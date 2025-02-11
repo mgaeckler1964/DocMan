@@ -272,7 +272,7 @@ class THE_REMOTE_FILE : public THE_FILE_BASE
 	virtual const char *compare( int firstVersion=0, int secondVersion=-1  );
 	virtual bool canReserve( void ) const;
 	virtual bool canUnreserve( bool noAdminCheck ) const;
-	virtual void reserve( int reserveFor=0 );
+	virtual void reserve( int reserveFor=0, bool doNotOverwrite=false );
 	virtual void unreserve( bool doBranch, const STRING &description, const STRING &newVersion="" );
 	virtual void cancelReserve( void );
 

@@ -231,7 +231,7 @@ void ThreadBackground::updateIndex( void )
 
 	IndexResultQueue	indexResult;
 	IndexProcessor		indexProcessor( &indexResult, &stopWords, storageBase );
-	IndexPool			indexPool( Thread::getNumberOfCores() );
+	IndexPool			indexPool( Thread::getNumberOfCores(), "IndexPoolThread" );
 
 	readDocManIndex( &globalIndex );
 	if( !strAccess( stopWordsFile, 0 ) )

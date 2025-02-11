@@ -53,10 +53,10 @@ object CheckOutForm: TCheckOutForm
     ItemHeight = 13
     TabOrder = 0
   end
-  object CheckBoxIncludeExtensions: TCheckBox
+  object CheckBoxFlag: TCheckBox
     Left = 8
     Top = 40
-    Width = 177
+    Width = 265
     Height = 17
     Caption = 'Include Other File Extensions'
     TabOrder = 1

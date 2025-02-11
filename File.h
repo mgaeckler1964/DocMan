@@ -72,6 +72,12 @@
 // ----- constants ----------------------------------------------------- //
 // --------------------------------------------------------------------- //
 
+extern const char STATUS_OK[];
+extern const char STATUS_OLDER[];
+extern const char STATUS_NEWER[];
+extern const char STATUS_MISSING[];
+extern const char STATUS_RESERVED[];
+
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
 // --------------------------------------------------------------------- //
@@ -243,12 +249,12 @@ class THE_FILE_BASE : public THE_ITEM
 	virtual const char *compare( int firstVersion=0, int secondVersion=-1  ) = 0;
 	virtual bool canReserve( void ) const = 0;
 	virtual bool canUnreserve( bool noAdminCheck ) const = 0;
-	virtual void reserve( int taskID=0 )
+	virtual void reserve( int taskID=0, bool doNotOverwrite=false )
 	{
 		setTask( taskID );
 		reservedBy = gak::vcl::getActUserID();
 		reservedOn = TDocManDataModule::getMachine();
-		setStatus( "reserved" );
+		setStatus( STATUS_RESERVED );
 	}
 	void setTask( int taskID=0 )
 	{
@@ -261,7 +267,7 @@ class THE_FILE_BASE : public THE_ITEM
 		reservedBy = 0;
 		reservedFor = 0;
 		reservedOn = "";
-		setStatus( "OK" );
+		setStatus( STATUS_OK );
 	}
 	const STRING &getReservedOn( void ) const
 	{
@@ -431,7 +437,7 @@ class THE_FILE : public THE_FILE_BASE
 
 	virtual bool canReserve( void ) const;
 	virtual bool canUnreserve( bool noAdminCheck ) const;
-	virtual void reserve( int reserveFor=0 );
+	virtual void reserve( int reserveFor=0, bool doNotOverwrite=false );
 	virtual void unreserve( bool doBranch, const STRING &description, const STRING &newVersion="" );
 	virtual void cancelReserve( void );
 	virtual const char *compare( int firstVersion=0, int secondVersion=-1  );

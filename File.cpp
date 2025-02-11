@@ -158,6 +158,12 @@ class ACTION_GENERATE : public ACTION_BASE_MOVE
 // ----- exported datas ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
+const char STATUS_OK[] = "OK";
+const char STATUS_NEWER[] = "Newer";
+const char STATUS_OLDER[] = "Older";
+const char STATUS_MISSING[] = "Missing";
+const char STATUS_RESERVED[] = "Reserved";
+
 // --------------------------------------------------------------------- //
 // ----- module static data -------------------------------------------- //
 // --------------------------------------------------------------------- //
@@ -1020,7 +1026,7 @@ bool THE_FILE::canUnreserve( bool noAdminCheck ) const
 	return (perms & ITEM_PERM_ADD_VERSION) ? true : false;
 }
 
-void THE_FILE::reserve( int reserveFor )
+void THE_FILE::reserve( int reserveFor, bool doNotOverwrite )
 {
 	if( getID() && !canReserve() )
 /*@*/	throw Exception( "Item cannot be reserved" );
@@ -1048,30 +1054,33 @@ void THE_FILE::reserve( int reserveFor )
 
 			TDateTime localTime = vcl::EncodeDateTime( localStat.st_mtime );
 
-			long difference = ((double)localTime - (double)latestVersion->getFileModifiedDate())*3600.0*24.0;
-			if( abs( difference ) <= 3 )
-				difference = 0;
-
-			if( difference
-			|| (unsigned long)localStat.st_size != latestVersion->getSize() )
+			if( !doNotOverwrite )
 			{
-				STRING	message;
-				if( localStat.st_mode & S_IWRITE )
+				long difference = ((double)localTime - (double)latestVersion->getFileModifiedDate())*3600.0*24.0;
+				if( abs( difference ) <= 3 )
+					difference = 0;
+
+				if( difference
+				|| (unsigned long)localStat.st_size != latestVersion->getSize() )
 				{
-					message = "File is writable and changed.\n";
-					message += "Repository: ";
-					message += latestVersion->getFileModifiedDate().DateTimeString().c_str();
-					message += '\n';
-					message += "Local: ";
-					message += localTime.DateTimeString().c_str();
-					message += '\n';
-					message += "Overwirte?";
-				}
-				if( message.isEmpty()
-				|| Application->MessageBox( (const char *)message, "DocMan", MB_YESNO|MB_ICONQUESTION ) == IDYES )
-				{
-					STRING	src = getExternalFile();
-					fcopy( src, downloadPath );
+					STRING	message;
+					if( localStat.st_mode & S_IWRITE )
+					{
+						message = "File is writable and changed.\n";
+						message += "Repository: ";
+						message += latestVersion->getFileModifiedDate().DateTimeString().c_str();
+						message += '\n';
+						message += "Local: ";
+						message += localTime.DateTimeString().c_str();
+						message += '\n';
+						message += "Overwirte?";
+					}
+					if( message.isEmpty()
+					|| Application->MessageBox( (const char *)message, "DocMan", MB_YESNO|MB_ICONQUESTION ) == IDYES )
+					{
+						STRING	src = getExternalFile();
+						fcopy( src, downloadPath );
+					}
 				}
 			}
 		}
@@ -1183,7 +1192,7 @@ void THE_FILE::unreserve(
 		}
 	}
 
-	setStatus( "OK" );
+	setStatus( STATUS_OK );
 
 	THE_FILE_BASE::cancelReserve();
 }
@@ -1243,7 +1252,7 @@ void THE_FILE::cancelReserve( void )
 	}
 
 	THE_FILE_BASE::cancelReserve();
-	setStatus( "OK" );
+	setStatus( STATUS_OK );
 }
 
 bool THE_FILE::canDelete(  bool forPurge, bool recursive  )
@@ -1699,18 +1708,18 @@ const STRING &THE_FILE_BASE::calcStatus( bool force )
 				DateTime	dbDate( false );
 
 				if( strAccess( downloadPath, 04 ) )
-					status = "missing";
+					status = STATUS_MISSING;
 				else if( hasChanged( downloadPath, &localDate, &dbDate ) )
 				{
 					if( localDate > dbDate  )
-						status = "newer";
+						status = STATUS_NEWER;
 					else
-						status = "older";
+						status = STATUS_OLDER;
 				}
 				else if( getReservedBy() )
-					status = "reserved";
+					status = STATUS_RESERVED;
 				else
-					status = "OK";
+					status = STATUS_OK;
 			}
 		}
 		else
@@ -1994,7 +2003,7 @@ void THE_FILE::createVersion( const STRING &filePath, const STRING &description 
 
 	setFileSize( statBuf.st_size );
 	setFileModifiedDate( vcl::EncodeDateTime(statBuf.st_mtime) );
-	setStatus( "OK" );
+	setStatus( STATUS_OK );
 
 	STRING	fileName = filePath;
 	size_t	slashPos = fileName.searchRChar( DIRECTORY_DELIMITER );

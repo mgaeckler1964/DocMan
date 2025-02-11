@@ -315,9 +315,9 @@ int THE_LOCAL_FOLDER::itemCompare( const PTR_ITEM &e1, const PTR_ITEM &e2, int t
 		STRING status1 = fp1 ? fp1->calcStatus( false ) : NULL_STRING;
 		STRING status2 = fp2 ? fp2->calcStatus( false ) : NULL_STRING;
 
-		if( status1 == "OK" && status2 != "OK" )
+		if( status1 == STATUS_OK && status2 != STATUS_OK )
 			compareResult = 1;
-		else if( status1 != "OK" && status2 == "OK" )
+		else if( status1 != STATUS_OK && status2 == STATUS_OK )
 			compareResult = -1;
 		else
 			compareResult = strcmpi( status1, status2 );
@@ -1740,7 +1740,7 @@ void THE_SOURCE_FOLDER::checkIn( bool doBranch, const STRING &description )
 	StatusForm->restore();
 }
 
-void THE_SOURCE_FOLDER::reserve( int taskID )
+void THE_SOURCE_FOLDER::reserve( int taskID, bool changedOnly )
 {
 	if( StatusForm->pushStatus( "Test", getName() ) )
 /*@*/	return;
@@ -1765,10 +1765,13 @@ void THE_SOURCE_FOLDER::reserve( int taskID )
 		{
 			if( file->canReserve() )
 			{
-				StatusForm->pushStatus( "Check Out", file->getName() );
-				file->reserve( taskID );
-				file->updateDatabase();
-				StatusForm->restore();
+				if( !changedOnly || file->calcStatus( true ) != STATUS_OK )
+				{
+					StatusForm->pushStatus( "Check Out", file->getName() );
+					file->reserve( taskID, changedOnly );
+					file->updateDatabase();
+					StatusForm->restore();
+				}
 			}
 		}
 		else
@@ -1776,7 +1779,7 @@ void THE_SOURCE_FOLDER::reserve( int taskID )
 			PTR_SOURCE_FOLDER folder = child;
 			if( folder )
 			{
-				folder->reserve( taskID );
+				folder->reserve( taskID, changedOnly );
 			}
 		}
 	}
@@ -1959,12 +1962,12 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 			else if( difference < 0  )
 			{
 				theEntry.status = LOCAL_OLDER;
-				theEntry.statusSTR += "Older";
+				theEntry.statusSTR += STATUS_OLDER;
 			}
 			else if( difference > 0 )
 			{
 				theEntry.status = LOCAL_NEWER;
-				theEntry.statusSTR += "Newer";
+				theEntry.statusSTR += STATUS_NEWER;
 			}
 			else
 			{

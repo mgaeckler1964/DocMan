@@ -295,7 +295,7 @@ class THE_SOURCE_FOLDER : public THE_LOCAL_FOLDER
 	virtual bool refresh( bool recursive=true, std::ostream *stream=NULL );
 	void import( void );
 	void checkIn( bool doBranch, const STRING &description );
-	void reserve( int taskID );
+	void reserve( int taskID, bool changedOnly );
 
 	virtual void getItemFactories( Array<const FACTORY_BASE*> *factory ) const;
 };

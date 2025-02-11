@@ -80,16 +80,16 @@ class ACTION_CANCEL_CHECK_OUT : public ACTION_BASE_CHECK
 #pragma option -RT-
 class THREAD_CHECK_OUT_TREE : public ThreadDocMan
 {
-	int taskID;
+	int m_taskID;
+	bool m_changedOnly;
 
 	virtual const char *getTitle( void ) const;
 	virtual void perform( void );
 
 	public:
-	THREAD_CHECK_OUT_TREE( const PTR_ITEM &theItemToHandle, int taskID )
-	: ThreadDocMan(theItemToHandle)
+	THREAD_CHECK_OUT_TREE( const PTR_ITEM &theItemToHandle, int taskID, bool changedOnly )
+	: ThreadDocMan(theItemToHandle), m_taskID(taskID), m_changedOnly(changedOnly)
 	{
-		this->taskID = taskID;
 	}
 };
 #pragma option -RT.
@@ -121,13 +121,11 @@ REFRESH_TYPE ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
 	{
-		CheckOutForm->Caption = "Check Out";
-		CheckOutForm->CheckBoxIncludeExtensions->Visible = true;
-		if( CheckOutForm->ShowModal() == mrOk )
+		if( CheckOutForm->ShowModal(CHECKOUT_FILE) == mrOk )
 		{
 			theFile->reserve( CheckOutForm->getSelectedTaskID() );
 			theFile->updateDatabase();
-			if( CheckOutForm->CheckBoxIncludeExtensions->Checked )
+			if( CheckOutForm->CheckBoxFlag->Checked )
 			{
 				PTR_ITEM parent = theItem->getParent();
 				if( parent )
@@ -191,7 +189,7 @@ void THREAD_CHECK_OUT_TREE::perform( void )
 	PTR_SOURCE_FOLDER theFolder = theItemToHandle;
 	if( theFolder )
 	{
-		theFolder->reserve( taskID );
+		theFolder->reserve( m_taskID, m_changedOnly );
 	}
 }
 
@@ -204,14 +202,12 @@ REFRESH_TYPE ACTION_CHECK_OUT_TREE::perform( PTR_ITEM theItem )
 		if( localPath.isEmpty() )
 /*@*/		throw Exception( "Don't know local path" );
 
-		CheckOutForm->Caption = "Check Out";
-		CheckOutForm->CheckBoxIncludeExtensions->Visible = false;
-
-		if( CheckOutForm->ShowModal() == mrOk )
+		if( CheckOutForm->ShowModal(CHECKOUT_TREE) == mrOk )
 		{
 			THREAD_CHECK_OUT_TREE *theThread = new THREAD_CHECK_OUT_TREE(
 				theFolder,
-				CheckOutForm->getSelectedTaskID()
+				CheckOutForm->getSelectedTaskID(),
+				CheckOutForm->CheckBoxFlag->Checked
 			);
 			theThread->StartThread();
 			return REFRESH_RELOAD;
@@ -240,11 +236,8 @@ REFRESH_TYPE ACTION_ASSIGNED_TASK::perform( PTR_ITEM theItem )
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
 	{
-		CheckOutForm->Caption = "Assigned Task";
-		CheckOutForm->CheckBoxIncludeExtensions->Visible = false;
 		CheckOutForm->setLastTask( theFile->getTask() );
-
-		if( CheckOutForm->ShowModal() == mrOk )
+		if( CheckOutForm->ShowModal(CHANGE_TASK) == mrOk )
 		{
 			theFile->setTask( CheckOutForm->getSelectedTaskID() );
 			theFile->updateDatabase();
@@ -284,10 +277,36 @@ REFRESH_TYPE ACTION_CANCEL_CHECK_OUT::perform( PTR_ITEM theItem )
 
 //---------------------------------------------------------------------------
 __fastcall TCheckOutForm::TCheckOutForm(TComponent* Owner)
-	: TForm(Owner)
+	: TForm(Owner), m_lastTaskID( 0 ), m_regKey(NULL)
 {
-	lastTaskID = 0;
 }
+
+int TCheckOutForm::ShowModal( FormMode mode )
+{
+	if( mode == CHECKOUT_FILE )
+	{
+		Caption = "Check Out";
+		CheckBoxFlag->Visible = true;
+		CheckBoxFlag->Caption = "Include Other File Extensions";
+		m_regKey = "CheckBoxIncludeExtensions";
+	}
+	else if( mode == CHECKOUT_TREE )
+	{
+		Caption = "Check Out";
+		CheckBoxFlag->Visible = true;
+		CheckBoxFlag->Caption = "Changed Files, only";
+		m_regKey = "CheckBoxChangedOnly";
+	}
+	else if( mode == CHANGE_TASK )
+	{
+		Caption = "Assigned Task";
+		CheckBoxFlag->Visible = false;
+		m_regKey = NULL;
+	}
+
+	return TForm::ShowModal();
+}
+
 //---------------------------------------------------------------------------
 
 void __fastcall TCheckOutForm::FormShow(TObject *)
@@ -295,26 +314,26 @@ void __fastcall TCheckOutForm::FormShow(TObject *)
 	int			lastItemIndex = 0;
 	AnsiString	taskTitle;
 
-	if( !lastTaskID )
+	if( !m_lastTaskID )
 	{
 		std::auto_ptr<TRegistry> reg( new TRegistry );
 
 		if( reg->OpenKey( registryKey, false ) )
 		{
 			if( reg->ValueExists( "lastTaskID" ) )
-				lastTaskID = reg->ReadInteger( "lastTaskID" );
+				m_lastTaskID = reg->ReadInteger( "lastTaskID" );
 
-			if( reg->ValueExists( "CheckBoxIncludeExtensions" ) )
-				CheckBoxIncludeExtensions->Checked = reg->ReadBool( "CheckBoxIncludeExtensions" );
+			if( m_regKey && reg->ValueExists( m_regKey ) )
+				CheckBoxFlag->Checked = reg->ReadBool( m_regKey );
 
 			reg->CloseKey();
 		}
 	}
 
 	ComboBoxTasks->Items->Clear();
-	ids.clear();
+	m_ids.clear();
 
-	ids.addElement( 0 );
+	m_ids.addElement( 0 );
 	ComboBoxTasks->Items->Add( "None" );
 
 	QueryOpenTasks->ParamByName( "actUser" )->AsInteger = vcl::getActUserID();
@@ -330,9 +349,9 @@ void __fastcall TCheckOutForm::FormShow(TObject *)
 		taskTitle += ')';
 
 		ComboBoxTasks->Items->Add( taskTitle );
-		ids.addElement( QueryOpenTasks->FieldByName( "ID" )->AsInteger );
+		m_ids.addElement( QueryOpenTasks->FieldByName( "ID" )->AsInteger );
 
-		if( QueryOpenTasks->FieldByName( "ID" )->AsInteger == lastTaskID )
+		if( QueryOpenTasks->FieldByName( "ID" )->AsInteger == m_lastTaskID )
 			lastItemIndex = ComboBoxTasks->Items->Count -1;
 	}
 	ComboBoxTasks->ItemIndex = lastItemIndex;
@@ -344,12 +363,15 @@ void __fastcall TCheckOutForm::FormShow(TObject *)
 //---------------------------------------------------------------------------
 void __fastcall TCheckOutForm::ButtonOKClick(TObject *)
 {
-	lastTaskID = ids[ComboBoxTasks->ItemIndex];
+	m_lastTaskID = m_ids[ComboBoxTasks->ItemIndex];
 	std::auto_ptr<TRegistry> reg( new TRegistry );
 
 	reg->OpenKey( registryKey, true );
-	reg->WriteInteger( "lastTaskID", lastTaskID );
-	reg->WriteBool( "CheckBoxIncludeExtensions", CheckBoxIncludeExtensions->Checked );
+	reg->WriteInteger( "lastTaskID", m_lastTaskID );
+	if( m_regKey )
+	{
+		reg->WriteBool( m_regKey, CheckBoxFlag->Checked );
+	}
 	reg->CloseKey();
 }
 //---------------------------------------------------------------------------
