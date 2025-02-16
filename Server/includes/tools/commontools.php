@@ -123,7 +123,7 @@
 		$queryResult = queryDatabase(
 			$dbConnect,
 			"select nachname, vorname, strasse, postfach, land, plz, ort, email, ".
-				"password, id, administrator, guest, loginEnabled ".
+				"password, id, administrator, guest, loginenabled ".
 			"from user_tab ".
 			"where id=$1 or email=$2",
 			array( $id, $email )
@@ -140,9 +140,9 @@
 		$queryResult = queryDatabase(
 			$dbConnect,
 			"select nachname, vorname, strasse, postfach, land, plz, ort, email, ".
-				"password, id, administrator, guest, loginEnabled ".
+				"password, id, administrator, guest, loginenabled ".
 			"from user_tab ".
-			"where guest='X' and loginEnabled='X'"
+			"where guest='X' and loginenabled='X'"
 		);
 		if( $queryResult && !is_object( $queryResult ) )
 			$user = fetchUser( $queryResult );
@@ -167,7 +167,7 @@
 	function getGuestCount( $dbConnect )
 	{
 		$userCount = 0;
-		$queryResult = queryDatabase( $dbConnect, "select count(*) as GuestCount from user_tab where loginEnabled = 'X' and guest = 'X'" );
+		$queryResult = queryDatabase( $dbConnect, "select count(*) as GuestCount from user_tab where loginenabled = 'X' and guest = 'X'" );
 		if( $queryResult && !is_object( $queryResult ) )
 		{
 			$queryResult = fetchQueryRow( $queryResult );
@@ -189,7 +189,7 @@
 		{
 			$user = "Falsches Kennwort#2";
 		}
-		else if( !$user['administrator'] && !$user['loginEnabled'] )
+		else if( !$user['administrator'] && !$user['loginenabled'] )
 		{
 			$user = "Anmeldung nicht erlaubt";
 		}

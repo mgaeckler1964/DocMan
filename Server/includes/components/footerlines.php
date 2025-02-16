@@ -6,5 +6,6 @@
 		{
 			print_r( $_SERVER["HTTP_USER_AGENT"] );
 		}
+		print_r($actUser)
 	?>
 </p>

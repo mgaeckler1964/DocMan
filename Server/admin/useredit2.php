@@ -8,10 +8,10 @@
 	$land = $_POST["land"];
 	$plz = $_POST["plz"];
 	$ort = $_POST["ort"];
-	$email = $_POST["email"];
+	$email = $_POST["uiemail"];
 		
 		
-	if( $id == 1 || $actUser['id'] == $id ) // root is allways an admin an the current user must not remove his own admin flag
+	if( $id == 1 || $actUser['ID'] == $id ) // root is allways an admin an the current user must not remove his own admin flag
 		$administrator = 'X';
 	else
 		$administrator = array_key_exists( "administrator", $_POST ) ? $_POST["administrator"] : "";

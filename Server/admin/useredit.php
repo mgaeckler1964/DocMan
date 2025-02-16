@@ -25,7 +25,7 @@
 				$land = $user['land'];
 				$plz = $user['plz'];
 				$ort = $user['ort'];
-				$email = $user['email'];
+				$uiemail = $user['email'];
 			}
 			else
 			{
@@ -37,7 +37,7 @@
 				$land = "";
 				$plz = "";
 				$ort = "";
-				$email = "";
+				$uiemail = "";
 			}
 		?>
 
@@ -53,15 +53,15 @@
 					<input type=text" name="plz" value="<?php echo htmlspecialchars($plz); ?>">
 					<input type=text" name="ort" value="<?php echo htmlspecialchars($ort); ?>">
 				</td></tr>
-				<tr><td class="fieldLabel">E-Mail</td><td><input type="email" required="required" name="email" value="<?php echo htmlspecialchars($email); ?>"></td></tr>
+				<tr><td class="fieldLabel">E-Mail</td><td><input type="email" required="required" name="uiemail" value="<?php echo htmlspecialchars($uiemail); ?>"></td></tr>
 				<tr><td class="fieldLabel">Administrator</td><td><input type="checkbox" name="administrator" value="X"
 					<?php if( isset( $user ) && $user['administrator'] ) echo "checked"; ?>
 				></td></tr>
 				<tr><td class="fieldLabel">Gast-Konto</td><td><input type="checkbox" name="guest" value="X"
 					<?php if( isset( $user ) && $user['guest'] ) echo "checked"; ?>
 				></td></tr>
-				<tr><td class="fieldLabel">Anmeldung erlaubt</td><td><input type="checkbox" name="loginEnabled" value="X"
-					<?php if( isset( $user ) && $user['loginEnabled'] ) echo "checked"; ?>
+				<tr><td class="fieldLabel">Anmeldung erlaubt</td><td><input type="checkbox" name="loginenabled" value="X"
+					<?php if( isset( $user ) && $user['loginenabled'] ) echo "checked"; ?>
 				></td></tr>
 				<tr><td class="fieldLabel">&nbsp;</td><td>&nbsp;</td></tr>
 				<tr>

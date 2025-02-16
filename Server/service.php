@@ -119,14 +119,14 @@
 						"email = $8, " .
 						"administrator = $9, " .
 						"guest = $10, ".
-						"loginEnabled = $11 " .
+						"loginenabled = $11 " .
 					"where id = $12",
 					array( 
 						$theUser['nachname'], $theUser['vorname'],
 						$theUser['strasse'], $theUser['postfach'],
 						$theUser['land'], $theUser['plz'], $theUser['ort'],
 						$theUser['email'],
-						$theUser['administrator'], $theUser['guest'], $theUser['loginEnabled'],
+						$theUser['administrator'], $theUser['guest'], $theUser['loginenabled'],
 						$theUser['id']
 					)
 				);
@@ -140,7 +140,7 @@
 				{
 					$result = queryDatabase( $dbConnect,
 						"insert into user_tab (" .
-							"id, nachname, vorname, strasse, postfach, land, plz, ort, email, administrator, guest, loginEnabled " .
+							"id, nachname, vorname, strasse, postfach, land, plz, ort, email, administrator, guest, loginenabled " .
 						")" .
 						"values" .
 						"(" .
@@ -152,7 +152,7 @@
 							$theUser['strasse'], $theUser['postfach'],
 							$theUser['land'], $theUser['plz'], $theUser['ort'],
 							$theUser['email'],
-							$theUser['administrator'], $theUser['guest'], $theUser['loginEnabled']
+							$theUser['administrator'], $theUser['guest'], $theUser['loginenabled']
 						)
 					);
 					if( is_object( $result ) )
@@ -392,7 +392,7 @@
 			'email' => array('name' => 'email','type' => 'xsd:string'),
 			'password' => array('name' => 'password','type' => 'xsd:string'),
 			'guest' => array('name' => 'guest','type' => 'xsd:string'),
-			'loginEnabled' => array('name' => 'loginEnabled','type' => 'xsd:string'),
+			'loginenabled' => array('name' => 'loginenabled','type' => 'xsd:string'),
 			'administrator' => array('name' => 'administrator','type' => 'xsd:string'),
 			'is_group' => array('name' => 'is_group','type' => 'xsd:string')
 		)

@@ -96,7 +96,7 @@
 			}
 			if( $userOK )
 			{
-				if( !$user['administrator'] && !$user['loginEnabled'] )
+				if( !$user['administrator'] && !$user['loginenabled'] )
 				{
 					$userOK = false;
 					$error = "Anmeldung nicht erlaubt";

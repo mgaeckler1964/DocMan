@@ -14,7 +14,7 @@
 			"email			varchar(128)	not null, ".
 			"password		varchar(32), ".
 			"guest			varchar(1), ".
-			"loginEnabled	varchar(1), ".
+			"loginenabled	varchar(1), ".
 			"administrator	varchar(1), ".
 			"is_group		varchar(1) ".
 		")";
@@ -42,7 +42,7 @@
 				$error .= "<p>". $result->errorText . "<br>" . $result->errorDetail . "</p>";
 		}
 		
-		$query = "insert into user_tab (id, nachname, vorname, email, administrator, loginEnabled ) values ( 1, 'root', 'root', 'root@cresd.de', 'X', 'X' )";
+		$query = "insert into user_tab (id, nachname, vorname, email, administrator, loginenabled ) values ( 1, 'root', 'root', 'root@cresd.de', 'X', 'X' )";
 		$result = queryDatabase( $dbConnect, $query );
 		if( !$result || is_object( $result ) )
 		{

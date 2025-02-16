@@ -34,7 +34,7 @@
 		<form action="groupedit2.php" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="id" value="<?php echo $id;?>">
 			<table>
-				<tr><td class="fieldLabel">Name</td><td><input type="text" required="required" name="email" value="<?php echo htmlspecialchars($email); ?>"></td></tr>
+				<tr><td class="fieldLabel">Name</td><td><input type="text" required="required" name="uiemail" value="<?php echo htmlspecialchars($email); ?>"></td></tr>
 				<tr><td class="fieldLabel">&nbsp;</td><td>&nbsp;</td></tr>
 				<tr>
 					<td class="fieldLabel">&nbsp;</td>

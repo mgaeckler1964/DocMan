@@ -1,7 +1,7 @@
 <?php
 	require_once( "includes/components/login.php" ); 
 	$id = $_POST["id"];
-	$email = $_POST["email"];
+	$email = $_POST["uiemail"];
 		
 		
 	if( !$id )
@@ -10,14 +10,14 @@
 
 		$result = queryDatabase( $dbConnect,
 			"insert into user_tab (" .
-				"id, email, is_group " .
+				"id, email, nachname, vorname, is_group " .
 			")" .
 			"values" .
 			"(" .
-				"$1, $2, $3" .
+				"$1, $2, $3, $4, $5" .
 			")",
 			array( 
-				$id, $email, 'X'
+				$id, $email, $email, $email, 'X'
 			)
 		);
 	}
