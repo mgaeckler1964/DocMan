@@ -11,12 +11,12 @@
 	$email = $_POST["uiemail"];
 		
 		
-	if( $id == 1 || $actUser['ID'] == $id ) // root is allways an admin an the current user must not remove his own admin flag
+	if( $id == 1 || $actUser['id'] == $id ) // root is allways an admin an the current user must not remove his own admin flag
 		$administrator = 'X';
 	else
 		$administrator = array_key_exists( "administrator", $_POST ) ? $_POST["administrator"] : "";
 	$guest = array_key_exists( "guest", $_POST ) ? $_POST["guest"] : "";
-	$loginEnabled = array_key_exists( "loginEnabled", $_POST ) ? $_POST["loginEnabled"] : "";
+	$loginenabled = array_key_exists( "loginenabled", $_POST ) ? $_POST["loginenabled"] : "";
 
 	if( !$id )
 	{
@@ -24,14 +24,14 @@
 
 		$result = queryDatabase( $dbConnect,
 			"insert into user_tab (" .
-				"id, nachname, vorname, strasse, postfach, land, plz, ort, email, administrator, guest, loginEnabled " .
+				"id, nachname, vorname, strasse, postfach, land, plz, ort, email, administrator, guest, loginenabled " .
 			")" .
 			"values" .
 			"(" .
 				"$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12" .
 			")",
 			array( 
-				$id, $nachname, $vorname, $strasse, $postfach, $land, $plz, $ort, $email, $administrator, $guest, $loginEnabled
+				$id, $nachname, $vorname, $strasse, $postfach, $land, $plz, $ort, $email, $administrator, $guest, $loginenabled
 			)
 		);
 	}
@@ -49,11 +49,11 @@
 				"email = $8, " .
 				"administrator = $9, " .
 				"guest = $10, ".
-				"loginEnabled = $11 " .
+				"loginenabled = $11 " .
 			"where id = $12",
 			array( 
 				$nachname, $vorname, $strasse, $postfach, $land, $plz, $ort,
-				$email, $administrator, $guest, $loginEnabled,
+				$email, $administrator, $guest, $loginenabled,
 				$id 
 			)
 		);

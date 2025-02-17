@@ -144,7 +144,7 @@
 			}
 			else
 			{
-				$actUser = array( "ID" => 1, 'administrator' => 'X' );
+				$actUser = array( "id" => 1, 'administrator' => 'X' );
 			}
 		
 		}

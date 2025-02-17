@@ -39,7 +39,7 @@
 				"( id, parentID, item_type, name, description, createDate, modifiedDate, ownerUser, ownerGroup, mode, createBy ) ".
 				"values ".
 				"( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 )", 
-				array( $nextID, $parentID, $itemType, $name, $description, time(), time(), $ownerUser, $ownerGroup, $mode, $actUser['ID']  )
+				array( $nextID, $parentID, $itemType, $name, $description, time(), time(), $ownerUser, $ownerGroup, $mode, $actUser['id']  )
 			);
 			if( $queryResult && !is_object($queryResult) )
 			{

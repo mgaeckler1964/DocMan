@@ -25,7 +25,7 @@
 				$land = $user['land'];
 				$plz = $user['plz'];
 				$ort = $user['ort'];
-				$uiemail = $user['email'];
+				$email = $user['email'];
 			}
 			else
 			{
@@ -37,7 +37,7 @@
 				$land = "";
 				$plz = "";
 				$ort = "";
-				$uiemail = "";
+				$email = "";
 			}
 		?>
 
@@ -53,7 +53,7 @@
 					<input type=text" name="plz" value="<?php echo htmlspecialchars($plz); ?>">
 					<input type=text" name="ort" value="<?php echo htmlspecialchars($ort); ?>">
 				</td></tr>
-				<tr><td class="fieldLabel">E-Mail</td><td><input type="email" required="required" name="uiemail" value="<?php echo htmlspecialchars($uiemail); ?>"></td></tr>
+				<tr><td class="fieldLabel">E-Mail</td><td><input type="email" required="required" name="uiemail" value="<?php echo htmlspecialchars($email); ?>"></td></tr>
 				<tr><td class="fieldLabel">Administrator</td><td><input type="checkbox" name="administrator" value="X"
 					<?php if( isset( $user ) && $user['administrator'] ) echo "checked"; ?>
 				></td></tr>
