@@ -37,7 +37,7 @@
 		application specific constants
 	*/
 	define( "APPLICATION_NAME", "Doc Manager Server" );
-	define( "APPLICATION_COPYRIGHT", "&copy; 2012 - 2014 by <a href='http://www.cresd.de/' target='_blank'>CRESD GmbH</a>" );
+	define( "APPLICATION_COPYRIGHT", "&copy; 2012 - 2015 by <a href='https://www.gaeckler.at/' target='_blank'>M. G&auml;ckler</a>" );
 	$backupTables = array( "user_tab", "user_login_prot", "group_member", "item_tree", "file_versions" );
 	
 	if( is_dir( "../DocManStorage" ) )

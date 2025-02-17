@@ -51,7 +51,7 @@
 		return $full_name;
 	}
 	
-	function cresdMd5Hash( $password )
+	function mgMd5Hash( $password )
 	{
 		if( function_exists( "hash" ) )
 			$password = hash( "md5", $password );
@@ -185,7 +185,7 @@
 		{
 			$user = "Unbekannter Benutzer#2" . $email;
 		}
-		else if( $user['password'] && $user['password'] != cresdMd5Hash($password) )
+		else if( $user['password'] && $user['password'] != mgMd5Hash($password) )
 		{
 			$user = "Falsches Kennwort#2";
 		}

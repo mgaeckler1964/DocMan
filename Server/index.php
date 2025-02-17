@@ -7,6 +7,9 @@
 			$id = $_GET["ID"];
 		else
 			$id = -1;
+			
+		if( $id=="" )
+			$id = -1;
 
 		if( $id >= 0 )
 		{

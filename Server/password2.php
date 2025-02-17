@@ -8,7 +8,7 @@
 	
 	if( $actUser['guest'] )
 		$error = "Nicht erlaubt";
-	else if( $actUser['password'] && $actUser['password'] != cresdMd5Hash($old_password) )
+	else if( $actUser['password'] && $actUser['password'] != mgMd5Hash($old_password) )
 		$error = "Altes Kennwort ist falsch#1";
 	else if( !$actUser['password'] && $old_password )
 		$error = "Altes Kennwort ist falsch#2";
@@ -22,7 +22,7 @@
 				"update user_tab " .
 				"set password = $1 " .
 				"where id = $2",
-				array( cresdMd5Hash($new_password1), $id )
+				array( mgMd5Hash($new_password1), $id )
 			);
 		}
 		else

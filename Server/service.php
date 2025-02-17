@@ -69,7 +69,7 @@
 
 	$server = new soap_server(); 
 
-	$namespace = "urn:CresdDocMan";
+	$namespace = "urn:mgDocMan";
 	$serviceName = "DocManService";
 	$callType = "rpc";
 	$callType = "document";

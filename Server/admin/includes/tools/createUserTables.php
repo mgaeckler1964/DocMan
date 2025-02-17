@@ -42,7 +42,7 @@
 				$error .= "<p>". $result->errorText . "<br>" . $result->errorDetail . "</p>";
 		}
 		
-		$query = "insert into user_tab (id, nachname, vorname, email, administrator, loginenabled ) values ( 1, 'root', 'root', 'root@cresd.de', 'X', 'X' )";
+		$query = "insert into user_tab (id, nachname, vorname, email, administrator, loginenabled ) values ( 1, 'root', 'root', 'root@gaeckler.at', 'X', 'X' )";
 		$result = queryDatabase( $dbConnect, $query );
 		if( !$result || is_object( $result ) )
 		{

@@ -60,7 +60,7 @@
 			}
 			else if( $user['password'] )
 			{
-				if( $user['password'] != cresdMd5Hash($password) )
+				if( $user['password'] != mgMd5Hash($password) )
 				{
 					$userOK = false;
 					$error = "Falsches Kennwort#1";
@@ -88,7 +88,7 @@
 					array( $user['id'] )
 				);
 */
-				if( $user['password'] != cresdMd5Hash($password) )
+				if( $user['password'] != mgMd5Hash($password) )
 				{
 					$userOK = false;
 					$error = "Falsches Kennwort#2";

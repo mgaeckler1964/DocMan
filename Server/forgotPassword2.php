@@ -23,7 +23,7 @@
 					"update user_tab " .
 					"set password = $1 " .
 					"where id = $2",
-					array( cresdMd5Hash($new_password), $user['id'] )
+					array( mgMd5Hash($new_password), $user['id'] )
 				);
 				if( $result && !is_object( $result ) )
 				{
