@@ -83,7 +83,7 @@
 				{
 					echo( "<hr><table><tr><th>Datum</th><th>IP-Adresse</th></tr>\n" );
 					while( $row = fetchQueryRow( $queryResult ) )
-						echo( "<tr><td>" . strftime( "%d. %m. %Y %T", $row['loginDate'] ) . "</td><td>{$row['remoteIP']}</td></tr>\n" );
+						echo( "<tr><td>" . formatTimeStamp($row['loginDate']) . "</td><td>{$row['remoteIP']}</td></tr>\n" );
 				}
 				echo( "</table>" );
 			}

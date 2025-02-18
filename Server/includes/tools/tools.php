@@ -163,7 +163,7 @@
 					
 				$result = queryDatabase( 
 					$dbConnect, 
-					"insert into file_versions ( id, itemID, createBy, mimeType, createDate, modifiedDate, description ) values ( $1, $2, $3, $4, $5, $6, $7 )",
+					"insert into file_versions ( id, itemID, createBy, mimetype, createdate, modifieddate, description ) values ( $1, $2, $3, $4, $5, $6, $7 )",
 					array( $versionID, $itemID, $actUser['id'], $mimeType, time(), $modTime, $description )
 				);
 				if( !is_object( $result ) )
@@ -196,7 +196,7 @@
 		{
 			$result = queryDatabase( 
 				$dbConnect, 
-				"update file_versions set mimeType = $1, description = $2 where id = $3",
+				"update file_versions set mimetype = $1, description = $2 where id = $3",
 					array( $mimeType, $description, $versionID )
 				);
 			if( !is_object( $result ) )

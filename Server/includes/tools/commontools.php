@@ -43,6 +43,10 @@
 	{
 		return compareDate( createDate( $date1 ), createDate( $date2 ) );
 	}
+	function formatTimeStamp( $timestamp )
+	{
+		return date( "d. m. Y H:i:s", $timestamp );
+	}
 	
 	function fullname2Html( $full_name )
 	{
@@ -102,7 +106,7 @@
 			{
 				$queryResult = fetchQueryRow( $queryResult );
 				if( $queryResult && $queryResult['lastLogin'] )
-					$user['lastLogin'] = strftime( "%d. %m. %Y %T", $queryResult['lastLogin'] );
+					$user['lastLogin'] = formatTimeStamp($queryResult['lastLogin']);
 				else
 					$user['lastLogin'] = "";
 			}

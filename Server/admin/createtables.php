@@ -32,8 +32,8 @@
 					"ownerGroup		int				not null references user_tab, ".
 					"mode			int, ".
 					"createBy		int				not null references user_tab, ".
-					"createDate		int, ".
-					"modifiedDate	int, ".
+					"createdate		int, ".
+					"modifieddate	int, ".
 					"reservedBy		int ".
 				")";
 	
@@ -58,10 +58,10 @@
 					"id				int				not null	primary key, ".
 					"itemID			int				not null	references item_tree, ".
 					"createBy		int				not null	references user_tab, ".
-					"mimeType		varchar(255), ".
+					"mimetype		varchar(255), ".
 					"description	varchar(4000), ".
-					"createDate		int, ".
-					"modifiedDate	int ".
+					"createdate		int, ".
+					"modifieddate	int ".
 				")";
 				$result = queryDatabase( $dbConnect, $query );
 				if( !$result || is_object( $result ) )

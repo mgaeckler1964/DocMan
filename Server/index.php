@@ -85,18 +85,18 @@
 						else
 							$viewer=false;
 						
-						if( $record['createDate'] )
-							$record['createDate'] = strftime( "%d. %m. %Y %T", $record['createDate'] );
+						if( $record['createdate'] )
+							$record['createdate'] = formatTimeStamp($record['createdate']);
 	
-						if( $record['modifiedDate'] )
-							$record['modifiedDate'] = strftime( "%d. %m. %Y %T", $record['modifiedDate'] );
+						if( $record['modifieddate'] )
+							$record['modifieddate'] = formatTimeStamp($record['modifieddate']);
 	
 						if( $viewer )
 							echo( "<td><a href='{$viewer}?ID={$record['id']}'>{$record['name']}</a></td>" );
 						else
 							echo( "<td>{$record['name']}</td>" );
-						echo( "<td>{$record['createDate']}</td>" );
-						echo( "<td>{$record['modifiedDate']}</td>" );
+						echo( "<td>{$record['createdate']}</td>" );
+						echo( "<td>{$record['modifieddate']}</td>" );
 						echo( "<td>" );
 						echo( "<a href='general.php?ID={$record['id']}'>&gt;&gt;&nbsp;General</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
 						if( canWrite( $record ) )

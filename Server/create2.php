@@ -36,7 +36,7 @@
 			$queryResult = queryDatabase( 
 				$dbConnect, 
 				"insert into item_tree ".
-				"( id, parentID, item_type, name, description, createDate, modifiedDate, ownerUser, ownerGroup, mode, createBy ) ".
+				"( id, parentID, item_type, name, description, createdate, modifieddate, ownerUser, ownerGroup, mode, createBy ) ".
 				"values ".
 				"( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 )", 
 				array( $nextID, $parentID, $itemType, $name, $description, time(), time(), $ownerUser, $ownerGroup, $mode, $actUser['id']  )

@@ -32,7 +32,7 @@
 	{
 		$queryResult = queryDatabase( 
 			$dbConnect, 
-			"update item_tree set name = $1, description = $2, modifiedDate = $3, ownerUser = $4, ownerGroup = $5, mode=$6 where id=$7", 
+			"update item_tree set name = $1, description = $2, modifieddate = $3, ownerUser = $4, ownerGroup = $5, mode=$6 where id=$7", 
 			array( $name, $description, time(), $ownerUser, $ownerGroup, $mode, $itemID )
 		);
 		if( $queryResult && !is_object( $queryResult ) )

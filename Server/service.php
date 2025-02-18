@@ -209,7 +209,7 @@
 			if( $itemID )
 				$queryResult = queryDatabase( 
 					$dbConnect, 
-					"update item_tree set name = $1, description = $2, modifiedDate = $3, ownerUser = $4, ownerGroup = $5, mode=$6 where id=$7", 
+					"update item_tree set name = $1, description = $2, modifieddate = $3, ownerUser = $4, ownerGroup = $5, mode=$6 where id=$7", 
 					array( $itemData['name'], $itemData['description'], time(), $itemData['ownerUser'], $itemData['ownerGroup'], $itemData['mode'], $itemID )
 				);
 			else
@@ -230,7 +230,7 @@
 						$queryResult = queryDatabase( 
 							$dbConnect, 
 							"insert into item_tree ".
-							"( id, parentID, item_type, name, description, createDate, modifiedDate, ownerUser, ownerGroup, mode, createBy ) ".
+							"( id, parentID, item_type, name, description, createdate, modifieddate, ownerUser, ownerGroup, mode, createBy ) ".
 							"values ".
 							"( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 )", 
 							array( 
@@ -416,8 +416,8 @@
 			'ownerGroup' => array('name' => 'ownerGroup','type' => 'xsd:int'),
 			'mode' => array('name' => 'mode','type' => 'xsd:int'),
 			'createBy' => array('name' => 'createBy','type' => 'xsd:int'),
-			'createDate' => array('name' => 'createDate','type' => 'xsd:int'),
-			'modifiedDate' => array('name' => 'modifiedDate','type' => 'xsd:int'),
+			'createdate' => array('name' => 'createdate','type' => 'xsd:int'),
+			'modifieddate' => array('name' => 'modifieddate','type' => 'xsd:int'),
 			'reservedBy' => array('name' => 'reservedBy','type' => 'xsd:int')
 		)
 	);
@@ -437,8 +437,8 @@
 			'createBy' => array('name' => 'createBy','type' => 'xsd:int'),
 			'mimeType' => array('name' => 'mimeType','type' => 'xsd:string'),
 			'description' => array('name' => 'description','type' => 'xsd:string'),
-			'createDate' => array('name' => 'createDate','type' => 'xsd:int'),
-			'modifiedDate' => array('name' => 'modifiedDate','type' => 'xsd:int')
+			'createdate' => array('name' => 'createdate','type' => 'xsd:int'),
+			'modifieddate' => array('name' => 'modifieddate','type' => 'xsd:int')
 		)
 	);
 	$server->wsdl->addComplexType(

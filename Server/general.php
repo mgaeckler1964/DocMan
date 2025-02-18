@@ -160,13 +160,13 @@
 				$i = count( $versionTable );
 				forEach( $versionTable as $record )
 				{
-					if( $record['createDate'] )
-						$record['createDate'] = strftime( "%d. %m. %Y %T", $record['createDate'] );
+					if( $record['createdate'] )
+						$record['createdate'] = formatTimeStamp($record['createdate']);
 
-					if( $record['modifiedDate'] )
-						$record['modifiedDate'] = strftime( "%d. %m. %Y %T", $record['modifiedDate'] );
+					if( $record['modifieddate'] )
+						$record['modifieddate'] = formatTimeStamp($record['modifieddate']);
 	
-					echo( "<tr><td><a href='viewDoc.php?ID={$record['itemID']}&versionID={$record['id']}'>" . $i . "</td><td>" . $record['createDate'] . "</td><td>" . $record['modifiedDate'] . "</td><td>" . $record['mimeType'] . "</td></tr>" );
+					echo( "<tr><td><a href='viewDoc.php?ID={$record['itemID']}&versionID={$record['id']}'>" . $i . "</td><td>" . $record['createdate'] . "</td><td>" . $record['modifieddate'] . "</td><td>" . $record['mimetype'] . "</td></tr>" );
 					$i--;
 				}
 				echo( "</table>" );

@@ -14,7 +14,7 @@
 		{
 			$fileName = STORAGE_PATH . $version['id'] .".dat";
 		
-			header('Content-Type: ' . $version['mimeType'] );
+			header('Content-Type: ' . $version['mimetype'] );
 			header('Content-Disposition: attachment; filename='. $itemData['name'] );
 			header('Content-Transfer-Encoding: binary');
 			header('Content-Length: ' . filesize($fileName));
