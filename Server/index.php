@@ -68,7 +68,7 @@
 					{
 						echo( "<tr>" );	
 						echo( "<td>" );
-						if( $record['reservedBy'] )
+						if( $record['reservedby'] )
 							echo( "<img src='support/reserved.gif'>" );
 						if( $record['item_type'] == 0 )
 							echo( "<img src='support/folder.gif'>" );
@@ -103,7 +103,7 @@
 						{
 							echo( "<a href='delete.php?ID={$record['id']}' onClick='if( confirm( \"Wirklich?\" ) ) return true; else return false;'>&gt;&gt;&nbsp;Löschen</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
 							echo( "<a href='reserve.php?ID={$record['id']}'>&gt;&gt;&nbsp;" );
-							if( $record['reservedBy'] )
+							if( $record['reservedby'] )
 								echo( "Reservierung aufheben" );
 							else
 								echo( "Reservieren" );

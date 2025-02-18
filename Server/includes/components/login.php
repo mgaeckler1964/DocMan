@@ -108,7 +108,7 @@
 					$actUser = $user;
 					queryDatabase(
 						$dbConnect,
-						"insert into user_login_prot ( userID, loginDate, remoteIP ) values( $1, $2, $3 )", 
+						"insert into user_login_prot ( userid, logindate, remoteip ) values( $1, $2, $3 )", 
 						array( $actUser['id'], time(), $_SERVER['REMOTE_ADDR'] )
 					);
 				}
@@ -129,7 +129,7 @@
 				$actUser = $user;
 				queryDatabase(
 					$dbConnect,
-					"insert into user_login_prot ( userID, loginDate, remoteIP ) values( $1, $2, $3 )", 
+					"insert into user_login_prot ( userid, logindate, remoteip ) values( $1, $2, $3 )", 
 					array( $actUser['id'], time(), $_SERVER['REMOTE_ADDR'] )
 				);
 			}
@@ -150,7 +150,7 @@
 		}
 	}
 	else
-		$actUser = array( "ID" => 1, 'administrator' => 'X' );
+		$actUser = array( "id" => 1, 'administrator' => 'X' );
 	
 
 	if( !$userOK && !isset( $tryLogin) )

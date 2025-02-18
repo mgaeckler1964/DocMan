@@ -9,6 +9,8 @@
 	$plz = $_POST["plz"];
 	$ort = $_POST["ort"];
 	$email = $_POST["uiemail"];
+	$password = $_POST["password"];
+	$password2 = $_POST["password2"];
 		
 		
 	if( $id == 1 || $actUser['id'] == $id ) // root is allways an admin an the current user must not remove his own admin flag
@@ -56,6 +58,21 @@
 				$email, $administrator, $guest, $loginenabled,
 				$id 
 			)
+		);
+	}
+	if( is_object( $result ) )
+	{
+		$error = $result;
+		$result = false;
+	}
+
+	if( $result && $password > "" && $password==$password2)
+	{
+		$result = queryDatabase( $dbConnect,
+			"update user_tab " .
+			"set password = $1 " .
+			"where id = $2",
+			array( mgMd5Hash($password), $id )
 		);
 	}
 	if( is_object( $result ) )

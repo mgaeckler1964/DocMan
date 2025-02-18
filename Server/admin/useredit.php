@@ -54,6 +54,8 @@
 					<input type=text" name="ort" value="<?php echo htmlspecialchars($ort); ?>">
 				</td></tr>
 				<tr><td class="fieldLabel">E-Mail</td><td><input type="email" required="required" name="uiemail" value="<?php echo htmlspecialchars($email); ?>"></td></tr>
+				<tr><td class="fieldLabel">Passwort</td><td><input type="password" name="uipassword"></td></tr>
+				<tr><td class="fieldLabel">Passwort (Wdh)</td><td><input type="password" name="uipassword2"></td></tr>
 				<tr><td class="fieldLabel">Administrator</td><td><input type="checkbox" name="administrator" value="X"
 					<?php if( isset( $user ) && $user['administrator'] ) echo "checked"; ?>
 				></td></tr>
@@ -78,12 +80,12 @@
 		<?php
 			if( $id )
 			{
-				$queryResult = queryDatabase( $dbConnect, "select * from user_login_prot where userID = $1 order by loginDate desc", array( $id ) );
+				$queryResult = queryDatabase( $dbConnect, "select * from user_login_prot where userid = $1 order by logindate desc", array( $id ) );
 				if( $queryResult && !is_object( $queryResult ) )
 				{
 					echo( "<hr><table><tr><th>Datum</th><th>IP-Adresse</th></tr>\n" );
 					while( $row = fetchQueryRow( $queryResult ) )
-						echo( "<tr><td>" . formatTimeStamp($row['loginDate']) . "</td><td>{$row['remoteIP']}</td></tr>\n" );
+						echo( "<tr><td>" . formatTimeStamp($row['logindate']) . "</td><td>{$row['remoteip']}</td></tr>\n" );
 				}
 				echo( "</table>" );
 			}

@@ -61,9 +61,9 @@
 		}
 
 		$query = "create table user_login_prot ( ".
-			"userID			int				not null, ".
-			"loginDate		int				not null, ".
-			"remoteIP		varchar(32)		not null ".
+			"userid			int				not null, ".
+			"logindate		int				not null, ".
+			"remoteip		varchar(32)		not null ".
 		")";
 					
 		$result = queryDatabase( $dbConnect, $query );

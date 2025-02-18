@@ -16,7 +16,7 @@
 			$id=$_GET['ID'];
 			$itemData = getItemData( $id );
 			if( is_array( $itemData ) && count( $itemData ) )
-				if( !$itemData['reservedBy'] )
+				if( !$itemData['reservedby'] )
 					$error = reserve( $itemData );
 				else
 					$error = unreserve( $itemData );

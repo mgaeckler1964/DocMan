@@ -163,7 +163,7 @@
 					
 				$result = queryDatabase( 
 					$dbConnect, 
-					"insert into file_versions ( id, itemID, createBy, mimetype, createdate, modifieddate, description ) values ( $1, $2, $3, $4, $5, $6, $7 )",
+					"insert into file_versions ( id, itemID, createby, mimetype, createdate, modifieddate, description ) values ( $1, $2, $3, $4, $5, $6, $7 )",
 					array( $versionID, $itemID, $actUser['id'], $mimeType, time(), $modTime, $description )
 				);
 				if( !is_object( $result ) )
@@ -260,7 +260,7 @@
 				{
 					queryDatabase( 
 						$dbConnect, 
-						"update item_tree set reservedBy = $1 where id = $2", 
+						"update item_tree set reservedby = $1 where id = $2", 
 						array( $actUser['id'], $itemData['id'] )
 					);
 					$result = false;
@@ -291,7 +291,7 @@
 				{
 					queryDatabase( 
 						$dbConnect, 
-						"update item_tree set reservedBy = null where id = $1", 
+						"update item_tree set reservedby = null where id = $1", 
 						array( $itemData['id'] )
 					);
 					$result = false;
@@ -356,8 +356,8 @@
 
 			if( is_array( $itemData ) )
 			{
-				if( $itemData['reservedBy'] )
-					$result = ($itemData['reservedBy'] == $userId);
+				if( $itemData['reservedby'] )
+					$result = ($itemData['reservedby'] == $userId);
 				else if( $userId == $itemData['ownerUser'] && ($itemData['mode'] & 0200) )
 					$result = true;
 				else if( $itemData['mode'] & 0002 )
@@ -385,7 +385,7 @@
 			if( !is_array( $itemData ) )
 				$itemData = getItemData( $itemData );
 
-			if( is_array( $itemData ) && count( $itemData ) && !$itemData['reservedBy'] && $itemData['item_type'] != TYPE_FOLDER )
+			if( is_array( $itemData ) && count( $itemData ) && !$itemData['reservedby'] && $itemData['item_type'] != TYPE_FOLDER )
 				$result = canWrite( $itemData );
 			else
 				$result = false;
@@ -407,9 +407,9 @@
 
 			if( is_array( $itemData ) && count( $itemData ) )
 			{
-				if( $itemData['reservedBy'] == $userID ) 
+				if( $itemData['reservedby'] == $userID ) 
 					$result = true;
-				else if( $itemData['reservedBy'] && $actUser['administrator'] )
+				else if( $itemData['reservedby'] && $actUser['administrator'] )
 					$result = true;
 				else
 					$result = false;

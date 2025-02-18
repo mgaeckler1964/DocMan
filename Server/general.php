@@ -29,9 +29,9 @@
 		if( !is_array( $userList ) )
 			$error = $userList;
 	}
-	if( $itemData['reservedBy'] )
+	if( $itemData['reservedby'] )
 	{
-		$reserver = getUser( $dbConnect, $itemData['reservedBy'] );
+		$reserver = getUser( $dbConnect, $itemData['reservedby'] );
 		if( !is_array( $reserver ) || !count( $reserver ) )
 			$error = $reserver;
 	}
@@ -55,7 +55,7 @@
 					<tr><td class="fieldLabel">Name</td><td><input type="text" name="itemName" required="required" value="<?php echo $itemData["name"]; ?>"></td></tr>
 					<tr><td class="fieldLabel">Beschreibung</td><td><input type="text" name="description" value="<?php echo $itemData["description"]; ?>"></td></tr>
 					<?php
-						if( $itemData['reservedBy'] )
+						if( $itemData['reservedby'] )
 							echo( "<tr><td class='fieldLabel'>Reserviert für</td><td>{$reserver["fullname"]}</td></tr>\n" );
 					?>
 					<tr><td class="fieldLabel">Eigentümer</td><td><select name="ownerUser">

@@ -31,10 +31,10 @@
 					"ownerUser		int				not null references user_tab, ".
 					"ownerGroup		int				not null references user_tab, ".
 					"mode			int, ".
-					"createBy		int				not null references user_tab, ".
+					"createby		int				not null references user_tab, ".
 					"createdate		int, ".
 					"modifieddate	int, ".
-					"reservedBy		int ".
+					"reservedby		int ".
 				")";
 	
 				$result = queryDatabase( $dbConnect, $query );
@@ -57,7 +57,7 @@
 				$query = "create table file_versions ( ".
 					"id				int				not null	primary key, ".
 					"itemID			int				not null	references item_tree, ".
-					"createBy		int				not null	references user_tab, ".
+					"createby		int				not null	references user_tab, ".
 					"mimetype		varchar(255), ".
 					"description	varchar(4000), ".
 					"createdate		int, ".

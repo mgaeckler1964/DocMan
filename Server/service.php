@@ -230,7 +230,7 @@
 						$queryResult = queryDatabase( 
 							$dbConnect, 
 							"insert into item_tree ".
-							"( id, parentID, item_type, name, description, createdate, modifieddate, ownerUser, ownerGroup, mode, createBy ) ".
+							"( id, parentID, item_type, name, description, createdate, modifieddate, ownerUser, ownerGroup, mode, createby ) ".
 							"values ".
 							"( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 )", 
 							array( 
@@ -367,7 +367,7 @@
 		if( is_object( $error ) )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
-			return array( "reservedBy" => $actUser['id'] );
+			return array( "reservedby" => $actUser['id'] );
 	}
 	function sUnreserve( $itemID )
 	{
@@ -415,10 +415,10 @@
 			'ownerUser' => array('name' => 'ownerUser','type' => 'xsd:int'),
 			'ownerGroup' => array('name' => 'ownerGroup','type' => 'xsd:int'),
 			'mode' => array('name' => 'mode','type' => 'xsd:int'),
-			'createBy' => array('name' => 'createBy','type' => 'xsd:int'),
+			'createby' => array('name' => 'createby','type' => 'xsd:int'),
 			'createdate' => array('name' => 'createdate','type' => 'xsd:int'),
 			'modifieddate' => array('name' => 'modifieddate','type' => 'xsd:int'),
-			'reservedBy' => array('name' => 'reservedBy','type' => 'xsd:int')
+			'reservedby' => array('name' => 'reservedby','type' => 'xsd:int')
 		)
 	);
 	$server->wsdl->addComplexType(
@@ -434,7 +434,7 @@
 		array(
 			'id' => array('name' => 'id','type' => 'xsd:int'),
 			'itemID' => array('name' => 'itemID','type' => 'xsd:int'),
-			'createBy' => array('name' => 'createBy','type' => 'xsd:int'),
+			'createby' => array('name' => 'createby','type' => 'xsd:int'),
 			'mimeType' => array('name' => 'mimeType','type' => 'xsd:string'),
 			'description' => array('name' => 'description','type' => 'xsd:string'),
 			'createdate' => array('name' => 'createdate','type' => 'xsd:int'),
@@ -675,7 +675,7 @@
 		// parameter list:
 		array( 'itemID' => 'xsd:int' ),
 		// return value(s):
-		array('reservedBy'=>'xsd:int'),
+		array('reservedby'=>'xsd:int'),
 		// namespace:
 		$namespace,
 		// soapaction: (use default)

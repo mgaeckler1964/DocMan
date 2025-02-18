@@ -99,7 +99,7 @@
 
 			$queryResult = queryDatabase(
 				$dbConnect,
-				"select max( loginDate) as lastLogin from user_login_prot where userID=$1",
+				"select max( logindate) as lastLogin from user_login_prot where userid=$1",
 				array( $user['id'] )
 			);
 			if( $queryResult && !is_object( $queryResult ) )
@@ -157,12 +157,14 @@
 	function getUserCount( $dbConnect )
 	{
 		$userCount = 0;
-		$queryResult = queryDatabase( $dbConnect, "select count(*) as UserCount from user_tab " );
+		$queryResult = queryDatabase( $dbConnect, "select count(*) as usercount from user_tab " );
+		print_r($queryResult);
 		if( $queryResult && !is_object( $queryResult ) )
 		{
 			$queryResult = fetchQueryRow( $queryResult );
+		print_r($queryResult);
 			if( $queryResult )
-				$userCount = $queryResult['UserCount'];
+				$userCount = $queryResult['usercount'];
 		}
 
 		return $userCount;
@@ -200,7 +202,7 @@
 		if( $lastUserID && is_array( $user ) && count( $user ) && $lastUserID != $user['id'] )
 			queryDatabase(
 				$dbConnect,
-				"insert into user_login_prot ( userID, loginDate, remoteIP ) values( $1, $2, $3 )", 
+				"insert into user_login_prot ( userid, logindate, remoteip ) values( $1, $2, $3 )", 
 				array( $user['id'], time(), $_SERVER['REMOTE_ADDR'] )
 			);
 		
@@ -253,7 +255,7 @@
 		{
 			$queryResult = queryDatabase( $dbConnect, "delete from group_member where groupId = $1 or member = $2", array( $theUserID, $theUserID ) );
 			if( !is_object($queryResult)  )
-				$queryResult = queryDatabase( $dbConnect, "delete from user_login_prot where userID = $1", array( $theUserID ) );
+				$queryResult = queryDatabase( $dbConnect, "delete from user_login_prot where userid = $1", array( $theUserID ) );
 			if( !is_object($queryResult)  )
 				$queryResult = queryDatabase( $dbConnect, "delete from user_tab where id = $1", array( $theUserID ) );
 			
