@@ -28,7 +28,7 @@
 			else
 			{
 				echo( "<p>Daten erfolgreich gespeichert</p>" );
-				echo( "<p><a href='index.php?ID={$itemData['parentID']}'>&gt;&gt;&nbsp;Weiter</p>" );
+				echo( "<p><a href='index.php?ID={$itemData['parentid']}'>&gt;&gt;&nbsp;Weiter</p>" );
 			}
 	
 

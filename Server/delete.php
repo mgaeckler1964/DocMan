@@ -15,7 +15,7 @@
 				$error = deleteItem( $id );
 				if( !$error )
 				{
-					header( "Location: index.php?ID=" . $itemData['parentID'] );
+					header( "Location: index.php?ID=" . $itemData['parentid'] );
 					exit();
 				}
 			}

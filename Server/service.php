@@ -182,11 +182,11 @@
 	} 
 
 
-	function sGetItemContent( $itemID )
+	function sGetItemContent( $itemid )
 	{
 		global $dbConnect, $actUser;
 
-		$itemContent = getItemContent( $itemID );
+		$itemContent = getItemContent( $itemid );
 		
 		if( is_array( $itemContent ) )
 			return array( "theItemContent" => $itemContent );
@@ -204,40 +204,40 @@
 
 		if( canWrite( $itemData ) )
 		{
-			$itemID = $itemData['id'];
+			$itemid = $itemData['id'];
 
-			if( $itemID )
+			if( $itemid )
 				$queryResult = queryDatabase( 
 					$dbConnect, 
-					"update item_tree set name = $1, description = $2, modifieddate = $3, ownerUser = $4, ownerGroup = $5, mode=$6 where id=$7", 
-					array( $itemData['name'], $itemData['description'], time(), $itemData['ownerUser'], $itemData['ownerGroup'], $itemData['mode'], $itemID )
+					"update item_tree set name = $1, description = $2, modifieddate = $3, owneruser = $4, ownergroup = $5, mode=$6 where id=$7", 
+					array( $itemData['name'], $itemData['description'], time(), $itemData['owneruser'], $itemData['ownergroup'], $itemData['mode'], $itemid )
 				);
 			else
 			{
-				$itemID = getNextID( $dbConnect, "item_tree", "id" );
-				if( is_numeric( $itemID ) )
+				$itemid = getNextID( $dbConnect, "item_tree", "id" );
+				if( is_numeric( $itemid ) )
 				{
-					$parentData = getItemData( $itemData['parentID'] );
+					$parentData = getItemData( $itemData['parentid'] );
 					if( !$parentData )
 					{
 						$parentData = array();
 						$parentData['mode'] = 0600;
-						$parentData['ownerUser'] = $actUser['id'];
-						$parentData['ownerGroup'] = 0;
+						$parentData['owneruser'] = $actUser['id'];
+						$parentData['ownergroup'] = 0;
 					}
 					if( is_array( $parentData ) )
 					{
 						$queryResult = queryDatabase( 
 							$dbConnect, 
 							"insert into item_tree ".
-							"( id, parentID, item_type, name, description, createdate, modifieddate, ownerUser, ownerGroup, mode, createby ) ".
+							"( id, parentid, item_type, name, description, createdate, modifieddate, owneruser, ownergroup, mode, createby ) ".
 							"values ".
 							"( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 )", 
 							array( 
-								$itemID, $itemData['parentID'], 
+								$itemid, $itemData['parentid'], 
 								$itemData['item_type'], $itemData['name'], $itemData['description'], 
 								time(), time(), 
-								$parentData['ownerUser'], $parentData['ownerGroup'], $parentData['mode'], 
+								$parentData['owneruser'], $parentData['ownergroup'], $parentData['mode'], 
 								$actUser['id'] 
 							)
 						);
@@ -246,7 +246,7 @@
 						$queryResult = $parentData;
 				}
 				else
-					$queryResult = $itemID;
+					$queryResult = $itemid;
 			}
 			if( is_object( $queryResult ) )
 				$error = $queryResult;
@@ -258,23 +258,23 @@
 		if( $error )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
-			return array( "theItemID" => $itemID );
+			return array( "theItemID" => $itemid );
 	}
 
-	function sDeleteItem( $itemID )
+	function sDeleteItem( $itemid )
 	{
 		global $dbConnect;
 
 		$error = false;
-		$itemData = getItemData( $itemID );
+		$itemData = getItemData( $itemid );
 		if( is_array( $itemData ) )
 		{
 			if( count( $itemData ) )
 			{
 				if( canWrite( $itemData ) )
 				{
-					$itemID = $itemData['id'];
-					$error = deleteItem( $itemID );
+					$itemid = $itemData['id'];
+					$error = deleteItem( $itemid );
 				}
 				else
 					$error = new errorClass( "Permission denied" );
@@ -284,10 +284,10 @@
 		if( $error )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
-			return array( "theItemID" => $itemID );
+			return array( "theItemID" => $itemid );
 	}
 
-	function sAddVersion( $itemID, $mimeType, $description, $encodedData, $modTime )
+	function sAddVersion( $itemid, $mimeType, $description, $encodedData, $modTime )
 	{
 		$error = false;
 
@@ -298,7 +298,7 @@
 			$current = base64_decode($encodedData);			// Now decode the content which was sent by the client     
 			file_put_contents($location, $current);			// Write the decoded content in the file mentioned at particular location      
 			
-			$error = createFileVersion( $itemID, $location, $mimeType, $description, $modTime );
+			$error = createFileVersion( $itemid, $location, $mimeType, $description, $modTime );
 		}
 		else
 			$error = new errorClass( "Permission denied" );
@@ -306,38 +306,38 @@
 		if( $error )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
-			return array( "theItemID" => $itemID );
+			return array( "theItemID" => $itemid );
 	}
-	function sUpdateVersion( $itemID, $versionID, $mimeType, $description )
+	function sUpdateVersion( $itemid, $versionID, $mimeType, $description )
 	{
-		$error = updateFileVersion( $itemID, $versionID, $mimeType, $description );
+		$error = updateFileVersion( $itemid, $versionID, $mimeType, $description );
 
 		if( $error )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
-			return array( "theItemID" => $itemID );
+			return array( "theItemID" => $itemid );
 	}
-	function sDeleteVersion( $itemID, $versionID )
+	function sDeleteVersion( $itemid, $versionID )
 	{
-		$error = deleteFileVersion( $itemID, $versionID );
+		$error = deleteFileVersion( $itemid, $versionID );
 
 		if( $error )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
-			return array( "theItemID" => $itemID );
+			return array( "theItemID" => $itemid );
 	}
-	function sGetVersions( $itemID, $versionID )
+	function sGetVersions( $itemid, $versionID )
 	{
 		if( $versionID >= 0 )
 		{
-			$itemVersions = getFileVersion( $itemID, $versionID );
+			$itemVersions = getFileVersion( $itemid, $versionID );
 			if( !$itemVersions )
 				$itemVersions = array();
 			else if( !is_object($itemVersions) )
 				$itemVersions = array( $itemVersions );
 		}
 		else
-			$itemVersions = getItemVersions( $itemID );
+			$itemVersions = getItemVersions( $itemid );
 			
 		if( is_object( $itemVersions ) )
 			return new nusoap_fault('Client','DocMan', $itemVersions->errorText, $itemVersions->errorDetail ); 
@@ -345,33 +345,33 @@
 			return array( "theItemVersions" => $itemVersions );
 	}
 
-	function sCanReserve( $itemID )
+	function sCanReserve( $itemid )
 	{
-		if( canReserve( $itemID ) )
+		if( canReserve( $itemid ) )
 			return array( "canReserve" => 1 );
 		else
 			return array( "canReserve" => 0 );
 	}
-	function sCanUnreserve( $itemID )
+	function sCanUnreserve( $itemid )
 	{
-		if( canUnreserve( $itemID ) )
+		if( canUnreserve( $itemid ) )
 			return array( "canUnreserve" => 1 );
 		else
 			return array( "canUnreserve" => 0 );
 	}
-	function sReserve( $itemID )
+	function sReserve( $itemid )
 	{
 		global $actUser;
 
-		$error = reserve( $itemID );
+		$error = reserve( $itemid );
 		if( is_object( $error ) )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
 			return array( "reservedby" => $actUser['id'] );
 	}
-	function sUnreserve( $itemID )
+	function sUnreserve( $itemid )
 	{
-		$error = unreserve( $itemID );
+		$error = unreserve( $itemid );
 		if( is_object( $error ) )
 			return new nusoap_fault('Client','DocMan', $error->errorText, $error->errorDetail ); 
 		else
@@ -408,12 +408,12 @@
 		'ItemRecord','complexType','struct','sequence','',
 		array(
 			'id' => array('name' => 'id','type' => 'xsd:int'),
-			'parentID' => array('name' => 'parentID','type' => 'xsd:int'),
+			'parentid' => array('name' => 'parentid','type' => 'xsd:int'),
 			'item_type' => array('name' => 'item_type','type' => 'xsd:int'),
 			'name' => array('name' => 'name','type' => 'xsd:string'),
 			'description' => array('name' => 'description','type' => 'xsd:string'),
-			'ownerUser' => array('name' => 'ownerUser','type' => 'xsd:int'),
-			'ownerGroup' => array('name' => 'ownerGroup','type' => 'xsd:int'),
+			'owneruser' => array('name' => 'owneruser','type' => 'xsd:int'),
+			'ownergroup' => array('name' => 'ownergroup','type' => 'xsd:int'),
 			'mode' => array('name' => 'mode','type' => 'xsd:int'),
 			'createby' => array('name' => 'createby','type' => 'xsd:int'),
 			'createdate' => array('name' => 'createdate','type' => 'xsd:int'),
@@ -433,7 +433,7 @@
 		'VersionRecord','complexType','struct','sequence','',
 		array(
 			'id' => array('name' => 'id','type' => 'xsd:int'),
-			'itemID' => array('name' => 'itemID','type' => 'xsd:int'),
+			'itemid' => array('name' => 'itemid','type' => 'xsd:int'),
 			'createby' => array('name' => 'createby','type' => 'xsd:int'),
 			'mimeType' => array('name' => 'mimeType','type' => 'xsd:string'),
 			'description' => array('name' => 'description','type' => 'xsd:string'),
@@ -509,7 +509,7 @@
 		// method name:
 		'sGetItemContent',
 		// parameter list:
-		array( 'itemID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int' ),
 		// return value(s):
 		array('theItemContent'=>'ItemContent'),
 		// namespace:
@@ -545,7 +545,7 @@
 		// method name:
 		'sDeleteItem',
 		// parameter list:
-		array( 'itemID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int' ),
 		// return value(s):
 		array('theItemID'=>'xsd:int'),
 		// namespace:
@@ -563,7 +563,7 @@
 		// method name:
 		'sAddVersion',
 		// parameter list:
-		array( 'itemID' => 'xsd:int', 'mimeType' => 'xsd:string', 'description' => 'xsd:string', 'encodedData' => 'xsd:string', 'modTime' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int', 'mimeType' => 'xsd:string', 'description' => 'xsd:string', 'encodedData' => 'xsd:string', 'modTime' => 'xsd:int' ),
 		// return value(s):
 		array('theVersionID'=>'xsd:int'),
 		// namespace:
@@ -582,7 +582,7 @@
 		// method name:
 		'sUpdateVersion',
 		// parameter list:
-		array( 'itemID' => 'xsd:int', 'versionID' => 'xsd:int', 'mimeType' => 'xsd:string', 'description' => 'xsd:string' ),
+		array( 'itemid' => 'xsd:int', 'versionID' => 'xsd:int', 'mimeType' => 'xsd:string', 'description' => 'xsd:string' ),
 		// return value(s):
 		array('theVersionID'=>'xsd:int'),
 		// namespace:
@@ -600,7 +600,7 @@
 		// method name:
 		'sDeleteVersion',
 		// parameter list:
-		array( 'itemID' => 'xsd:int', 'versionID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int', 'versionID' => 'xsd:int' ),
 		// return value(s):
 		array('theVersionID'=>'xsd:int'),
 		// namespace:
@@ -619,7 +619,7 @@
 		// method name:
 		'sGetVersions',
 		// parameter list:
-		array( 'itemID' => 'xsd:int', 'versionID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int', 'versionID' => 'xsd:int' ),
 		// return value(s):
 		array('theItemVersions'=>'VersionTable'),
 		// namespace:
@@ -637,7 +637,7 @@
 		// method name:
 		'sCanReserve',
 		// parameter list:
-		array( 'itemID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int' ),
 		// return value(s):
 		array('canReserve'=>'xsd:int'),
 		// namespace:
@@ -655,7 +655,7 @@
 		// method name:
 		'sCanUnreserve',
 		// parameter list:
-		array( 'itemID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int' ),
 		// return value(s):
 		array('canUnreserve'=>'xsd:int'),
 		// namespace:
@@ -673,7 +673,7 @@
 		// method name:
 		'sReserve',
 		// parameter list:
-		array( 'itemID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int' ),
 		// return value(s):
 		array('reservedby'=>'xsd:int'),
 		// namespace:
@@ -691,7 +691,7 @@
 		// method name:
 		'sUnreserve',
 		// parameter list:
-		array( 'itemID' => 'xsd:int' ),
+		array( 'itemid' => 'xsd:int' ),
 		// return value(s):
 		array('error'=>'xsd:int'),
 		// namespace:

@@ -8,11 +8,11 @@
 		$error = new errorClass( "Did not receive a file (" . $_FILES["versionFile"]["error"] . ")" );
 	else
 	{
-		$parentID = $_POST["parentID"];
+		$parentid = $_POST["parentid"];
 		$name = $_POST["folderName"];
 		$description = $_POST["description"];
-		$ownerUser =  $_POST["ownerUser"];
-		$ownerGroup =  $_POST["ownerGroup"];
+		$owneruser =  $_POST["owneruser"];
+		$ownergroup =  $_POST["ownergroup"];
 		$mode = 0;
 		if( array_key_exists( "userReadPerm", $_POST ) )
 			$mode |= 0400;
@@ -28,7 +28,7 @@
 			$mode |= 0002;
 		$itemType = $_POST["itemType"];
 	}
-	if( !$error && canWrite( $parentID ) )
+	if( !$error && canWrite( $parentid ) )
 	{
 		$nextID = getNextID( $dbConnect, "item_tree", "id" );
 		if( is_numeric( $nextID ) )
@@ -36,10 +36,10 @@
 			$queryResult = queryDatabase( 
 				$dbConnect, 
 				"insert into item_tree ".
-				"( id, parentID, item_type, name, description, createdate, modifieddate, ownerUser, ownerGroup, mode, createby ) ".
+				"( id, parentid, item_type, name, description, createdate, modifieddate, owneruser, ownergroup, mode, createby ) ".
 				"values ".
 				"( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 )", 
-				array( $nextID, $parentID, $itemType, $name, $description, time(), time(), $ownerUser, $ownerGroup, $mode, $actUser['id']  )
+				array( $nextID, $parentid, $itemType, $name, $description, time(), time(), $owneruser, $ownergroup, $mode, $actUser['id']  )
 			);
 			if( $queryResult && !is_object($queryResult) )
 			{
@@ -52,7 +52,7 @@
 				
 				if( !$error || !is_object( $error ) )
 				{
-					header("Location: index.php?ID=" . $parentID );
+					header("Location: index.php?ID=" . $parentid );
 					exit();
 				}
 			}

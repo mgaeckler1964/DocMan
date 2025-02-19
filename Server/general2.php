@@ -8,12 +8,12 @@
 		$error = new errorClass( "Did not receive a file (" . $_FILES["versionFile"]["error"] . ")" );
 	else
 	{
-		$itemID = $_POST["ID"];
-		$parentID = $_POST["parentID"];
+		$itemid = $_POST["ID"];
+		$parentid = $_POST["parentid"];
 		$name = $_POST["itemName"];
 		$description = $_POST["description"];
-		$ownerUser =  $_POST["ownerUser"];
-		$ownerGroup =  $_POST["ownerGroup"];
+		$owneruser =  $_POST["owneruser"];
+		$ownergroup =  $_POST["ownergroup"];
 		$mode = 0;
 		if( array_key_exists( "userReadPerm", $_POST ) )
 			$mode |= 0400;
@@ -28,22 +28,22 @@
 		if( array_key_exists( "otherWritePerm", $_POST ) )
 			$mode |= 0002;
 	}
-	if( !$error && canWrite( $itemID ) )
+	if( !$error && canWrite( $itemid ) )
 	{
 		$queryResult = queryDatabase( 
 			$dbConnect, 
-			"update item_tree set name = $1, description = $2, modifieddate = $3, ownerUser = $4, ownerGroup = $5, mode=$6 where id=$7", 
-			array( $name, $description, time(), $ownerUser, $ownerGroup, $mode, $itemID )
+			"update item_tree set name = $1, description = $2, modifieddate = $3, owneruser = $4, ownergroup = $5, mode=$6 where id=$7", 
+			array( $name, $description, time(), $owneruser, $ownergroup, $mode, $itemid )
 		);
 		if( $queryResult && !is_object( $queryResult ) )
 		{
 			$versionFile = $_FILES["versionFile"]["tmp_name"];
 			if( $versionFile )
-				$error = createFileVersion( $itemID, $versionFile, $_FILES['versionFile']['type'], $description );
+				$error = createFileVersion( $itemid, $versionFile, $_FILES['versionFile']['type'], $description );
 			
 			if( !$error || !is_object( $error ) )
 			{
-				header("Location: index.php?ID=" . $parentID );
+				header("Location: index.php?ID=" . $parentid );
 				exit();
 			}
 		}

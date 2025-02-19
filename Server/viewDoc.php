@@ -1,15 +1,15 @@
 <?php include_once( "includes/components/login.php" ); ?>
 <?php
-	$itemID = $_GET['ID'];
+	$itemid = $_GET['ID'];
 	if( array_key_exists( 'versionID', $_GET ) )
 		$versionID = $_GET['versionID'];
 	else
 		$versionID = -1;
 	
-	$itemData = getItemData( $itemID );
+	$itemData = getItemData( $itemid );
 	if( is_array( $itemData ) )
 	{
-		$version = getFileVersion( $itemID, $versionID );
+		$version = getFileVersion( $itemid, $versionID );
 		if( is_array( $version ) )
 		{
 			$fileName = STORAGE_PATH . $version['id'] .".dat";

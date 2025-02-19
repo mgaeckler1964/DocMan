@@ -24,12 +24,12 @@
 
 				$query = "create table item_tree ( ".
 					"id				int				not null	primary key, ".
-					"parentID		int				not null, ".
+					"parentid		int				not null, ".
 					"item_type		int				not null, ".
 					"name			varchar(255), ".
 					"description	varchar(4000), ".
-					"ownerUser		int				not null references user_tab, ".
-					"ownerGroup		int				not null references user_tab, ".
+					"owneruser		int				not null references user_tab, ".
+					"ownergroup		int				not null references user_tab, ".
 					"mode			int, ".
 					"createby		int				not null references user_tab, ".
 					"createdate		int, ".
@@ -45,7 +45,7 @@
 						$error .= "<p>". $result->errorText . "<br>" . $result->errorDetail . "</p>";
 				}
 	
-				$query = "create unique index item_parentIdx on item_tree (parentID, name )";
+				$query = "create unique index item_parentIdx on item_tree (parentid, name )";
 				$result = queryDatabase( $dbConnect, $query );
 				if( !$result || is_object( $result ) )
 				{
@@ -56,7 +56,7 @@
 
 				$query = "create table file_versions ( ".
 					"id				int				not null	primary key, ".
-					"itemID			int				not null	references item_tree, ".
+					"itemid			int				not null	references item_tree, ".
 					"createby		int				not null	references user_tab, ".
 					"mimetype		varchar(255), ".
 					"description	varchar(4000), ".

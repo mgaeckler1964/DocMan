@@ -3,14 +3,14 @@
 
 	if( !isset( $error ) )
 	{
-		$itemID = $_GET['ID'];
-		$itemData = getItemData( $itemID );
+		$itemid = $_GET['ID'];
+		$itemData = getItemData( $itemid );
 		if( is_array( $itemData ) )
 		{
 			$itemType = $itemData['item_type'];
 			if( $itemType == 1 )
 			{
-				$versionTable = getItemVersions( $itemID );
+				$versionTable = getItemVersions( $itemid );
 				if( !is_array( $versionTable ) )
 					$error = $versionTable;
 			}
@@ -48,23 +48,23 @@
 		<?php include( "includes/components/headerlines.php" ); ?>
 		<?php if( !isset( $error ) ) { ?>
 			<form action="general2.php" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="ID" value="<?php echo $itemID; ?>">
-				<input type="hidden" name="parentID" value="<?php echo $itemData["parentID"]; ?>">
+				<input type="hidden" name="ID" value="<?php echo $itemid; ?>">
+				<input type="hidden" name="parentid" value="<?php echo $itemData["parentid"]; ?>">
 				<table>
-					<tr><td class="fieldLabel">ID</td><td><?php echo $itemID; ?></td></tr>
+					<tr><td class="fieldLabel">ID</td><td><?php echo $itemid; ?></td></tr>
 					<tr><td class="fieldLabel">Name</td><td><input type="text" name="itemName" required="required" value="<?php echo $itemData["name"]; ?>"></td></tr>
 					<tr><td class="fieldLabel">Beschreibung</td><td><input type="text" name="description" value="<?php echo $itemData["description"]; ?>"></td></tr>
 					<?php
 						if( $itemData['reservedby'] )
 							echo( "<tr><td class='fieldLabel'>Reserviert für</td><td>{$reserver["fullname"]}</td></tr>\n" );
 					?>
-					<tr><td class="fieldLabel">Eigentümer</td><td><select name="ownerUser">
+					<tr><td class="fieldLabel">Eigentümer</td><td><select name="owneruser">
 						<?php
 							forEach( $userList as $theUser )
 							{
 								if( !$theUser['is_group'] )
 								{
-									if( $theUser['id'] == $itemData['ownerUser'] )
+									if( $theUser['id'] == $itemData['owneruser'] )
 										echo( "<option value='{$theUser['id']}' SELECTED>{$theUser['email']}</option>" );
 									else
 										echo( "<option value='{$theUser['id']}'>{$theUser['email']}</option>" );
@@ -87,13 +87,13 @@
 							?>
 						</td>
 						</tr>
-						<tr><td class="fieldLabel">Gruppe</td><td><select name="ownerGroup">
+						<tr><td class="fieldLabel">Gruppe</td><td><select name="ownergroup">
 						<?php
 							forEach( $userList as $theUser )
 							{
 								if( $theUser['is_group'] )
 								{
-									if( $theUser['id'] == $itemData['ownerGroup'] )
+									if( $theUser['id'] == $itemData['ownergroup'] )
 										echo( "<option value='{$theUser['id']}' SELECTED>{$theUser['email']}</option>" );
 									else
 										echo( "<option value='{$theUser['id']}'>{$theUser['email']}</option>" );
@@ -166,7 +166,7 @@
 					if( $record['modifieddate'] )
 						$record['modifieddate'] = formatTimeStamp($record['modifieddate']);
 	
-					echo( "<tr><td><a href='viewDoc.php?ID={$record['itemID']}&versionID={$record['id']}'>" . $i . "</td><td>" . $record['createdate'] . "</td><td>" . $record['modifieddate'] . "</td><td>" . $record['mimetype'] . "</td></tr>" );
+					echo( "<tr><td><a href='viewDoc.php?ID={$record['itemid']}&versionID={$record['id']}'>" . $i . "</td><td>" . $record['createdate'] . "</td><td>" . $record['modifieddate'] . "</td><td>" . $record['mimetype'] . "</td></tr>" );
 					$i--;
 				}
 				echo( "</table>" );

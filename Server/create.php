@@ -8,14 +8,14 @@
 		if( !is_array( $userList ) )
 			$error = $userList;
 			
-		$parentID = $_GET['parentID'];
-		if( $parentID > 0 )
-			$itemData = getItemData( $parentID );
+		$parentid = $_GET['parentid'];
+		if( $parentid > 0 )
+			$itemData = getItemData( $parentid );
 		else
 		{
 			$itemData = array();
 			$itemData['mode'] = 0600;
-			$itemData['ownerGroup'] = 0;
+			$itemData['ownergroup'] = 0;
 		}
 			
 		
@@ -34,12 +34,12 @@
 		<?php if( !isset( $error ) ) { ?>
 
 			<form action="create2.php" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="parentID" value="<?php echo $parentID; ?>">
+				<input type="hidden" name="parentid" value="<?php echo $parentid; ?>">
 				<input type="hidden" name="itemType" value="<?php echo $itemType; ?>">
 				<table>
 					<tr><td class="fieldLabel">Name</td><td><input type="text" name="folderName" required="required"></td></tr>
 					<tr><td class="fieldLabel">Beschreibung</td><td><input type="text" name="description"></td></tr>
-					<tr><td class="fieldLabel">Eigentümer</td><td><select name="ownerUser">
+					<tr><td class="fieldLabel">Eigentümer</td><td><select name="owneruser">
 						<?php
 							forEach( $userList as $theUser )
 							{
@@ -68,13 +68,13 @@
 							?>
 						</td>
 						</tr>
-						<tr><td class="fieldLabel">Gruppe</td><td><select name="ownerGroup">
+						<tr><td class="fieldLabel">Gruppe</td><td><select name="ownergroup">
 						<?php
 							forEach( $userList as $theUser )
 							{
 								if( $theUser['is_group'] )
 								{
-									if( $theUser['id'] == $itemData['ownerGroup'] )
+									if( $theUser['id'] == $itemData['ownergroup'] )
 										echo( "<option value='{$theUser['id']}' SELECTED>{$theUser['email']}</option>" );
 									else
 										echo( "<option value='{$theUser['id']}'>{$theUser['email']}</option>" );

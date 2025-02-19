@@ -1,11 +1,11 @@
 <?php
-	function getItemData( $itemID )
+	function getItemData( $itemid )
 	{
 		global $dbConnect;
 		
-		if( $itemID >= 0 )
+		if( $itemid >= 0 )
 		{
-			$queryResult = queryDatabase( $dbConnect, "select * from item_tree where id=$1", array( $itemID ) );
+			$queryResult = queryDatabase( $dbConnect, "select * from item_tree where id=$1", array( $itemid ) );
 			if( $queryResult && !is_object( $queryResult ) )
 			{
 				$itemData = fetchQueryRow( $queryResult );
@@ -29,8 +29,8 @@
 
 		if( is_array( $itemData ) && count( $itemData ) )
 		{
-			if( $itemData['parentID'] >= 0 )
-				$itemPath = getItemPath( $itemData['parentID'] );
+			if( $itemData['parentid'] >= 0 )
+				$itemPath = getItemPath( $itemData['parentid'] );
 			else
 				$itemPath = array();
 
@@ -42,15 +42,15 @@
 		return $itemPath;
 	}
 
-	function getItemContent( $itemID )
+	function getItemContent( $itemid )
 	{
 		global $dbConnect;
 
-		if( $itemID > 0 && !canRead( $itemID ) )
+		if( $itemid > 0 && !canRead( $itemid ) )
 			$itemContent = new errorClass( "Permission Denied" );
 		else
 		{
-			$queryResult = queryDatabase( $dbConnect, "select * from item_tree where parentId = $1 order by name", array( $itemID ) );
+			$queryResult = queryDatabase( $dbConnect, "select * from item_tree where parentId = $1 order by name", array( $itemid ) );
 			if( $queryResult && !is_object( $queryResult ) )
 			{
 				$itemContent = array();
@@ -63,15 +63,15 @@
 		
 		return $itemContent;
 	}
-	function getItemVersions( $itemID )
+	function getItemVersions( $itemid )
 	{
 		global $dbConnect;
 
-		if( $itemID > 0 && !canRead( $itemID ) )
+		if( $itemid > 0 && !canRead( $itemid ) )
 			$itemVersions = new errorClass( "Permission Denied" );
 		else
 		{
-			$queryResult = queryDatabase( $dbConnect, "select * from file_versions where itemId = $1 order by id desc", array( $itemID ) );
+			$queryResult = queryDatabase( $dbConnect, "select * from file_versions where itemId = $1 order by id desc", array( $itemid ) );
 			if( $queryResult && !is_object( $queryResult ) )
 			{
 				$itemVersions = array();
@@ -84,14 +84,14 @@
 		
 		return $itemVersions;
 	}
-	function deleteItem( $itemID )
+	function deleteItem( $itemid )
 	{
 		global $dbConnect;
 		
 		$result = false;
-		if( canWrite( $itemID ) )
+		if( canWrite( $itemid ) )
 		{
-			$itemContent = getItemContent( $itemID );
+			$itemContent = getItemContent( $itemid );
 			if( $itemContent && !is_object( $itemContent ) )
 			{
 				forEach( $itemContent as $record )
@@ -101,7 +101,7 @@
 						break;
 				}
 			}
-			$versionTable = getItemVersions( $itemID );
+			$versionTable = getItemVersions( $itemid );
 			if( is_array( $versionTable ) )
 			{
 				forEach( $versionTable as $versionEntry )
@@ -114,13 +114,13 @@
 
 			if( !$result )
 			{
-				$result = queryDatabase( $dbConnect, "delete from file_versions where itemID=$1", array( $itemID ) );
+				$result = queryDatabase( $dbConnect, "delete from file_versions where itemid=$1", array( $itemid ) );
 				if( !is_object( $result ) )
 					$result = false;
 			}
 			if( !$result )
 			{
-				$result = queryDatabase( $dbConnect, "delete from item_tree where id=$1", array( $itemID ) );
+				$result = queryDatabase( $dbConnect, "delete from item_tree where id=$1", array( $itemid ) );
 				if( !is_object( $result ) )
 					$result = false;
 			}
@@ -130,12 +130,12 @@
 		
 		return $result;
 	}
-	function deleteFileVersion( $itemID, $versionID )
+	function deleteFileVersion( $itemid, $versionID )
 	{
 		global $dbConnect;
 		
 		$result = false;
-		if( canWrite( $itemID ) )
+		if( canWrite( $itemid ) )
 		{
 			$result = queryDatabase( $dbConnect, "delete from file_versions where id=$1", array( $versionID ) );
 			if( !is_object( $result ) )
@@ -149,11 +149,11 @@
 		
 		return $result;
 	}
-	function createFileVersion( $itemID, $versionFile, $mimeType, $description, $modTime=false )
+	function createFileVersion( $itemid, $versionFile, $mimeType, $description, $modTime=false )
 	{
 		global $dbConnect, $actUser;
 
-		if( canWrite( $itemID ) )
+		if( canWrite( $itemid ) )
 		{
 			$versionID = getNextID( $dbConnect, "file_versions", "id" );
 			if( $versionID && !is_object( $versionID ) )
@@ -163,8 +163,8 @@
 					
 				$result = queryDatabase( 
 					$dbConnect, 
-					"insert into file_versions ( id, itemID, createby, mimetype, createdate, modifieddate, description ) values ( $1, $2, $3, $4, $5, $6, $7 )",
-					array( $versionID, $itemID, $actUser['id'], $mimeType, time(), $modTime, $description )
+					"insert into file_versions ( id, itemid, createby, mimetype, createdate, modifieddate, description ) values ( $1, $2, $3, $4, $5, $6, $7 )",
+					array( $versionID, $itemid, $actUser['id'], $mimeType, time(), $modTime, $description )
 				);
 				if( !is_object( $result ) )
 				{
@@ -188,11 +188,11 @@
 	
 		return $result;		
 	}
-	function updateFileVersion( $itemID, $versionID, $mimeType, $description )
+	function updateFileVersion( $itemid, $versionID, $mimeType, $description )
 	{
 		global $dbConnect, $actUser;
 
-		if( canWrite( $itemID ) )
+		if( canWrite( $itemid ) )
 		{
 			$result = queryDatabase( 
 				$dbConnect, 
@@ -207,11 +207,11 @@
 	
 		return $result;		
 	}
-	function getFileVersion( $itemID, $versionID )
+	function getFileVersion( $itemid, $versionID )
 	{
 		global $dbConnect;
 		
-		if( $itemID > 0 && !canRead( $itemID ) )
+		if( $itemid > 0 && !canRead( $itemid ) )
 			$result = new errorClass( "Permission Denied" );
 		else
 		{
@@ -223,9 +223,9 @@
 					"from file_versions ".
 					"where itemId = $1 ".
 					"and id = ( ".
-						"select max( id ) from file_versions where itemID = $2 ".
+						"select max( id ) from file_versions where itemid = $2 ".
 					")",
-					array( $itemID, $itemID )
+					array( $itemid, $itemid )
 				);
 			else
 				$queryResult = queryDatabase( 
@@ -233,7 +233,7 @@
 					"select * ".
 					"from file_versions ".
 					"where itemId = $1 and id = $2",
-					array( $itemID, $versionID )
+					array( $itemid, $versionID )
 				);
 				
 			if( $queryResult && !is_object($queryResult) )
@@ -326,14 +326,14 @@
 			}
 			else if( count( $itemData ) )
 			{
-				if( $userId == $itemData['ownerUser'] && ($itemData['mode'] & 0400) )
+				if( $userId == $itemData['owneruser'] && ($itemData['mode'] & 0400) )
 					$result = true;
 				else if( $itemData['mode'] & 0004 )
 					$result = true;
 				else if( $itemData['mode'] & 0040 )
 				{
 					$memberShips = getAllMemberships( $userId );
-					if( is_array( $memberShips ) && array_search( $itemData['ownerGroup'], $memberShips ) !== false )
+					if( is_array( $memberShips ) && array_search( $itemData['ownergroup'], $memberShips ) !== false )
 						$result = true;
 				}
 			}
@@ -358,14 +358,14 @@
 			{
 				if( $itemData['reservedby'] )
 					$result = ($itemData['reservedby'] == $userId);
-				else if( $userId == $itemData['ownerUser'] && ($itemData['mode'] & 0200) )
+				else if( $userId == $itemData['owneruser'] && ($itemData['mode'] & 0200) )
 					$result = true;
 				else if( $itemData['mode'] & 0002 )
 					$result = true;
 				else if( $itemData['mode'] & 0020 )
 				{
 					$memberShips = getAllMemberships( $userId );
-					if( is_array( $memberShips ) && array_search( $itemData['ownerGroup'], $memberShips ) !== false )
+					if( is_array( $memberShips ) && array_search( $itemData['ownergroup'], $memberShips ) !== false )
 						$result = true;
 				}
 				

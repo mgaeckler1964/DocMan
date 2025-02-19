@@ -47,7 +47,7 @@
 	
 				if( $id >= 0 )
 				{
-					echo( "<p><a href='index.php?ID={$itemData['parentID']}'>Nach oben</a></p>\n" );
+					echo( "<p><a href='index.php?ID={$itemData['parentid']}'>Nach oben</a></p>\n" );
 					$itemPath = getItemPath( $itemData );
 					if( count( $itemPath ) )
 					{
@@ -116,7 +116,7 @@
 				echo( "</table>" );
 
 				if( canWrite( $id ) )
-					echo( "<p><a href='create.php?parentID=$id&itemType=0'>&gt;&gt;&nbsp;Neuer Ordner</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='create.php?parentID=$id&itemType=1'>&gt;&gt;&nbsp;Neue Datei</a></p>\n" );
+					echo( "<p><a href='create.php?parentid=$id&itemType=0'>&gt;&gt;&nbsp;Neuer Ordner</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='create.php?parentid=$id&itemType=1'>&gt;&gt;&nbsp;Neue Datei</a></p>\n" );
 			}
 			else
 			{
