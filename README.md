@@ -13,6 +13,9 @@ Das Archiv enthält auch die notwendigen Tabellen.
 Eine Webseite, die mit DocMan erzeugt wurde:
 http://www.bigtown-music.de/homepage.html
 
+Einen DocMan Cloud Server finden Sie hier:
+https://docman.gaeckler.at/
+
 ## English
 To compile you need Borland C++ Builder 5. A setup can be downloaded from my website
 
@@ -22,6 +25,9 @@ The archive also contains the required tables.
 
 A web site generated with DochMan:
 http://www.bigtown-music.de/homepage.html
+
+A DocMan Cloud Server is here:
+https://docman.gaeckler.at/
 
 
 ## Screenshot
