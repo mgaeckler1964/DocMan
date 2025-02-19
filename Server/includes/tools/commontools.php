@@ -158,11 +158,9 @@
 	{
 		$userCount = 0;
 		$queryResult = queryDatabase( $dbConnect, "select count(*) as usercount from user_tab " );
-		print_r($queryResult);
 		if( $queryResult && !is_object( $queryResult ) )
 		{
 			$queryResult = fetchQueryRow( $queryResult );
-		print_r($queryResult);
 			if( $queryResult )
 				$userCount = $queryResult['usercount'];
 		}
