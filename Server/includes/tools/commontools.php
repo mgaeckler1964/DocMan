@@ -47,6 +47,10 @@
 	{
 		return date( "d. m. Y H:i:s", $timestamp );
 	}
+	function formatHtmlTimeStamp( $timestamp )
+	{
+		return date( "Y-m-d H:i:s", $timestamp );
+	}
 	
 	function fullname2Html( $full_name )
 	{
@@ -99,16 +103,16 @@
 
 			$queryResult = queryDatabase(
 				$dbConnect,
-				"select max( logindate) as lastLogin from user_login_prot where userid=$1",
+				"select max( logindate) as lastlogin from user_login_prot where userid=$1",
 				array( $user['id'] )
 			);
 			if( $queryResult && !is_object( $queryResult ) )
 			{
 				$queryResult = fetchQueryRow( $queryResult );
-				if( $queryResult && $queryResult['lastLogin'] )
-					$user['lastLogin'] = formatTimeStamp($queryResult['lastLogin']);
+				if( $queryResult && $queryResult['lastlogin'] )
+					$user['lastlogin'] = formatTimeStamp($queryResult['lastlogin']);
 				else
-					$user['lastLogin'] = "";
+					$user['lastlogin'] = "";
 			}
 			else
 				var_dump( $queryResult );
@@ -171,12 +175,12 @@
 	function getGuestCount( $dbConnect )
 	{
 		$userCount = 0;
-		$queryResult = queryDatabase( $dbConnect, "select count(*) as GuestCount from user_tab where loginenabled = 'X' and guest = 'X'" );
+		$queryResult = queryDatabase( $dbConnect, "select count(*) as guestcount from user_tab where loginenabled = 'X' and guest = 'X'" );
 		if( $queryResult && !is_object( $queryResult ) )
 		{
 			$queryResult = fetchQueryRow( $queryResult );
 			if( $queryResult )
-				$userCount = $queryResult['GuestCount'];
+				$userCount = $queryResult['guestcount'];
 		}
 
 		return $userCount;

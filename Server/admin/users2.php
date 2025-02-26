@@ -50,7 +50,7 @@
 					echo "<a href='useredit.php?id={$user['id']}'>{$user['fullname']}</a>";
 					echo "</td>";
 					echo "<td>{$user['email']}</td>";
-					echo "<td>{$user['lastLogin']}</td>";
+					echo "<td>{$user['lastlogin']}</td>";
 						
 					if( $user['id'] != 1 )
 						echo "<td><a href='deleteUser.php?id={$user['id']}' onClick='if( confirm( \"Wirklich?\" ) ) return true; else return false;'>Löschen</a></td>";
