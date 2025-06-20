@@ -133,7 +133,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=8
-Build=377
+Build=378
 Debug=0
 PreRelease=0
 Special=0
@@ -145,7 +145,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Martin Gäckler
 FileDescription=Source Code Control, Document Management, Content Management
-FileVersion=1.0.8.377
+FileVersion=1.0.8.378
 InternalName=DocMan
 LegalCopyright=(c) 2011-2025 by Martin Gäckler / Linz / Austria
 LegalTrademarks=

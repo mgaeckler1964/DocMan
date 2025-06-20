@@ -115,7 +115,7 @@ STRING TDocManDataModule::md5file( const STRING &filePath )
 {
 	ArrayOfData		md5Array;
 	unsigned char	fileMD5[16];
-	const int 		err = md5_file( filePath, fileMD5 );
+	const int 		err = md5_file_ptr( strFopen(filePath,"rb"), fileMD5 );
 	if( err == 1 )
 	{
 		throw OpenReadError(filePath);
