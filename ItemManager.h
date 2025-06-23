@@ -50,6 +50,7 @@
 #include <gak/t_string.h>
 #include <gak/Map.h>
 #include <gak/types.h>
+#include <gak/http.h>
 
 #include "gaklib.h"
 
@@ -200,7 +201,7 @@ class THE_ITEM : public gak::SharedObject
 	int					id, parentID, oldParentID, volumeID, oldVolumeID,
 						permissionID, copyID, createdBy, ordering, numLinks,
 						assignedTo;
-	STRING				name, oldName, previousName, extension, description;
+	STRING				m_name, m_oldName, m_previousName, m_extension, m_description;
 	TDateTime			m_createdDate, m_modifiedDate;
 	gak::uint32			m_reminderDate;
 
@@ -294,17 +295,17 @@ class THE_ITEM : public gak::SharedObject
 	void setName( const STRING &name )
 	{
         pathLoaded = false;
-		this->name = name;
+		m_name = name;
 		size_t	dotPos = name.searchRChar( '.' );
-		if( dotPos != (size_t)-1 )
-			extension = name.subString( dotPos );
+		if( dotPos != name.no_index )
+			m_extension = name.subString( dotPos );
 		else
-			extension = "";
+			m_extension = "";
 	}
 	void setData( const PTR_ITEM &parent, const STRING &name, const STRING &description )
 	{
 		setName( name );
-		this->description = description;
+		m_description = description;
 		setParent( parent );
 	}
 	void setOrder( int order )
@@ -318,14 +319,18 @@ class THE_ITEM : public gak::SharedObject
 	}
 	const STRING &getName( void ) const
 	{
-		if( !oldName.isEmpty() )
-			return oldName;
+		if( !m_oldName.isEmpty() )
+			return m_oldName;
 		else
-			return name;
+			return m_name;
+	}
+	STRING getFname() const
+	{
+		return gak::net::webUnEscape(getName());
 	}
 	const STRING &getPreviousName( void ) const
 	{
-		return previousName;
+		return m_previousName;
 	}
 	const STRING &getPreviousDownloadPath( void ) const
 	{
@@ -333,15 +338,15 @@ class THE_ITEM : public gak::SharedObject
 	}
 	const STRING &getExtension( void ) const
 	{
-		return extension;
+		return m_extension;
 	}
 	const STRING &getDescription( void ) const
 	{
-		return description;
+		return m_description;
 	}
 	void setDescription( const STRING &newDescription )
 	{
-		description = newDescription;
+		m_description = newDescription;
 	}
 	int getCreator( void ) const
 	{
@@ -673,7 +678,7 @@ class THE_ITEM : public gak::SharedObject
 	void restoreItem( const PTR_ITEM &parent, const STRING &name )
 	{
 		oldParentID = 0;
-		oldName = "";
+		m_oldName = "";
 		setName( name );
 		setParent( parent );
 	}

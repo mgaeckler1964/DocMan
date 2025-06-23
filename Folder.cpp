@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -42,6 +42,7 @@
 #include <gak/strFiles.h>
 #include <gak/exif.h>
 #include <gak/numericString.h>
+#include <gak/http.h>
 
 #include <graphix/magic.h>
 
@@ -1138,11 +1139,12 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 	)
 	{
 		const DirectoryEntry	&dirEntry = *it;
-		F_STRING				fileFound = dirEntry.fileName;
-		F_STRING				filePath = localPath + fileFound;
-		PTR_ITEM	child = getContentItem( fileFound );
+		F_STRING				_fileFound = dirEntry.fileName;
+		F_STRING				filePath = localPath + _fileFound;
+		STRING					entryName = net::webEscape(_fileFound);
+		PTR_ITEM				child = getContentItem( entryName );
 
-		StatusForm->pushStatus( "Refreshing", fileFound );
+		StatusForm->pushStatus( "Refreshing", _fileFound );
 #ifndef _DEBUG
 		if( !recursive && StatusForm->waitForUserSleep( 60000 ) )
 			break;
@@ -1187,7 +1189,7 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 				++it
 			)
 			{
-				if( fileFound.match( *it ) )
+				if( _fileFound.match( *it ) )
 				{
 					ignore = true;
 /*v*/				break;
@@ -1202,7 +1204,7 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 					PTR_FILE_REF	newFile = createItem( TYPE_FILE_REF );
 					newFile->setData(
 						this,
-						fileFound,
+						entryName,
 						"",
 						TDocManDataModule::md5file( filePath ),
 						dirEntry.creationDate.calcOriginalTime(),
@@ -1217,13 +1219,13 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 					hasChanged = true;
 				}
 				else if( dirEntry.directory
-				&& fileFound != "."
-				&& fileFound != ".." )
+				&& _fileFound != "."
+				&& _fileFound != ".." )
 				{
 					PTR_FOLDER_REF newFolder = createItem( TYPE_FOLDER_REF );
 					newFolder->setData(
 						this,
-						fileFound,
+						entryName,
 						"",
 						dirEntry.creationDate.calcOriginalTime(),
 						dirEntry.modifiedDate.calcOriginalTime()
@@ -1257,8 +1259,9 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 		PTR_FOLDER_REF theFolder = child;
 		if( child )
 		{
-			STRING 					itemFound = child->getName();
-			const DirectoryEntry	*dirEntry = dirContent.findElement(itemFound);
+			STRING 					_itemFound = child->getName();
+			STRING					fName = net::webUnEscape(_itemFound);
+			const DirectoryEntry	*dirEntry = dirContent.findElement(fName);
 			if( !dirEntry )
 			{
 				child->purgeItem();

@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -456,18 +456,18 @@ void THE_ITEM::loadFields( TQuery *query )
 	copyID = query->FieldByName( "COPYID" )->AsInteger;
 	STRING name = query->FieldByName( "NAME" )->AsString.c_str();
 	setName( name );
-	oldName = query->FieldByName( "OLD_NAME" )->AsString.c_str();
+	m_oldName = query->FieldByName( "OLD_NAME" )->AsString.c_str();
 	createdBy = query->FieldByName( "CREATEDBY" )->AsInteger;
 	m_createdDate = query->FieldByName( "createdDate" )->AsDateTime;
 	m_modifiedDate = query->FieldByName( "modifiedDate" )->AsDateTime;
 	m_reminderDate = query->FieldByName( "reminderDate" )->AsInteger;
-	description = query->FieldByName( "description" )->AsString.c_str();
+	m_description = query->FieldByName( "description" )->AsString.c_str();
 	this->assignedTo = query->FieldByName( "assigned_to" )->AsInteger;
 
 	loadPermissions();
 
 	previousDownloadPath = getDownloadPath();
-	previousName = this->name;
+	m_previousName = m_name;
 }
 
 int THE_ITEM::loadPermissions( void )
@@ -553,13 +553,13 @@ void THE_ITEM::updateDatabase( void )
 				"where id=:theId"
 			);
 			unsigned i=0;
-			theQuery->Params->Items[i++]->AsString = (const char *)name;
+			theQuery->Params->Items[i++]->AsString = (const char *)m_name.c_str();
 			theQuery->Params->Items[i++]->AsInteger = parentID;
-			theQuery->Params->Items[i++]->AsString = (const char *)oldName;
+			theQuery->Params->Items[i++]->AsString = (const char *)m_oldName;
 			theQuery->Params->Items[i++]->AsInteger = oldParentID;
 			theQuery->Params->Items[i++]->AsDateTime = m_modifiedDate;
 			theQuery->Params->Items[i++]->AsInteger = m_reminderDate;
-			theQuery->Params->Items[i++]->AsMemo = (const char *)description;
+			theQuery->Params->Items[i++]->AsMemo = (const char *)m_description;
 			theQuery->Params->Items[i++]->AsInteger = ordering;
 			theQuery->Params->Items[i++]->AsInteger = volumeID;
 			theQuery->Params->Items[i++]->AsInteger = permissionID;
@@ -598,14 +598,14 @@ void THE_ITEM::updateDatabase( void )
 			);
 			unsigned i=0;
 			theQuery->Params->Items[i++]->AsInteger = parentID;
-			theQuery->Params->Items[i++]->AsString = static_cast<const char *>(name);
+			theQuery->Params->Items[i++]->AsString = m_name.c_str();
 			theQuery->Params->Items[i++]->AsInteger = getItemType();
 			theQuery->Params->Items[i++]->AsInteger = createdBy;
 			theQuery->Params->Items[i++]->AsInteger = id;
 			theQuery->Params->Items[i++]->AsDateTime = m_createdDate;;
 			theQuery->Params->Items[i++]->AsDateTime = m_modifiedDate;
 			theQuery->Params->Items[i++]->AsInteger = m_reminderDate;
-			theQuery->Params->Items[i++]->AsMemo = static_cast<const char *>(description);
+			theQuery->Params->Items[i++]->AsMemo = m_description.c_str();
 			theQuery->Params->Items[i++]->AsInteger = copyID;
 			theQuery->Params->Items[i++]->AsInteger = volumeID;
 			theQuery->Params->Items[i++]->AsInteger = permissionID;
@@ -718,7 +718,7 @@ void THE_ITEM::updateDatabase( void )
 
 	if( !errMsg.isEmpty() )
 	{
-		errMsg = STRING("Error " ) + step + ' ' + name + '\n' + errMsg;
+		errMsg = STRING("Error " ) + step + ' ' + m_name + '\n' + errMsg;
 /*@*/	throw Exception( (const char*)errMsg );
 	}
 }
@@ -944,7 +944,7 @@ STRING THE_ITEM::getDownloadPath( PTR_ITEM parent )
 
 		if( !downloadPath.isEmpty() )
 		{
-			downloadPath += name;
+			downloadPath += getFname();
 			if( isContainer() )
 				downloadPath += DIRECTORY_DELIMITER;
 		}
@@ -1539,7 +1539,7 @@ void THE_ITEM::deleteItem( void )
 		{
 			if( !oldParentID )
 				oldParentID = getParentID();
-			oldName = name;
+			m_oldName = m_name;
 			STRING newName = formatNumber( id );
 			setParent( theTrash, true );
 			setName( newName );
@@ -1674,7 +1674,7 @@ void THE_ITEM::createXMLattributes( xml::Element *theElement )
 	theElement->setIntegerAttribute( "reminder", m_reminderDate );
 
 	theElement->addObject(
-		new xml::Any( "description", description )
+		new xml::Any( "description", m_description )
 	);
 }
 
