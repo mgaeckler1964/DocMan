@@ -216,8 +216,8 @@ class THE_ITEM : public gak::SharedObject
 	PTR_ITEM			parent, volume;
 	*/
 
-	bool				pathLoaded;
-	STRING				downloadPath, previousDownloadPath;
+	bool				m_pathLoaded;
+	STRING				m_downloadPath, m_previousDownloadPath;
 
 	int					userPermissions;
 	int					childCount;
@@ -238,7 +238,7 @@ class THE_ITEM : public gak::SharedObject
 		oldParentID = 0;
 		userPermissions = 0;
 		childCount = -1;
-		pathLoaded = ancestorsLoaded = contentLoaded = aclLoaded = aclChanged =
+		m_pathLoaded = ancestorsLoaded = contentLoaded = aclLoaded = aclChanged =
 			false
 		;
 		copyID = 0;
@@ -294,7 +294,7 @@ class THE_ITEM : public gak::SharedObject
 	public:
 	void setName( const STRING &name )
 	{
-        pathLoaded = false;
+		m_pathLoaded = false;
 		m_name = name;
 		size_t	dotPos = name.searchRChar( '.' );
 		if( dotPos != name.no_index )
@@ -334,7 +334,7 @@ class THE_ITEM : public gak::SharedObject
 	}
 	const STRING &getPreviousDownloadPath( void ) const
 	{
-		return previousDownloadPath;
+		return m_previousDownloadPath;
 	}
 	const STRING &getExtension( void ) const
 	{
@@ -630,6 +630,14 @@ class THE_ITEM : public gak::SharedObject
 */
 	typedef gak::TreeMap<int,int>	ItemsCopiedMap;
 
+	protected:
+	void fixDownloadPath( const STRING &downloadPath )
+	{
+		m_pathLoaded = true;
+		m_downloadPath = downloadPath;
+	}
+
+	public:
 	virtual void open( void );
 	virtual void openItem( int itemIdx );
 	virtual STRING getDownloadPath( PTR_ITEM parent=PTR_ITEM() );

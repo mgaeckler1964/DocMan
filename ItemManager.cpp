@@ -466,7 +466,7 @@ void THE_ITEM::loadFields( TQuery *query )
 
 	loadPermissions();
 
-	previousDownloadPath = getDownloadPath();
+	m_previousDownloadPath = getDownloadPath();
 	m_previousName = m_name;
 }
 
@@ -931,7 +931,7 @@ void THE_ITEM::openItem( int itemIdx )
 STRING THE_ITEM::getDownloadPath( PTR_ITEM parent )
 {
 	doEnterFunctionEx(gakLogging::llDetail, "THE_ITEM::getDownloadPath");
-	if( !pathLoaded )
+	if( !m_pathLoaded )
 	{
 		if( !parent )
 		{
@@ -939,20 +939,20 @@ STRING THE_ITEM::getDownloadPath( PTR_ITEM parent )
 		}
 		if( parent )
 		{
-			downloadPath = parent->getDownloadPath();
+			m_downloadPath = parent->getDownloadPath();
 		}
 
-		if( !downloadPath.isEmpty() )
+		if( !m_downloadPath.isEmpty() )
 		{
-			downloadPath += getFname();
+			m_downloadPath += m_name;
 			if( isContainer() )
-				downloadPath += DIRECTORY_DELIMITER;
+				m_downloadPath += DIRECTORY_DELIMITER;
 		}
 
-		pathLoaded = true;
+		m_pathLoaded = true;
 	}
 
-	return downloadPath;
+	return m_downloadPath;
 }
 
 void THE_ITEM::getItemFactories( Array<const FACTORY_BASE*> *factory ) const

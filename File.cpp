@@ -47,6 +47,7 @@
 #include <gak/vcl_tools.h>
 #include <gak/strFiles.h>
 #include <gak/fcopy.h>
+#include <gak/http.h>
 
 #include "File.h"
 #include "ItemManager.h"
@@ -642,7 +643,18 @@ void THE_FILE_REF::loadFields( TQuery *query )
 	if( !localFile.isEmpty() )
 	{
 		struct stat localStat;
-		strStat( localFile, &localStat );
+		if( strStat( localFile, &localStat ) )
+		{
+			localFile = gak::net::webUnEscape(localFile).setCharSet( STR_UTF8 );
+			if( !strStat( localFile, &localStat ) )
+			{
+				fixDownloadPath( localFile );
+			}
+			else
+			{
+				localStat.st_size = 0;
+			}
+		}
 
 		m_size = localStat.st_size;
 	}

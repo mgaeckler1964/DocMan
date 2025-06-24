@@ -1139,12 +1139,14 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 	)
 	{
 		const DirectoryEntry	&dirEntry = *it;
-		F_STRING				_fileFound = dirEntry.fileName;
-		F_STRING				filePath = localPath + _fileFound;
-		STRING					entryName = net::webEscape(_fileFound);
+		F_STRING				fileFound = dirEntry.fileName;
+		F_STRING				filePath = localPath + fileFound;
+		STRING					entryName = fileFound.getCharSet() == STR_UTF8
+									? net::webEscape(fileFound)
+									: fileFound;
 		PTR_ITEM				child = getContentItem( entryName );
 
-		StatusForm->pushStatus( "Refreshing", _fileFound );
+		StatusForm->pushStatus( "Refreshing", fileFound );
 #ifndef _DEBUG
 		if( !recursive && StatusForm->waitForUserSleep( 60000 ) )
 			break;
@@ -1189,7 +1191,7 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 				++it
 			)
 			{
-				if( _fileFound.match( *it ) )
+				if( fileFound.match( *it ) )
 				{
 					ignore = true;
 /*v*/				break;
@@ -1219,8 +1221,8 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 					hasChanged = true;
 				}
 				else if( dirEntry.directory
-				&& _fileFound != "."
-				&& _fileFound != ".." )
+				&& fileFound != "."
+				&& fileFound != ".." )
 				{
 					PTR_FOLDER_REF newFolder = createItem( TYPE_FOLDER_REF );
 					newFolder->setData(
@@ -1259,9 +1261,13 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 		PTR_FOLDER_REF theFolder = child;
 		if( child )
 		{
-			STRING 					_itemFound = child->getName();
-			STRING					fName = net::webUnEscape(_itemFound);
-			const DirectoryEntry	*dirEntry = dirContent.findElement(fName);
+			STRING 					itemFound = child->getName();
+			const DirectoryEntry	*dirEntry = dirContent.findElement(itemFound);
+			if( !dirEntry )
+			{
+				STRING	fName = net::webUnEscape(itemFound).setCharSet( STR_UTF8 );
+				dirEntry = dirContent.findElement(fName);
+			}
 			if( !dirEntry )
 			{
 				child->purgeItem();
