@@ -1176,7 +1176,13 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 					theFileRef->updateDatabase();
 
 					if( stream )
-						*stream << "File Updated: " << theFileRef->getPath() << '\n';
+					{
+						*stream << "File Updated: " << theFileRef->getPath()
+								<< '\n';
+						*stream << "\tTime changed from " << childDate
+								<<  " to " << localTime
+								<< '\n';
+					}
 
 					hasChanged = true;
 				}

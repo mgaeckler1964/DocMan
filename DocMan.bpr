@@ -133,7 +133,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=8
-Build=381
+Build=386
 Debug=0
 PreRelease=0
 Special=0
@@ -145,7 +145,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Martin Gäckler
 FileDescription=Source Code Control, Document Management, Content Management
-FileVersion=1.0.8.381
+FileVersion=1.0.8.386
 InternalName=DocMan
 LegalCopyright=(c) 2011-2025 by Martin Gäckler / Linz / Austria
 LegalTrademarks=
@@ -186,8 +186,9 @@ Item10=$(BCB)\lib_uk\obj;$(BCB)\lib_uk
 Item11=C:\Windows\system32;..\GRAPHIX;..\XML Edit;..\GAKLIB\Repository;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
 
 [HistoryLists\hlDebugSourcePath]
-Count=1
-Item0=$(BCB)\source\vcl
+Count=2
+Item0=c:\program files (x86)\borland\cbuilder5\source\vcl;C:\CRESD\Source\GAKLIB\INCLUDE\gak\
+Item1=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=3
@@ -207,7 +208,7 @@ Item0=..\..\object\
 Item1=..\..\object\DocMan\
 
 [Debugging]
-DebugSourceDirs=$(BCB)\source\vcl
+DebugSourceDirs=c:\program files (x86)\borland\cbuilder5\source\vcl;C:\CRESD\Source\GAKLIB\INCLUDE\gak\
 
 [Parameters]
 RunParams=

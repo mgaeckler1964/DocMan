@@ -645,7 +645,10 @@ void THE_FILE_REF::loadFields( TQuery *query )
 		struct stat localStat;
 		if( strStat( localFile, &localStat ) )
 		{
-			localFile = gak::net::webUnEscape(localFile).setCharSet( STR_UTF8 );
+			F_STRING path, name;
+			gak::fsplit(localFile, &path, &name );
+			localFile = path + DIRECTORY_DELIMITER + gak::net::webUnEscape(name);
+			localFile = localFile.setCharSet( STR_UTF8 );
 			if( !strStat( localFile, &localStat ) )
 			{
 				fixDownloadPath( localFile );

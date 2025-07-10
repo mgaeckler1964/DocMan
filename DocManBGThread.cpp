@@ -476,6 +476,7 @@ order by it.parentID, it.ID
 			curEntry.dbModifiedDate = curEntry.modifiedDate;
 		}
 	}
+	fp << "END\n";
 	fp.close();
 	if( hasChanged )
 	{
@@ -522,6 +523,7 @@ order by it.parentID, it.ID
 			curEntry.dbModifiedDate = curEntry.modifiedDate;
 		}
 	}
+	fp << "END\n";
 	fp.close();
 	if( hasChanged )
 	{
@@ -564,6 +566,7 @@ order by it.parentID, it.ID
 			StatusForm->restore();
 		}
 	}
+	fp << "END\n";
 	fp.close();
 	if( hasChanged )
 	{
