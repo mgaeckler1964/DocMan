@@ -1,7 +1,7 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			ItemManager.cpp
+		Description:	The base for all content types
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
@@ -241,8 +241,8 @@ int THE_ITEM::itemCompare( const PTR_ITEM &item1, const PTR_ITEM &item2, int the
 
 void THE_ITEM::clearAncestors( void )
 {
-	ancestors.clear();
-	ancestorsLoaded = false;
+	m_ancestors.clear();
+	m_ancestorsLoaded = false;
 }
 
 int THE_ITEM::loadChildCount( void )
@@ -267,13 +267,13 @@ ArrayOfInts *THE_ITEM::loadAncestors( void )
 	PTR_ITEM	parent = getParent();
 	while( parent )
 	{
-		ancestors.insertElement( (*parent).getID(), 0 );
+		m_ancestors.insertElement( (*parent).getID(), 0 );
 		parent = (*parent).getParent();
 	}
 
-	ancestorsLoaded = true;
+	m_ancestorsLoaded = true;
 
-	return &ancestors;
+	return &m_ancestors;
 }
 
 void THE_ITEM::loadACL( void )
@@ -284,19 +284,19 @@ void THE_ITEM::loadACL( void )
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add( "select * from I_ACLS where item_id = :theId" );
 	theQuery->Params->Items[0]->AsInteger = id;
-	acl.clear();
+	m_acl.clear();
 
 	for( theQuery->Open(); !theQuery->Eof; theQuery->Next() )
 	{
 		itemPerm.user_id = theQuery->FieldByName( "user_id" )->AsInteger;
 		itemPerm.permissions = theQuery->FieldByName( "permissions" )->AsInteger;
-		acl.addElement( itemPerm );
+		m_acl.addElement( itemPerm );
 	}
 
 	theQuery->Close();
 
-	aclLoaded = true;
-	aclChanged = false;
+	m_aclLoaded = true;
+	m_aclChanged = false;
 }
 
 void THE_ITEM::acceptParent( THE_ITEM *newParent, bool forDelete )
@@ -350,8 +350,8 @@ void THE_ITEM::setParent( const PTR_ITEM &newParent, bool forDelete )
 
 void THE_ITEM::clearContent( void )
 {
-	content.clear();
-	contentLoaded = false;
+	m_content.clear();
+	m_contentLoaded = false;
 }
 
 void THE_ITEM::createPersonalName( void )
@@ -516,7 +516,7 @@ int THE_ITEM::loadPermissions( void )
 
 	}
 
-	aclLoaded = false;
+	m_aclLoaded = false;
 
 	return userPermissions;
 }
@@ -612,12 +612,12 @@ void THE_ITEM::updateDatabase( void )
 			theQuery->Params->Items[i++]->AsInteger = ordering;
 			theQuery->Params->Items[i++]->AsInteger = assignedTo;
 
-			if( !aclChanged && !permissionID )
+			if( !m_aclChanged && !permissionID )
 			{
 				if( parentID > 0 )
 					setACL( parent->getACL() );
 
-				aclChanged = true;
+				m_aclChanged = true;
 			}
 
 			isNew = true;
@@ -625,12 +625,12 @@ void THE_ITEM::updateDatabase( void )
 
 		theQuery->ExecSQL();
 
-		if( permissionID && permissionID != id && acl.size() )
+		if( permissionID && permissionID != id && m_acl.size() )
 		{
-			acl.clear();
-			aclChanged = true;
+			m_acl.clear();
+			m_aclChanged = true;
 		}
-		if( aclChanged )
+		if( m_aclChanged )
 		{
 			step = "removing ACLs";
 
@@ -648,11 +648,12 @@ void THE_ITEM::updateDatabase( void )
 				"( :item_id, :user_id, :permissions )"
 			);
 
-			size_t	numAcl = acl.size();
+			size_t	numAcl = m_acl.size();
 			if( numAcl )
 			{
 				for(
-					ITEM_PERMLIST::const_iterator it=acl.cbegin(), endIT=acl.cend();
+					ITEM_PERMLIST::const_iterator it=m_acl.cbegin(),
+						endIT=m_acl.cend();
 					it != endIT;
 					++it
 				)
@@ -683,8 +684,8 @@ void THE_ITEM::updateDatabase( void )
 
 			step = "updating child volume";
 			for(
-				ITEM_CONTENT::const_iterator it = content.cbegin(),
-					endIT = content.cend();
+				ITEM_CONTENT::const_iterator it = m_content.cbegin(),
+					endIT = m_content.cend();
 				it != endIT;
 				++it
 			)
@@ -739,8 +740,8 @@ PTR_ITEM THE_ITEM::copy(
 		loadContent();
 
 		for(
-			ITEM_CONTENT::const_iterator it = content.cbegin(),
-				endIT = content.cend();
+			ITEM_CONTENT::const_iterator it = m_content.cbegin(),
+				endIT = m_content.cend();
 			it != endIT && !StatusForm->isTerminated();
 			++it
 		)
@@ -809,7 +810,7 @@ int THE_ITEM::getHeaderCount( void ) const
 
 int THE_ITEM::getRowCount( void ) const
 {
-	return content.size();
+	return m_content.size();
 }
 
 COL_TITLE	*THE_ITEM::getColumnTitles( void ) const
@@ -830,7 +831,7 @@ COL_TITLE	*THE_ITEM::getColumnTitles( void ) const
 
 void THE_ITEM::sort( void )
 {
-	content.sort( itemCompare, sortType );
+	m_content.sort( itemCompare, sortType );
 }
 
 STRING THE_ITEM::drawHeaderCell( int col, int, TCanvas *canvas, TRect &Rect, TImageList *ImageListSort )
@@ -863,9 +864,9 @@ STRING THE_ITEM::drawCell( int col, int row, TCanvas *canvas, TRect &Rect )
 {
 	STRING text;
 
-	if( size_t(row) < content.size() )
+	if( size_t(row) < m_content.size() )
 	{
-		PTR_ITEM	theItem = content[row];
+		PTR_ITEM	theItem = m_content[row];
 		if( col == 0 )
 		{
 			int order = theItem->getOrder();
@@ -924,7 +925,18 @@ void THE_ITEM::openItem( int itemIdx )
 	PTR_ITEM	theItem = getContentItem( itemIdx );
 	if( theItem )
 	{
-		theItem->open();
+		if( theItem->getChildCount() == 1 )
+		{
+			ITEM_CONTENT *content = theItem->getContent();
+			PTR_FOLDER	theFolder = (*content)[0];
+			if( theFolder )
+			{
+				theItem->openItem(0);
+/***/			return;
+			}
+		}
+
+/***/	theItem->open();
 	}
 }
 
@@ -1180,30 +1192,30 @@ ITEM_CONTENT *THE_ITEM::loadContent( void )
 				newItem->loadFields( theQuery.get() );
 				if( newItem->getUserPermissions() )
 				{
-					content.addElement( newItem );
+					m_content.addElement( newItem );
 					addItemToCache( newItem );
 				}
 			}
 		}
 		theQuery->Close();
 
-		contentLoaded = true;
+		m_contentLoaded = true;
 
 		sort();
 	}
 
-	return &content;
+	return &m_content;
 }
 
 bool THE_ITEM::hasReserved( const STRING &machine, int userId )
 {
-	if( !contentLoaded )
+	if( !m_contentLoaded )
 	{
 		loadContent();
 	}
 
 	for(
-		ITEM_CONTENT::iterator it = content.begin(), endIT = content.end();
+		ITEM_CONTENT::iterator it = m_content.begin(), endIT = m_content.end();
 		it != endIT;
 		++it
 	)
@@ -1228,8 +1240,8 @@ void THE_ITEM::lock( void )
 	loadContent();
 
 	for(
-		ITEM_CONTENT::iterator it = content.begin(),
-			endIT = content.end();
+		ITEM_CONTENT::iterator it = m_content.begin(),
+			endIT = m_content.end();
 		it != endIT && !StatusForm->isTerminated();
 		++it
 	)
@@ -1250,8 +1262,8 @@ void THE_ITEM::unlock( void )
 
 	loadContent();
 	for(
-		ITEM_CONTENT::iterator it = content.begin(),
-			endIT = content.end();
+		ITEM_CONTENT::iterator it = m_content.begin(),
+			endIT = m_content.end();
 		it != endIT && !StatusForm->isTerminated();
 		++it
 	)
@@ -1397,19 +1409,19 @@ bool THE_ITEM::canDelete( bool forPurge, bool recursive )
 	{
 		return false;
 	}
-	if( !contentLoaded )
+	if( !m_contentLoaded )
 	{
 		loadContent();
 	}
-	if( content.size() < size_t(getChildCount()) )
+	if( m_content.size() < size_t(getChildCount()) )
 	{
 		return false;
 	}
 	if( recursive )
 	{
 		for(
-			ITEM_CONTENT::iterator it = content.begin(),
-				endIT = content.end();
+			ITEM_CONTENT::iterator it = m_content.begin(),
+				endIT = m_content.end();
 			it != endIT && !StatusForm->isTerminated();
 			++it
 		)
@@ -1447,14 +1459,14 @@ void THE_ITEM::purgeItem( void )
 /*@*/	throw Exception( (const char *)error  );
 	}
 
-	if( !contentLoaded )
+	if( !m_contentLoaded )
 	{
 		loadContent();
 	}
 
 	for(
-		ITEM_CONTENT::iterator it = content.begin(),
-			endIT = content.end();
+		ITEM_CONTENT::iterator it = m_content.begin(),
+			endIT = m_content.end();
 		it != endIT && !StatusForm->isTerminated();
 		++it
 	)
@@ -1495,14 +1507,14 @@ void THE_ITEM::purgeVersions( int numVersions )
 		return;
 	}
 
-	if( !contentLoaded )
+	if( !m_contentLoaded )
 	{
 		loadContent();
 	}
 
 	for(
-		ITEM_CONTENT::iterator it = content.begin(),
-			endIT = content.end();
+		ITEM_CONTENT::iterator it = m_content.begin(),
+			endIT = m_content.end();
 		it != endIT && !StatusForm->isTerminated();
 		++it
 	)
@@ -1552,9 +1564,9 @@ int THE_ITEM::getContentIndex( int ID )
 {
 	int index;
 	getContent();
-	for( index = int(content.size())-1; index >= 0; index-- )
+	for( index = int(m_content.size())-1; index >= 0; index-- )
 	{
-		if( ID == content[index]->getID() )
+		if( ID == m_content[index]->getID() )
 		{
 			break;
 		}
@@ -1567,8 +1579,8 @@ PTR_ITEM THE_ITEM::getContentItem( const char *name )
 	getContent();
 
 	for(
-		ITEM_CONTENT::iterator it = content.begin(),
-			endIT = content.end();
+		ITEM_CONTENT::iterator it = m_content.begin(),
+			endIT = m_content.end();
 		it != endIT && !StatusForm->isTerminated();
 		++it
 	)
@@ -1604,7 +1616,7 @@ void THE_ITEM::setACL(
 		}
 		else
 		{
-			if( !aclLoaded )
+			if( !m_aclLoaded )
 			{
 				loadACL();
 			}
@@ -1617,29 +1629,29 @@ void THE_ITEM::setACL(
 			{
 				bool processed = false;
 				const ITEM_PERM	&permToProcess = *it;
-				for( size_t j=0; j<acl.size(); j++ )
+				for( size_t j=0; j<m_acl.size(); j++ )
 				{
-					ITEM_PERM	&curPerm = acl[j];
+					ITEM_PERM	&curPerm = m_acl[j];
 					if( curPerm.user_id == permToProcess.user_id )
 					{
 						if( applyMode == PERM_APPLY_DELETE )
-							acl.removeElementAt( j );
+							m_acl.removeElementAt( j );
 						else if( applyMode == PERM_APPLY_MERGE )
 							curPerm.permissions |= permToProcess.permissions;
 						processed = true;
-						aclChanged = true;
+						m_aclChanged = true;
 /*v*/					break;
 					}
 				}
 				if( applyMode == PERM_APPLY_MERGE && !processed )
 				{
-					acl.addElement( permToProcess );
-					aclChanged = true;
+					m_acl.addElement( permToProcess );
+					m_aclChanged = true;
 				}
 			}
 		}
 
-		if( aclChanged )
+		if( m_aclChanged )
 		{
 			updateDatabase();
 		}
@@ -1647,14 +1659,14 @@ void THE_ITEM::setACL(
 
 	if( !permissionID )
 	{
-		if( !contentLoaded )
+		if( !m_contentLoaded )
 		{
 			loadContent();
 		}
 
 		for(
-			ITEM_CONTENT::iterator it = content.begin(),
-				endIT = content.end();
+			ITEM_CONTENT::iterator it = m_content.begin(),
+				endIT = m_content.end();
 			it != endIT && !StatusForm->isTerminated();
 			++it
 		)
@@ -1705,8 +1717,8 @@ xml::Element *THE_ITEM::createXML( size_t maxLevel, size_t curLevel )
 
 		curLevel++;
 		for(
-			ITEM_CONTENT::iterator it = content.begin(),
-				endIT = content.end();
+			ITEM_CONTENT::iterator it = m_content.begin(),
+				endIT = m_content.end();
 			it != endIT;
 			++it
 		)

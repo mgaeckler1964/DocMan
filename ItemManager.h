@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			ItemManager.h
+		Description:	The base for all content types
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -201,14 +201,16 @@ class THE_ITEM : public gak::SharedObject
 	int					id, parentID, oldParentID, volumeID, oldVolumeID,
 						permissionID, copyID, createdBy, ordering, numLinks,
 						assignedTo;
-	STRING				m_name, m_oldName, m_previousName, m_extension, m_description;
+	STRING				m_name, m_oldName, m_previousName, m_extension,
+						m_description;
 	TDateTime			m_createdDate, m_modifiedDate;
 	gak::uint32			m_reminderDate;
 
-	bool				ancestorsLoaded, contentLoaded, aclLoaded, aclChanged;
-	ITEM_CONTENT		content;
-	gak::ArrayOfInts	ancestors;
-	ITEM_PERMLIST		acl;
+	bool				m_ancestorsLoaded, m_contentLoaded,
+						m_aclLoaded, m_aclChanged;
+	ITEM_CONTENT		m_content;
+	gak::ArrayOfInts	m_ancestors;
+	ITEM_PERMLIST		m_acl;
 
 	/*
 		do not add pointer to parents becaus they will create
@@ -238,8 +240,8 @@ class THE_ITEM : public gak::SharedObject
 		oldParentID = 0;
 		userPermissions = 0;
 		childCount = -1;
-		m_pathLoaded = ancestorsLoaded = contentLoaded = aclLoaded = aclChanged =
-			false
+		m_pathLoaded = m_ancestorsLoaded = m_contentLoaded = m_aclLoaded =
+			m_aclChanged =false
 		;
 		copyID = 0;
 		ordering = 0;
@@ -408,24 +410,24 @@ class THE_ITEM : public gak::SharedObject
 	virtual ITEM_CONTENT *loadContent( void );
 	ITEM_CONTENT *getContent( void )
 	{
-		if( !contentLoaded )
+		if( !m_contentLoaded )
 			loadContent();
-		return &content;
+		return &m_content;
 	}
 	ITEM_CONTENT *getContent( int sortType )
 	{
 		sort( sortType, true );
-		if( !contentLoaded )
+		if( !m_contentLoaded )
 		{
 			loadContent();
 		}
-		return &content;
+		return &m_content;
 	}
 	PTR_ITEM getContentItem( int index ) const
 	{
-		if( index >= 0 && index < int(content.size()) )
+		if( index >= 0 && index < int(m_content.size()) )
 		{
-			return content[index];
+			return m_content[index];
 		}
 		else
 		{
@@ -463,15 +465,15 @@ class THE_ITEM : public gak::SharedObject
 	public:
 	const ITEM_PERMLIST &getACL( void )
 	{
-		if( !aclLoaded )
+		if( !m_aclLoaded )
 			loadACL();
 
-		return acl;
+		return m_acl;
 	}
 	void setACL( const ITEM_PERMLIST &acl )
 	{
-		aclChanged = true;
-		this->acl = acl;
+		m_aclChanged = true;
+		m_acl = acl;
 	}
 	void setACL( const ITEM_PERMLIST &acl, enum PERM_APPLY_MODE applyMode );
 	void setPermissionID( int permissionID, int newPerms )
@@ -515,10 +517,10 @@ class THE_ITEM : public gak::SharedObject
 	public:
 	gak::ArrayOfInts *getAncestors( void )
 	{
-		if( !ancestorsLoaded )
+		if( !m_ancestorsLoaded )
 			loadAncestors();
 
-		return &ancestors;
+		return &m_ancestors;
 	}
 	STRING getPath( void ) const;
 
@@ -819,7 +821,7 @@ inline const char *THE_ITEM::getItemTypeString( void ) const
 
 inline PTR_ITEM THE_ITEM::getAncestorItem( int index )
 {
-	return getItem( ancestors[index] );
+	return getItem( m_ancestors[index] );
 }
 // --------------------------------------------------------------------- //
 // ----- entry points -------------------------------------------------- //
