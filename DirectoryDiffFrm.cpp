@@ -59,7 +59,7 @@ class ACTION_DIR_DIFF : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_DIR_DIFF::acceptItem( THE_ITEM *theItem )
@@ -82,7 +82,7 @@ const char *ACTION_DIR_DIFF::getLabel( void ) const
 	return "Show Diff...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_DIR_DIFF::perform( PTR_ITEM theItem )
+RefhreshType ACTION_DIR_DIFF::perform( PTR_ITEM theItem )
 {
 	PTR_LOCAL_FOLDER theFolder = theItem;
 	if( theFolder )
@@ -95,10 +95,10 @@ REFRESH_TYPE ACTION_DIR_DIFF::perform( PTR_ITEM theItem )
 				"DocMan", MB_ICONSTOP
 			);
 
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 static ACTION_DIR_DIFF theAction;
@@ -245,7 +245,7 @@ void __fastcall TDirectoryDiffForm::PopupMenuPopup(TObject *)
 
 	// Add Version, if local file is newer, only
 	MenuAddVersion->Enabled =
-		(theEntry.status == LOCAL_NEWER)
+		(theEntry.status == csLOCAL_NEWER)
 		? theCreateVersionAction.acceptItem( theFile )
 		: false
 	;
@@ -258,14 +258,14 @@ void __fastcall TDirectoryDiffForm::PopupMenuPopup(TObject *)
 
 	// Refresh, if file is in repository, only
 	// Add, if file is not in repository, only
-	if( theEntry.status == DB_MISSING )
+	if( theEntry.status == csDB_MISSING )
 	{
 		MenuRefresh->Enabled = false;
 		MenuAdd->Enabled = true;
 		MenuAddReserved->Enabled = true;
 		MenuRemoveFromFileSystem->Enabled = true;
 	}
-	else if( theEntry.status == COMPARE_FOLDER )
+	else if( theEntry.status == csFOLDER )
 	{
 		MenuRefresh->Enabled = false;
 		MenuAdd->Enabled = false;
@@ -279,16 +279,16 @@ void __fastcall TDirectoryDiffForm::PopupMenuPopup(TObject *)
 		MenuAddReserved->Enabled = false;
 		MenuRemoveFromFileSystem->Enabled = false;
 	}
-	if( theEntry.status == DB_MISSING
-	|| theEntry.status == LOCAL_MISSING
-	|| theEntry.status == COMPARE_FOLDER )
+	if( theEntry.status == csDB_MISSING
+	|| theEntry.status == csLOCAL_MISSING
+	|| theEntry.status == csFOLDER )
 		MenuShowDiff->Enabled = false;
 	else
 		MenuShowDiff->Enabled = true;
 
 	// RemoveFromRepository, only if local file is missing
 	MenuRemoveFromRepository->Enabled =
-		( theEntry.status == LOCAL_MISSING )
+		( theEntry.status == csLOCAL_MISSING )
 		? theDeleteAction.acceptItem( theFile ) || thePurgeAction.acceptItem( theFile )
 		: false
 	;
@@ -307,7 +307,7 @@ void __fastcall TDirectoryDiffForm::MenuRefreshClick(TObject *)
 			const STRING &filePath = theEntry.filePath;
 			theFile->download( 0, true, filePath );
 
-			theEntry.status = COMPARE_OK;
+			theEntry.status = csOK;
 			theEntry.statusSTR = "File refreshed";
 			refreshGrid();
 		}
@@ -330,7 +330,7 @@ void __fastcall TDirectoryDiffForm::MenuRemoveFromFileSystemClick(
 		chmod( filePath, S_IREAD|S_IWRITE );
 		unlink( filePath );
 
-		theEntry.status = COMPARE_OK;
+		theEntry.status = csOK;
 		theEntry.statusSTR = "File deleted";
 		refreshGrid();
 	}
@@ -354,7 +354,7 @@ void __fastcall TDirectoryDiffForm::MenuRemoveFromRepositoryClick(
 			// do not use action delete, because this runs a second thread
 			theFile->deleteItem();
 
-			theEntry.status = COMPARE_OK;
+			theEntry.status = csOK;
 			theEntry.statusSTR = "Item deleted";
 			refreshGrid();
 		}
@@ -398,7 +398,7 @@ void __fastcall TDirectoryDiffForm::MenuAddClick( TObject *Sender )
 				if( !localFile.isEmpty() )
 					chmod( localFile, S_IREAD );
 
-				theEntry.status = COMPARE_OK;
+				theEntry.status = csOK;
 				theEntry.statusSTR = "Item added";
 				refreshGrid();
 			}
@@ -434,7 +434,7 @@ void __fastcall TDirectoryDiffForm::MenuAddClick( TObject *Sender )
 				if( !localFile.isEmpty() )
 					chmod( localFile, S_IREAD );
 
-				theEntry.status = COMPARE_OK;
+				theEntry.status = csOK;
 				theEntry.statusSTR = "Item added";
 				refreshGrid();
 			}
@@ -458,7 +458,7 @@ void __fastcall TDirectoryDiffForm::MenuAddVersionClick(TObject *)
 		{
 			if( theCreateVersionAction.perform( theFile ) )
 			{
-				theEntry.status = COMPARE_OK;
+				theEntry.status = csOK;
 				theEntry.statusSTR = "Version added";
 				refreshGrid();
 			}
@@ -482,7 +482,7 @@ void __fastcall TDirectoryDiffForm::MenuCheckInClick(TObject *)
 		{
 			if( theCheckInAction.perform( theFile ) )
 			{
-				theEntry.status = COMPARE_OK;
+				theEntry.status = csOK;
 				theEntry.statusSTR = "Item checked in";
 				refreshGrid();
 			}

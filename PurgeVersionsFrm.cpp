@@ -47,7 +47,7 @@ class ACTION_PURGE_VERSIONS : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 #pragma option -RT-
@@ -79,7 +79,7 @@ const char *ACTION_PURGE_VERSIONS::getLabel( void ) const
 	return "Purge Versions...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_PURGE_VERSIONS::perform( PTR_ITEM theItem )
+RefhreshType ACTION_PURGE_VERSIONS::perform( PTR_ITEM theItem )
 {
 	if( PurgeVersionsForm->ShowModal() == mrOk )
 	{
@@ -96,7 +96,7 @@ REFRESH_TYPE ACTION_PURGE_VERSIONS::perform( PTR_ITEM theItem )
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 

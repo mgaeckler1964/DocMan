@@ -265,13 +265,13 @@ STRING THE_TEST_FOLDER::drawCell( int col, int row, TCanvas *canvas, TRect &Rect
 	{
 		PTR_ITEM	theItem = getContentItem( row );
 		if( theItem )
-			text = (*theItem).getAssignedToUserName();
+			text = theItem->getAssignedToUserName();
 	}
 	else if( col == 5 )
 	{
 		PTR_TEST_EXEC_FOLDER	theItem = getContentItem( row );
 		if( theItem )
-			text = (*theItem).getStatus();
+			text = theItem->getStatus();
 	}
 	else if( col == 3 )
 		text = THE_ITEM::drawCell( 4, row, canvas, Rect );

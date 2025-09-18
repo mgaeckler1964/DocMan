@@ -53,28 +53,28 @@ class ACTION_CHECK_OUT : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_CHECK_OUT_TREE : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_ASSIGNED_TASK : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_CANCEL_CHECK_OUT : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 #pragma option -RT-
@@ -116,7 +116,7 @@ const char *ACTION_CHECK_OUT::getLabel( void ) const
 	return "Check Out...";
 }
 
-REFRESH_TYPE ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
+RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
@@ -159,12 +159,12 @@ REFRESH_TYPE ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 				}
 			}
 
-/***/		return REFRESH_REDRAW;
+/***/		return rtREDRAW;
 		}
 
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 
@@ -193,7 +193,7 @@ void THREAD_CHECK_OUT_TREE::perform( void )
 	}
 }
 
-REFRESH_TYPE ACTION_CHECK_OUT_TREE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_CHECK_OUT_TREE::perform( PTR_ITEM theItem )
 {
 	PTR_SOURCE_FOLDER theFolder = theItem;
 	if( theFolder )
@@ -210,11 +210,11 @@ REFRESH_TYPE ACTION_CHECK_OUT_TREE::perform( PTR_ITEM theItem )
 				CheckOutForm->CheckBoxFlag->Checked
 			);
 			theThread->StartThread();
-			return REFRESH_RELOAD;
+			return rtRELOAD;
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 bool ACTION_ASSIGNED_TASK::acceptItem( THE_ITEM *theItem )
@@ -231,7 +231,7 @@ const char *ACTION_ASSIGNED_TASK::getLabel( void ) const
 	return "Assinged Task...";
 }
 
-REFRESH_TYPE ACTION_ASSIGNED_TASK::perform( PTR_ITEM theItem )
+RefhreshType ACTION_ASSIGNED_TASK::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
@@ -244,7 +244,7 @@ REFRESH_TYPE ACTION_ASSIGNED_TASK::perform( PTR_ITEM theItem )
 		}
  	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 bool ACTION_CANCEL_CHECK_OUT::acceptItem( THE_ITEM *theItem )
@@ -260,7 +260,7 @@ const char *ACTION_CANCEL_CHECK_OUT::getLabel( void ) const
 	return "Cancel";
 }
 
-REFRESH_TYPE ACTION_CANCEL_CHECK_OUT::perform( PTR_ITEM theItem )
+RefhreshType ACTION_CANCEL_CHECK_OUT::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
@@ -268,10 +268,10 @@ REFRESH_TYPE ACTION_CANCEL_CHECK_OUT::perform( PTR_ITEM theItem )
 		theFile->cancelReserve();
 		theFile->updateDatabase();
 
-		return REFRESH_REDRAW;
+		return rtREDRAW;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 

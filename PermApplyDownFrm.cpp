@@ -76,7 +76,7 @@ class ACTION_PERM_APPLY_DOWN : public ACTION_BASE_PERMISSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_PERM_APPLY_DOWN::acceptItem( THE_ITEM *theItem )
@@ -105,7 +105,7 @@ void THREAD_PERM_APPLY_DOWN::perform( void )
 	theItemToHandle->setACL( acl, permMode );
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_PERM_APPLY_DOWN::perform( PTR_ITEM theItem )
+RefhreshType ACTION_PERM_APPLY_DOWN::perform( PTR_ITEM theItem )
 {
 	PermApplyDownForm->setItem( theItem );
 	if( PermApplyDownForm->ShowModal() == mrOk )
@@ -143,7 +143,7 @@ REFRESH_TYPE ACTION_PERM_APPLY_DOWN::perform( PTR_ITEM theItem )
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 static ACTION_PERM_APPLY_DOWN theAction;

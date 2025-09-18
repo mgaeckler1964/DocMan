@@ -54,7 +54,7 @@ class ACTION_CRYPTO_KEYS : public ACTION_BASE_PERMISSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_CRYPTO_KEYS::acceptItem( THE_ITEM *theItem )
@@ -90,12 +90,12 @@ const char *ACTION_CRYPTO_KEYS::getLabel( void ) const
 	return "Change Keys...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_CRYPTO_KEYS::perform( PTR_ITEM theItem )
+RefhreshType ACTION_CRYPTO_KEYS::perform( PTR_ITEM theItem )
 {
 	CryptoKeysForm->setItem( theItem );
 	CryptoKeysForm->ShowModal();
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 //---------------------------------------------------------------------------

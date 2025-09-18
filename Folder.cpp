@@ -180,35 +180,35 @@ class ACTION_REFRESH : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_IMPORT : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_EXPLORER : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_LOCK_TREE : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_UNLOCK_TREE : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class THREAD_IMPORTING : public ThreadDocMan
@@ -1461,7 +1461,7 @@ void THREAD_REFRESHING::perform( void )
 	}
 }
 
-REFRESH_TYPE ACTION_REFRESH::perform( PTR_ITEM theItem )
+RefhreshType ACTION_REFRESH::perform( PTR_ITEM theItem )
 {
 	PTR_FOLDER_REF theFolder = theItem;
 	if( theFolder )
@@ -1469,10 +1469,10 @@ REFRESH_TYPE ACTION_REFRESH::perform( PTR_ITEM theItem )
 		theFolder->getContent();
 		THREAD_REFRESHING *theThread = new THREAD_REFRESHING( theItem );
 		theThread->StartThread();
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 bool ACTION_IMPORT::acceptItem( THE_ITEM *theItem )
@@ -1507,7 +1507,7 @@ void THREAD_IMPORTING::perform( void )
 		theFolder->import();
 }
 
-REFRESH_TYPE ACTION_IMPORT::perform( PTR_ITEM theItem )
+RefhreshType ACTION_IMPORT::perform( PTR_ITEM theItem )
 {
 	THE_SOURCE_FOLDER *theFolder = dynamic_cast<THE_SOURCE_FOLDER *>(
 		static_cast<THE_ITEM*>(theItem)
@@ -1516,10 +1516,10 @@ REFRESH_TYPE ACTION_IMPORT::perform( PTR_ITEM theItem )
 	{
 		THREAD_IMPORTING *theThread = new THREAD_IMPORTING( theItem );
 		theThread->StartThread();
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 bool ACTION_EXPLORER::acceptItem( THE_ITEM *theItem )
@@ -1533,7 +1533,7 @@ const char *ACTION_EXPLORER::getLabel( void ) const
 	return "Explorer";
 }
 
-REFRESH_TYPE ACTION_EXPLORER::perform( PTR_ITEM theItem )
+RefhreshType ACTION_EXPLORER::perform( PTR_ITEM theItem )
 {
 	STRING	downloadPath = theItem->getDownloadPath();
 	if( !downloadPath.isEmpty() )
@@ -1545,7 +1545,7 @@ REFRESH_TYPE ACTION_EXPLORER::perform( PTR_ITEM theItem )
 		throw Exception( "Don't know local path" );
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 bool ACTION_LOCK_TREE::acceptItem( THE_ITEM *theItem )
@@ -1563,7 +1563,7 @@ const char *ACTION_LOCK_TREE::getLabel( void ) const
 {
 	return "Lock Versions...";
 }
-REFRESH_TYPE ACTION_LOCK_TREE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_LOCK_TREE::perform( PTR_ITEM theItem )
 {
 	if( Application->MessageBox(
 		"This will lock the latest version of all files.\n"
@@ -1575,7 +1575,7 @@ REFRESH_TYPE ACTION_LOCK_TREE::perform( PTR_ITEM theItem )
 		THREAD_LOCK_TREE *theThread = new THREAD_LOCK_TREE( theItem );
 		theThread->StartThread();
 	}
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 bool ACTION_UNLOCK_TREE::acceptItem( THE_ITEM *theItem )
@@ -1595,7 +1595,7 @@ const char *ACTION_UNLOCK_TREE::getLabel( void ) const
 	return "Unlock Versions...";
 }
 
-REFRESH_TYPE ACTION_UNLOCK_TREE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_UNLOCK_TREE::perform( PTR_ITEM theItem )
 {
 	if( Application->MessageBox(
 		"This will unlock all versions of all files.\n"
@@ -1607,7 +1607,7 @@ REFRESH_TYPE ACTION_UNLOCK_TREE::perform( PTR_ITEM theItem )
 		THREAD_UNLOCK_TREE *theThread = new THREAD_UNLOCK_TREE( theItem );
 		theThread->StartThread();
 	}
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 const char *THREAD_LOCK_TREE::getTitle( void ) const
@@ -1940,7 +1940,7 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 
 			if( theEntry.folder )
 			{
-				theEntry.status = COMPARE_FOLDER;
+				theEntry.status = csFOLDER;
 				theEntry.statusSTR += "Folder";
 			}
 			else if( !theEntry.theFile )
@@ -1965,23 +1965,23 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 				}
 				else
 				{
-					theEntry.status = DB_MISSING;
+					theEntry.status = csDB_MISSING;
 					theEntry.statusSTR += "Not in repository";
 				}
 			}
 			else if( !theEntry.inFS )
 			{
-				theEntry.status = LOCAL_MISSING;
+				theEntry.status = csLOCAL_MISSING;
 				theEntry.statusSTR += "Not in local file system";
 			}
 			else if( difference < 0  )
 			{
-				theEntry.status = LOCAL_OLDER;
+				theEntry.status = csLOCAL_OLDER;
 				theEntry.statusSTR += STATUS_OLDER;
 			}
 			else if( difference > 0 )
 			{
-				theEntry.status = LOCAL_NEWER;
+				theEntry.status = csLOCAL_NEWER;
 				theEntry.statusSTR += STATUS_NEWER;
 			}
 			else
@@ -1995,7 +1995,7 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 			FolderCompareEntry	&theFolderEntry = (*iTheList)[dmPath];
 
 			theFolderEntry.folder = true;
-			theFolderEntry.status = COMPARE_FOLDER;
+			theFolderEntry.status = csFOLDER;
 			theFolderEntry.statusSTR += "Folder";
 
 			iTheList->addElements( theList );
@@ -2017,7 +2017,7 @@ STRING THE_FOLDER::generateWebFolder( bool forWebServer, STRING &mimeType )
 		for(
 			PTR_ITEM parent = getParent();
 			(THE_ITEM*)parent;
-			parent = (*parent).getParent()
+			parent = parent->getParent()
 		 )
 		{
 			webParent = parent;

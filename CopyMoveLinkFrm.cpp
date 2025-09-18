@@ -53,35 +53,35 @@ class ACTION_MOVE : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 class ACTION_COPY : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 class ACTION_LINK : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 class ACTION_ALIAS : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 class ACTION_BOOKMARK : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_MOVE::acceptItem( THE_ITEM *theItem )
@@ -144,9 +144,9 @@ const char *ACTION_BOOKMARK::getLabel( void ) const
 	return "Make Bookmark...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_MOVE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_MOVE::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	refresh;
+	RefhreshType	refresh;
 	PTR_ITEM 		parent = theItem->getParent();
 
 	CopyMoveLinkForm->setItem( theItem->getName(), parent );
@@ -158,17 +158,17 @@ REFRESH_TYPE ACTION_MOVE::perform( PTR_ITEM theItem )
 			CopyMoveLinkForm->EditName->Text.c_str()
 		);
 		theItem->updateDatabase();
-		refresh = REFRESH_RELOAD;
+		refresh = rtRELOAD;
 	}
 	else
-		refresh = REFRESH_NONE;
+		refresh = rtNONE;
 
 	return refresh;
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_COPY::perform( PTR_ITEM theItem )
+RefhreshType ACTION_COPY::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	refresh;
+	RefhreshType	refresh;
 	PTR_ITEM		parent = theItem->getParent();
 
 	CopyMoveLinkForm->setItem( theItem->getName(), parent );
@@ -183,18 +183,18 @@ REFRESH_TYPE ACTION_COPY::perform( PTR_ITEM theItem )
 		);
 		theThread->StartThread();
 
-		refresh = REFRESH_RELOAD;
+		refresh = rtRELOAD;
 	}
 	else
 	{
-		refresh = REFRESH_NONE;
+		refresh = rtNONE;
 	}
 	return refresh;
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_LINK::perform( PTR_ITEM theItem )
+RefhreshType ACTION_LINK::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	refresh = REFRESH_NONE;
+	RefhreshType	refresh = rtNONE;
 	PTR_ITEM		parent = theItem->getParent();
 	PTR_FILE		theFile = theItem;
 
@@ -208,15 +208,15 @@ REFRESH_TYPE ACTION_LINK::perform( PTR_ITEM theItem )
 				CopyMoveLinkForm->getDestination(),
 				CopyMoveLinkForm->EditName->Text.c_str()
 			);
-			refresh = REFRESH_RELOAD;
+			refresh = rtRELOAD;
 		}
 	}
 	return refresh;
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_ALIAS::perform( PTR_ITEM theItem )
+RefhreshType ACTION_ALIAS::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	refresh = REFRESH_NONE;
+	RefhreshType	refresh = rtNONE;
 	PTR_ITEM		parent = theItem->getParent();
 
 	CopyMoveLinkForm->setItem( theItem->getName(), parent );
@@ -233,14 +233,14 @@ REFRESH_TYPE ACTION_ALIAS::perform( PTR_ITEM theItem )
 		);
 		theAlias->updateDatabase();
 
-		refresh = REFRESH_RELOAD;
+		refresh = rtRELOAD;
 	}
 	return refresh;
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_BOOKMARK::perform( PTR_ITEM theItem )
+RefhreshType ACTION_BOOKMARK::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	refresh = REFRESH_NONE;
+	RefhreshType	refresh = rtNONE;
 	PTR_ITEM		thePersonal = getPersonalItem( TYPE_BOOKMARK_FOLDER );
 
 	CopyMoveLinkForm->setItem( theItem->getName(), thePersonal );
@@ -257,7 +257,7 @@ REFRESH_TYPE ACTION_BOOKMARK::perform( PTR_ITEM theItem )
 		);
 		theAlias->updateDatabase();
 
-		refresh = REFRESH_RELOAD;
+		refresh = rtRELOAD;
 	}
 
 	return refresh;

@@ -298,7 +298,7 @@ void TDocManDataModule::checkDB( bool silent )
 				PTR_ITEM theItem = getItem( findStorageQuery->Fields->Fields[0]->AsInteger );
 				if( theItem )
 				{
-					fp << "Storage used for " << (*theItem).getPath() << '\n';
+					fp << "Storage used for " << theItem->getPath() << '\n';
 				}
 			}
 			findStorageQuery->Close();
@@ -439,7 +439,7 @@ void TDocManDataModule::checkDB( bool silent )
 				PTR_ITEM theItem = getItem( findFileQuery->Fields->Fields[0]->AsInteger );
 				if( theItem )
 				{
-					fp << "File ID used for " << (*theItem).getPath() << '\n';
+					fp << "File ID used for " << theItem->getPath() << '\n';
 				}
 			}
 			findFileQuery->Close();
@@ -814,13 +814,13 @@ bool TDocManDataModule::updateExifData( const ImageMetaData *metaData )
 bool TDocManDataModule::updateExifData( const PTR_ITEM &theItem, int version, const ImageMetaData *metaData )
 {
 	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::updateExifData");
-	int itemID = (*theItem).getID();
+	int itemID = theItem->getID();
 
 	if( !version )
 	{
 		PTR_FILE theFile = theItem;
 		if( (THE_FILE*)theFile )
-			version = (*theFile).getVersionNum();
+			version = theFile->getVersionNum();
 	}
 
 	STRING filter = "ITEM_ID=";
@@ -875,7 +875,7 @@ void TDocManDataModule::refreshExifs( void )
 
 		if( theItem )
 		{
-			if( StatusForm->setStatus( "Checking", (*theItem).getName() ) )
+			if( StatusForm->setStatus( "Checking", theItem->getName() ) )
 				break;
 
 			theFile = theItem;
@@ -949,7 +949,7 @@ void TDocManDataModule::refreshExifs( void )
 			if( theFile )
 			{
 				metaData = new ImageMetaData;
-				success = (*theFile).loadImageMetaData( metaData, version );
+				success = theFile->loadImageMetaData( metaData, version );
 				doLogValue( "%d", (int)success );
 			}
 		}

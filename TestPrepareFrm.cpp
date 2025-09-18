@@ -67,7 +67,7 @@ class ACTION_TEST_PREPARE : ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 static ACTION_TEST_PREPARE	actionTestPrepare;
@@ -77,7 +77,7 @@ class ACTION_OPEN : ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 static ACTION_OPEN	actionOpen;
@@ -210,7 +210,7 @@ const char *ACTION_TEST_PREPARE::getLabel( void ) const
 	return "Prepare Test...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_TEST_PREPARE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_TEST_PREPARE::perform( PTR_ITEM theItem )
 {
 	PTR_TEST_FOLDER	theTestFolder = theItem;
 	if( theTestFolder )
@@ -279,10 +279,10 @@ REFRESH_TYPE ACTION_TEST_PREPARE::perform( PTR_ITEM theItem )
 				}
 			}
 		}
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 bool ACTION_OPEN::acceptItem( THE_ITEM *theItem )
@@ -298,10 +298,10 @@ const char *ACTION_OPEN::getLabel( void ) const
 	return "Browse";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_OPEN::perform( PTR_ITEM theItem )
+RefhreshType ACTION_OPEN::perform( PTR_ITEM theItem )
 {
 	theItem->THE_ITEM::open();
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 __fastcall TTestPrepareForm::TTestPrepareForm(TComponent* Owner)

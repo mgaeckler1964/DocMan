@@ -546,8 +546,8 @@ void THE_WEB_FOLDER::createLanguageChunk( PTR_FILE theItem, xml::Document *theDo
 	xml::XmlArray	menuElements;
 	PTR_FILE		child;
 	STRING			href, stylesheet;
-	PTR_ITEM		theParent = (*theItem).getParent();
-	ITEM_CONTENT	*theContent = (*theParent).getContent();
+	PTR_ITEM		theParent = theItem->getParent();
+	ITEM_CONTENT	*theContent = theParent->getContent();
 
 	theDoc->getAllElements(
 		&menuElements, "language", XMLNS_DOCMAN
@@ -583,7 +583,7 @@ void THE_WEB_FOLDER::createLanguageChunk( PTR_FILE theItem, xml::Document *theDo
 		stylesheet = menuElement->getAttribute( "stylesheet" );
 		if( !stylesheet.isEmpty() )
 		{
-			stylesheet = makeFullPath( (*theItem).getPath(), stylesheet );
+			stylesheet = makeFullPath( theItem->getPath(), stylesheet );
 			xslStylesheet = loadXSLfile( stylesheet );
 			if( xslStylesheet )
 			{
@@ -1138,7 +1138,7 @@ bool FACTORY_WEB_FOLDER::acceptParent( const THE_ITEM *_parent ) const
 {
 	PTR_ITEM	parent((THE_ITEM *)_parent);
 
-	if( (*parent).getID() <= 0 )
+	if( parent->getID() <= 0 )
 		return false;	// Don't accept the root
 
 	const THE_FOLDER *theFolder = dynamic_cast<const THE_FOLDER *>(
@@ -1155,7 +1155,7 @@ bool FACTORY_WEB_FOLDER::acceptParent( const THE_ITEM *_parent ) const
 		)
 			acceptable = false;
 		else
-			parent = (*parent).getParent();
+			parent = parent->getParent();
 	}
 
 	return acceptable;

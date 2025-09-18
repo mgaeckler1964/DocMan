@@ -604,10 +604,10 @@ void __fastcall TDocManMainForm::ActionClick( TObject *Sender )
 			ACTION_BASE *theAction = m_popupActions[i];
 			switch( theAction->perform( selectedItem ) )
 			{
-				case REFRESH_RELOAD:
+				case rtRELOAD:
 					fillContents( selectedItem->getID() );
 					break;
-				case REFRESH_REDRAW:
+				case rtREDRAW:
 					browserFrame->DrawGridContent->Invalidate();
 					break;
 			}

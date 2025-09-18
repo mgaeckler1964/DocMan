@@ -78,10 +78,10 @@
 // ----- type definitions ---------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-typedef enum
+enum CompareStatus
 {
-	COMPARE_OK, COMPARE_FOLDER, LOCAL_MISSING, DB_MISSING, LOCAL_NEWER, LOCAL_OLDER
-} COMPARE_STATUS;
+	csOK, csFOLDER, csLOCAL_MISSING, csDB_MISSING, csLOCAL_NEWER, csLOCAL_OLDER
+};
 
 class FolderCompareEntry;
 typedef gak::UnorderedMap<FolderCompareEntry>	FolderCompareList;
@@ -313,7 +313,7 @@ class FolderCompareEntry
 	PTR_FILE_BASE		theFile;
 	bool				inFS, reserved, folder;
 	STRING				statusSTR;
-	COMPARE_STATUS		status;
+	CompareStatus		status;
 
 	FolderCompareEntry()
 	{

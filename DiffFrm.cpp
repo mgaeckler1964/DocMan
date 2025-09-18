@@ -55,7 +55,7 @@ const char *ACTION_DIFF::getLabel( void ) const
 	return "Show Diff...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_DIFF::perform( PTR_ITEM theItem )
+RefhreshType ACTION_DIFF::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
@@ -63,7 +63,7 @@ REFRESH_TYPE ACTION_DIFF::perform( PTR_ITEM theItem )
 		DiffForm->ShowDiff( theFile );
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 __fastcall TDiffForm::TDiffForm(TComponent* Owner)

@@ -190,7 +190,7 @@ void __fastcall TTaskForm::FormShow(TObject *Sender)
 	else
 		throw Exception( "Internal Error" );
 
-	parentID = theParent ? (*theParent).getID() : (*theItem).getParentID();
+	parentID = theParent ? theParent->getID() : theItem->getParentID();
 	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 

@@ -56,7 +56,7 @@ class ACTION_TASK_FILES : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 static ACTION_TASK_FILES theAction;
 
@@ -78,12 +78,12 @@ const char *ACTION_TASK_FILES::getLabel( void ) const
 	return "Assigned Files...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_TASK_FILES::perform( PTR_ITEM theItem )
+RefhreshType ACTION_TASK_FILES::perform( PTR_ITEM theItem )
 {
 	TaskFilesForm->setItem( theItem );
 	TaskFilesForm->ShowModal();
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 //---------------------------------------------------------------------------

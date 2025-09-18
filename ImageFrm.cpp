@@ -56,7 +56,7 @@ class ACTION_IMAGE_BROWSER : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 #pragma options -RT.
 
@@ -75,7 +75,7 @@ const char *ACTION_IMAGE_BROWSER::getLabel( void ) const
 
 static ACTION_IMAGE_BROWSER				theImageBrowserAction;
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_IMAGE_BROWSER::perform( PTR_ITEM theItem )
+RefhreshType ACTION_IMAGE_BROWSER::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_REF	theFileRef;
 	PTR_REMOTE_FILE	theRemoteFile;
@@ -160,7 +160,7 @@ REFRESH_TYPE ACTION_IMAGE_BROWSER::perform( PTR_ITEM theItem )
 		delete ImageBrowserForm;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 __fastcall TImageBrowserForm::TImageBrowserForm(TComponent* Owner)
@@ -212,7 +212,7 @@ void __fastcall TImageBrowserForm::ItemClick( TObject *Sender )
 	if( !parentItem )
 	{
 		PTR_ITEM	theItem = getItem( theViewer.itemID );
-		parentItem = (*theItem).getParent();
+		parentItem = theItem->getParent();
 	}
 
 	if( parentItem )
@@ -227,10 +227,10 @@ bool TImageBrowserForm::addImage( const PTR_FILE &theFile )
 {
 	bool added = false;
 
-	STRING	mimeType = (*theFile).getMimeType();
+	STRING	mimeType = theFile->getMimeType();
 	if( mimeType == "image/jpeg" || mimeType == "image/bmp" )
 	{
-		STRING	storageFile = (*theFile).getExternalFile();
+		STRING	storageFile = theFile->getExternalFile();
 		TGraphic *theImage = mimeType == "image/jpeg"
 			? (TGraphic *)new TJPEGImage()
 			: (TGraphic *)new Graphics::TBitmap()
@@ -239,7 +239,7 @@ bool TImageBrowserForm::addImage( const PTR_FILE &theFile )
 		try
 		{
 			theImage->LoadFromFile( (const char *)storageFile );
-			added = addImage( (*theFile).getID(), (*theFile).getName(), theImage );
+			added = addImage( theFile->getID(), theFile->getName(), theImage );
 		}
 		catch( ... )
 		{

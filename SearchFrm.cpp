@@ -67,16 +67,16 @@ TSearchForm *SearchForm;
 //---------------------------------------------------------------------------
 class ACTION_SEARCH : public ACTION_BASE_PROPERTIES
 {
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 	virtual const char *getLabel( void ) const;
 };
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_SEARCH::perform( PTR_ITEM theItem )
+RefhreshType ACTION_SEARCH::perform( PTR_ITEM theItem )
 {
 	SearchForm->Show();
 	SearchForm->BringToFront();
 	SearchForm->SetFocus();
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 const char *ACTION_SEARCH::getLabel( void ) const

@@ -71,10 +71,10 @@
 // ----- type definitions ---------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-typedef enum
+enum RefhreshType
 {
-	REFRESH_NONE, REFRESH_REDRAW, REFRESH_RELOAD
-} REFRESH_TYPE;
+	rtNONE, rtREDRAW, rtRELOAD
+};
 
 // --------------------------------------------------------------------- //
 // ----- class definitions --------------------------------------------- //
@@ -90,7 +90,7 @@ class ACTION_BASE
 
 	virtual int getGroup( void ) const = 0;
 	virtual const char *getLabel( void ) const = 0;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem ) = 0;
+	virtual RefhreshType perform( PTR_ITEM theItem ) = 0;
 };
 
 typedef ACTION_BASE *ACTION_PTR;

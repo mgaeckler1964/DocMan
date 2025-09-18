@@ -56,7 +56,7 @@ class ACTION_VERSIONS : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_VERSIONS::acceptItem( THE_ITEM *theItem )
@@ -70,13 +70,13 @@ const char *ACTION_VERSIONS::getLabel( void ) const
 	return "Versions...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_VERSIONS::perform( PTR_ITEM theItem )
+RefhreshType ACTION_VERSIONS::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_BASE	theFile( theItem );
 	VersionsForm->setItem( theFile );
 	VersionsForm->ShowModal();
 
-	return REFRESH_REDRAW;
+	return rtREDRAW;
 }
 //---------------------------------------------------------------------------
 static ACTION_VERSIONS theAction;

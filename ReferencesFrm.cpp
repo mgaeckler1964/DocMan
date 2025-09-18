@@ -46,7 +46,7 @@ class ACTION_SHOW_REFERENCES : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 TReferencesForm *ReferencesForm;
@@ -63,12 +63,12 @@ const char *ACTION_SHOW_REFERENCES::getLabel( void ) const
 	return "Show References...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_SHOW_REFERENCES::perform( PTR_ITEM theItem )
+RefhreshType ACTION_SHOW_REFERENCES::perform( PTR_ITEM theItem )
 {
 	ReferencesForm->setItem( theItem );
 	ReferencesForm->ShowModal();
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 __fastcall TReferencesForm::TReferencesForm(TComponent* Owner)
@@ -78,7 +78,7 @@ __fastcall TReferencesForm::TReferencesForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TReferencesForm::FormShow(TObject *)
 {
-	QueryReferences->ParamByName( "theID" )->AsInteger = (*theItem).getID();
+	QueryReferences->ParamByName( "theID" )->AsInteger = theItem->getID();
 	QueryReferences->Open();
 }
 //---------------------------------------------------------------------------
@@ -86,7 +86,7 @@ void __fastcall TReferencesForm::QueryReferencesCalcFields(TDataSet *)
 {
 	PTR_ITEM	theItem = getItem( QueryReferencesID->AsInteger );
 	if( theItem )
-		QueryReferencesPATH->AsString = (const char *)(*theItem).getPath();
+		QueryReferencesPATH->AsString = (const char *)theItem->getPath();
 	else
 		QueryReferencesPATH->AsString = "???";
 }

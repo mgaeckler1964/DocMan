@@ -48,7 +48,7 @@ TVersionCreateForm *VersionCreateForm;
 ACTION_ADD_VERSION theCreateVersionAction;
 //---------------------------------------------------------------------------
 
-REFRESH_TYPE ACTION_ADD_VERSION::perform( PTR_ITEM theItem )
+RefhreshType ACTION_ADD_VERSION::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
@@ -71,11 +71,11 @@ REFRESH_TYPE ACTION_ADD_VERSION::perform( PTR_ITEM theItem )
 			);
 			theFile->updateDatabase();
 
-			return REFRESH_REDRAW;
+			return rtREDRAW;
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 //---------------------------------------------------------------------------

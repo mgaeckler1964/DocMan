@@ -252,10 +252,10 @@ void __fastcall TBrowserFrame::ActionClick(TObject *Sender)
 
 			switch( theAction->perform( selectedItem ) )
 			{
-				case REFRESH_RELOAD:
+				case rtRELOAD:
 					fillContents( currentItem, selectedItem->getID() );
 					break;
-				case REFRESH_REDRAW:
+				case rtREDRAW:
 					DrawGridContent->Invalidate();
 					break;
 			}

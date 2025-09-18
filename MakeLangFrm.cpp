@@ -49,7 +49,7 @@ class ACTION_MAKE_LANGUAGE : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_MAKE_LANGUAGE::acceptItem( THE_ITEM *theItem )
@@ -66,7 +66,7 @@ const char *ACTION_MAKE_LANGUAGE::getLabel( void ) const
 	return "Make Language...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_MAKE_LANGUAGE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_MAKE_LANGUAGE::perform( PTR_ITEM theItem )
 {
 	if( MakeLanguageForm->ShowModal() == mrOk )
 	{
@@ -84,7 +84,7 @@ REFRESH_TYPE ACTION_MAKE_LANGUAGE::perform( PTR_ITEM theItem )
 		}
 		else
 		{
-			STRING		oldName = (*theItem).getName();
+			STRING		oldName = theItem->getName();
 			STRING		tmpName = "TMP";
 
 			tmpName += formatNumber( theItem->getID() );
@@ -106,17 +106,17 @@ REFRESH_TYPE ACTION_MAKE_LANGUAGE::perform( PTR_ITEM theItem )
 			);
 			theQuery->Params->Items[0]->AsInteger = TYPE_LANGUAGE_ITEM;
 			theQuery->Params->Items[1]->AsString  = MakeLanguageForm->EditLanguage->Text;
-			theQuery->Params->Items[2]->AsInteger = (*newItem).getID();
-			theQuery->Params->Items[3]->AsInteger = (*theItem).getID();
+			theQuery->Params->Items[2]->AsInteger = newItem->getID();
+			theQuery->Params->Items[3]->AsInteger = theItem->getID();
 
 			theQuery->ExecSQL();
 
 		}
 
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 static ACTION_MAKE_LANGUAGE theAction;

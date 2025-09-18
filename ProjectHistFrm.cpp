@@ -73,7 +73,7 @@ class ACTION_PROJECT_HISTORY : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_PROJECT_HISTORY::acceptItem( THE_ITEM *theItem )
@@ -89,12 +89,12 @@ const char *ACTION_PROJECT_HISTORY::getLabel( void ) const
 	return "Project History...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_PROJECT_HISTORY::perform( PTR_ITEM theItem )
+RefhreshType ACTION_PROJECT_HISTORY::perform( PTR_ITEM theItem )
 {
 	ProjectHistoryForm->setItem( theItem );
 	ProjectHistoryForm->ShowModal();
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 static ACTION_PROJECT_HISTORY theAction;

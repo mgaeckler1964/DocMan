@@ -90,7 +90,7 @@ class ACTION_ARCHIVE : public ACTION_BASE_MOVE
 	public:
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_SHOW_ARCHIVE : public ACTION_BASE_PROPERTIES
@@ -98,7 +98,7 @@ class ACTION_SHOW_ARCHIVE : public ACTION_BASE_PROPERTIES
 	public:
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 // --------------------------------------------------------------------- //
@@ -199,11 +199,11 @@ const char *ACTION_ARCHIVE::getLabel( void ) const
 	return "Archive";
 }
 
-REFRESH_TYPE ACTION_ARCHIVE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_ARCHIVE::perform( PTR_ITEM theItem )
 {
-	(*theItem).archive();
+	theItem->archive();
 
-	return REFRESH_RELOAD;
+	return rtRELOAD;
 }
 
 bool ACTION_SHOW_ARCHIVE::acceptItem( THE_ITEM *theItem )
@@ -223,15 +223,15 @@ const char *ACTION_SHOW_ARCHIVE::getLabel( void ) const
 	return "Show Archive";
 }
 
-REFRESH_TYPE ACTION_SHOW_ARCHIVE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_SHOW_ARCHIVE::perform( PTR_ITEM theItem )
 {
-//	(*theItem).archive();
+//	theItem->archive();
 
-	PTR_ITEM	theArchive = (*theItem).getArchive( false );
+	PTR_ITEM	theArchive = theItem->getArchive( false );
 	if( theArchive )
-		(*theArchive).open();
+		theArchive->open();
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 // --------------------------------------------------------------------- //

@@ -267,8 +267,8 @@ ArrayOfInts *THE_ITEM::loadAncestors( void )
 	PTR_ITEM	parent = getParent();
 	while( parent )
 	{
-		m_ancestors.insertElement( (*parent).getID(), 0 );
-		parent = (*parent).getParent();
+		m_ancestors.insertElement( parent->getID(), 0 );
+		parent = parent->getParent();
 	}
 
 	m_ancestorsLoaded = true;

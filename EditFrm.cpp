@@ -55,7 +55,7 @@ class ACTION_EDIT : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 static ACTION_EDIT theAction;
@@ -81,7 +81,7 @@ const char *ACTION_EDIT::getLabel( void ) const
 	return "Edit...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_EDIT::perform( PTR_ITEM theItem )
+RefhreshType ACTION_EDIT::perform( PTR_ITEM theItem )
 {
 	PTR_FILE	theFile = theItem;
 	if( (THE_FILE*)theFile && theFile->canCreateVersion() )
@@ -128,7 +128,7 @@ REFRESH_TYPE ACTION_EDIT::perform( PTR_ITEM theItem )
 		DocManMainForm->ShowWindow( theEditor );
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 __fastcall TEditFileForm::TEditFileForm(TComponent* Owner)
@@ -145,8 +145,8 @@ void __fastcall TEditFileForm::Button1Click(TObject *)
 	content.writeToFile( destFile );
 	if( createVersion )
 	{
-		(*theFile).createVersion( destFile, "" );
-		(*theFile).updateDatabase();
+		theFile->createVersion( destFile, "" );
+		theFile->updateDatabase();
 	}
 
 	Close();

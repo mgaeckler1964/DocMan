@@ -54,7 +54,7 @@ TExifForm *ExifForm;
 class ACTION_EXIF : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 	virtual const char *getLabel( void ) const;
 };
 //---------------------------------------------------------------------------
@@ -70,11 +70,11 @@ bool ACTION_EXIF::acceptItem( THE_ITEM *theItem )
 	return false;
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_EXIF::perform( PTR_ITEM theItem )
+RefhreshType ACTION_EXIF::perform( PTR_ITEM theItem )
 {
 	ExifForm->setItem( theItem, 0 );
 	ExifForm->ShowModal();
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 const char *ACTION_EXIF::getLabel( void ) const
@@ -97,7 +97,7 @@ void __fastcall TExifForm::FormShow(TObject *)
 
 	if( (THE_FILE*)theFile )
 	{
-		success = (*theFile).updateImageMetaData( &metaData, theVersion );
+		success = theFile->updateImageMetaData( &metaData, theVersion );
 	}
 	else
 	{

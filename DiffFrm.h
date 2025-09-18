@@ -65,7 +65,7 @@ class ACTION_DIFF : public ACTION_BASE_PROPERTIES
 	public:
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TDiffForm *DiffForm;

@@ -138,21 +138,21 @@ class ACTION_DOWNLOAD : private ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_BRANCH_FILE : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_GENERATE : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 // --------------------------------------------------------------------- //
@@ -1517,7 +1517,7 @@ const char *ACTION_DOWNLOAD::getLabel( void ) const
 	return "Download...";
 }
 
-REFRESH_TYPE ACTION_DOWNLOAD::perform( PTR_ITEM theItem )
+RefhreshType ACTION_DOWNLOAD::perform( PTR_ITEM theItem )
 {
 	PTR_FILE	theFile = theItem;
 	if( theFile )
@@ -1529,7 +1529,7 @@ REFRESH_TYPE ACTION_DOWNLOAD::perform( PTR_ITEM theItem )
 			theFile->download( 0, false, saveDialog->FileName.c_str() );
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 //---------------------------------------------------------------------------
@@ -1559,7 +1559,7 @@ const char *ACTION_BRANCH_FILE::getLabel( void ) const
 	return "Branch...";
 }
 
-REFRESH_TYPE ACTION_BRANCH_FILE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_BRANCH_FILE::perform( PTR_ITEM theItem )
 {
 	PTR_FILE	theFile( theItem );
 
@@ -1570,11 +1570,11 @@ REFRESH_TYPE ACTION_BRANCH_FILE::perform( PTR_ITEM theItem )
 		MB_ICONQUESTION|MB_YESNO
 	) == IDYES )
 	{
-		(*theFile).branch();
-		return REFRESH_RELOAD;
+		theFile->branch();
+		return rtRELOAD;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 //---------------------------------------------------------------------------
@@ -1597,7 +1597,7 @@ bool ACTION_GENERATE::acceptItem( THE_ITEM *theItem )
 /*v*/			break;
 			}
 
-			parent = (*parent).getParent();
+			parent = parent->getParent();
 		}
 
 		if( acceptable )
@@ -1612,14 +1612,14 @@ const char *ACTION_GENERATE::getLabel( void ) const
 	return "Generate Web File";
 }
 
-REFRESH_TYPE ACTION_GENERATE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_GENERATE::perform( PTR_ITEM theItem )
 {
 	PTR_FILE	theFile( theItem );
 	STRING		dummy;
 
 	theFile->generateWebFile( false, dummy );
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 void THE_FILE::createXMLattributes( xml::Element *theElement )
@@ -2260,7 +2260,7 @@ STRING THE_FILE::generateWebFile( bool forWebServer, STRING &mimeType )
 	for(
 		PTR_ITEM parent = getParent();
 		(THE_ITEM*)parent;
-		parent = (*parent).getParent()
+		parent = parent->getParent()
 	 )
 	{
 		webParent = parent;
@@ -2289,7 +2289,7 @@ xml::Document *loadXmlDoc( const STRING &xmlFile )
 
 	if( (THE_FILE*)theFile )
 	{
-		theDoc = (*theFile).getXmlDocument();
+		theDoc = theFile->getXmlDocument();
 	}
 
 	return theDoc;
@@ -2304,7 +2304,7 @@ STRING loadCssDoc( const STRING &cssFile )
 
 	if( theFile )
 	{
-		css = (*theFile).getCSScontent();
+		css = theFile->getCSScontent();
 	}
 
 	return css;

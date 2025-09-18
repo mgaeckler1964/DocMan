@@ -60,7 +60,7 @@ TAttributesForm *AttributesForm;
 //---------------------------------------------------------------------------
 class ACTION_ATTRIBUTES : public ACTION_BASE_PROPERTIES
 {
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 	virtual const char *getLabel( void ) const;
 };
 //---------------------------------------------------------------------------
@@ -249,13 +249,13 @@ void THREAD_CAT_ADD_APPLY_DOWN::perform( void )
 	addCategory( testSQL.get(), theItemToHandle );
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_ATTRIBUTES::perform( PTR_ITEM theItem )
+RefhreshType ACTION_ATTRIBUTES::perform( PTR_ITEM theItem )
 {
 	AttributesForm->setItem( theItem );
 	if( AttributesForm->ShowModal() == mrOk )
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	else
-		return REFRESH_NONE;
+		return rtNONE;
 }
 //---------------------------------------------------------------------------
 const char *ACTION_ATTRIBUTES::getLabel( void ) const
@@ -305,7 +305,7 @@ void __fastcall TAttributesForm::FormShow(TObject *)
 		PTR_FILE	theFile = theItem;
 
 		if( (THE_FILE*)theFile )
-			theVersion = (*theFile).getVersionNum();
+			theVersion = theFile->getVersionNum();
 
 		editable = true;
 	}
@@ -317,7 +317,7 @@ void __fastcall TAttributesForm::FormShow(TObject *)
 	ButtonRemove->Enabled = editable;
 	ButtonUpgrade->Enabled = editable;
 
-	QueryCategoryForItem->Params->Items[0]->AsInteger = (*theItem).getID();
+	QueryCategoryForItem->Params->Items[0]->AsInteger = theItem->getID();
 	QueryCategoryForItem->Params->Items[1]->AsInteger = theVersion;
 
 	for(

@@ -164,7 +164,7 @@ void TTargetBrowseForm::setItem( const PTR_ITEM &iStartItem, bool all, enum item
 		PTR_ITEM theItem =
 			i<ancestorCount ? startItem->getAncestorItem( i ) : startItem
 		;
-		STRING	name = (*theItem).getName();
+		STRING	name = theItem->getName();
 
 		subNode = node ? findItem( node, theItem->getID() ) : NULL;
 		if( !subNode )

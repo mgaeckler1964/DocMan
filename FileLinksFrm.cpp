@@ -46,7 +46,7 @@ class ACTION_SHOW_LINKS : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 TFileLinksForm *FileLinksForm;
@@ -71,14 +71,14 @@ const char *ACTION_SHOW_LINKS::getLabel( void ) const
 	return "Show Links...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_SHOW_LINKS::perform( PTR_ITEM theItem )
+RefhreshType ACTION_SHOW_LINKS::perform( PTR_ITEM theItem )
 {
 	PTR_FILE	theFile( theItem );
 
 	FileLinksForm->setFile( theFile );
 	FileLinksForm->ShowModal();
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 __fastcall TFileLinksForm::TFileLinksForm(TComponent* Owner)
@@ -88,7 +88,7 @@ __fastcall TFileLinksForm::TFileLinksForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TFileLinksForm::FormShow(TObject *)
 {
-	QueryLinks->ParamByName( "theFileId" )->AsInteger = (*theFile).getFileID();
+	QueryLinks->ParamByName( "theFileId" )->AsInteger = theFile->getFileID();
 	QueryLinks->Open();
 }
 //---------------------------------------------------------------------------
@@ -96,7 +96,7 @@ void __fastcall TFileLinksForm::QueryLinksCalcFields(TDataSet *)
 {
 	PTR_ITEM	theItem = getItem( QueryLinksID->AsInteger );
 	if( theItem )
-		QueryLinksPATH->AsString = (const char *)(*theItem).getPath();
+		QueryLinksPATH->AsString = (const char *)theItem->getPath();
 	else
 		QueryLinksPATH->AsString = "???";
 }

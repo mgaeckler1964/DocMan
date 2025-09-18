@@ -48,14 +48,14 @@ class ACTION_BRANCH_RELEASE : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 class ACTION_RELEASE : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_BRANCH_RELEASE::acceptItem( THE_ITEM *theItem )
@@ -69,10 +69,10 @@ const char *ACTION_BRANCH_RELEASE::getLabel( void ) const
 	return "Branch...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_BRANCH_RELEASE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_BRANCH_RELEASE::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	refresh;
-	PTR_ITEM 		parent = (*theItem).getParent();
+	RefhreshType	refresh;
+	PTR_ITEM 		parent = theItem->getParent();
 
 	ReleaseForm->createBranch( theItem );
 	if( ReleaseForm->ShowModal() == mrOk )
@@ -87,11 +87,11 @@ REFRESH_TYPE ACTION_BRANCH_RELEASE::perform( PTR_ITEM theItem )
 		);
 		theThread->StartThread();
 
-		refresh = REFRESH_RELOAD;
+		refresh = rtRELOAD;
 	}
 	else
 	{
-		refresh = REFRESH_NONE;
+		refresh = rtNONE;
 	}
 	return refresh;
 }
@@ -102,7 +102,7 @@ bool ACTION_RELEASE::acceptItem( THE_ITEM *theItem )
 	return theFolder ? ACTION_BASE::acceptItem( theItem ) : false;
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_RELEASE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_RELEASE::perform( PTR_ITEM theItem )
 {
 	THE_RELEASE_FOLDER	*theFolder = dynamic_cast<THE_RELEASE_FOLDER *>(
 		static_cast<THE_ITEM*>(theItem)
@@ -121,11 +121,11 @@ REFRESH_TYPE ACTION_RELEASE::perform( PTR_ITEM theItem )
 			);
 			theFolder->updateDatabase();
 
-			return REFRESH_RELOAD;
+			return rtRELOAD;
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 const char *ACTION_RELEASE::getLabel( void ) const

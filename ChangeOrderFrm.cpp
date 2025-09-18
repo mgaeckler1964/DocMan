@@ -49,7 +49,7 @@ class ACTION_ORDERING : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 static ACTION_ORDERING	theAction;
@@ -74,7 +74,7 @@ const char *ACTION_ORDERING::getLabel( void ) const
 	return "Change Order...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_ORDERING::perform( PTR_ITEM theItem )
+RefhreshType ACTION_ORDERING::perform( PTR_ITEM theItem )
 {
 	int perms = theItem->getUserPermissions();
 	if( !perms & ITEM_PERM_MODIFY )
@@ -119,7 +119,7 @@ REFRESH_TYPE ACTION_ORDERING::perform( PTR_ITEM theItem )
 			child->updateDatabase();
 		}
 
-/***/	return REFRESH_REDRAW;
+/***/	return rtREDRAW;
 	case mrNoToAll:
 		for(
 			ITEM_CONTENT::const_iterator it = theContent->cbegin(),
@@ -133,10 +133,10 @@ REFRESH_TYPE ACTION_ORDERING::perform( PTR_ITEM theItem )
 			child->updateDatabase();
 		}
 
-/***/	return REFRESH_REDRAW;
+/***/	return rtREDRAW;
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 //---------------------------------------------------------------------------

@@ -84,7 +84,7 @@ class ACTION_DELETE : public ACTION_BASE_MOVE
 	public:
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_PURGE : public ACTION_BASE_MOVE
@@ -92,7 +92,7 @@ class ACTION_PURGE : public ACTION_BASE_MOVE
 	public:
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class THE_PERSONAL_TRASH : public THE_PERSONAL_FOLDER

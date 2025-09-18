@@ -50,7 +50,7 @@ class ACTION_CHECK_IN_TREE : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 
@@ -87,9 +87,9 @@ const char *ACTION_CHECK_IN::getLabel( void ) const
 	return "Check In...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_CHECK_IN::perform( PTR_ITEM theItem )
+RefhreshType ACTION_CHECK_IN::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	result = REFRESH_NONE;
+	RefhreshType	result = rtNONE;
 	PTR_FILE_BASE	theFile = theItem;
 
 	if( theFile && theFile->canUnreserve( false ) )
@@ -114,14 +114,14 @@ REFRESH_TYPE ACTION_CHECK_IN::perform( PTR_ITEM theItem )
 
 		if( CheckInForm->ShowModal() == mrOk )
 		{
-			result = REFRESH_REDRAW;
+			result = rtREDRAW;
 
 			STRING	versionFile = CheckInForm->CheckBoxAddVersion->Checked
 				? CheckInForm->EditFilePath->Text.c_str()
 				: "";
 
 			if( CheckInForm->CheckBoxBranch->Checked )
-				result = REFRESH_RELOAD;
+				result = rtRELOAD;
 
 			theFile->unreserve(
 				CheckInForm->CheckBoxBranch->Checked,
@@ -169,7 +169,7 @@ void THREAD_CHECK_IN_TREE::perform( void )
 	}
 }
 
-REFRESH_TYPE ACTION_CHECK_IN_TREE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_CHECK_IN_TREE::perform( PTR_ITEM theItem )
 {
 	PTR_SOURCE_FOLDER theFolder = theItem;
 	if( (THE_SOURCE_FOLDER *)theFolder )
@@ -195,11 +195,11 @@ REFRESH_TYPE ACTION_CHECK_IN_TREE::perform( PTR_ITEM theItem )
 				CheckInForm->MemoDescription->Text.c_str()
 			);
 			theThread->StartThread();
-			return REFRESH_RELOAD;
+			return rtRELOAD;
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 static ACTION_CHECK_IN_TREE		theTreeAction;

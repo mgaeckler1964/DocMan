@@ -50,11 +50,11 @@ TGeneralForm *GeneralForm;
 //---------------------------------------------------------------------------
 class ACTION_GENERAL : public ACTION_BASE_PROPERTIES
 {
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 	virtual const char *getLabel( void ) const;
 };
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_GENERAL::perform( PTR_ITEM theItem )
+RefhreshType ACTION_GENERAL::perform( PTR_ITEM theItem )
 {
 	GeneralForm->setItem( theItem );
 	if( GeneralForm->ShowModal() == mrOk )
@@ -75,10 +75,10 @@ REFRESH_TYPE ACTION_GENERAL::perform( PTR_ITEM theItem )
 		}
 
 		theItem->updateDatabase();
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	}
 	else
-		return REFRESH_NONE;
+		return rtNONE;
 }
 //---------------------------------------------------------------------------
 const char *ACTION_GENERAL::getLabel( void ) const

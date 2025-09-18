@@ -87,7 +87,7 @@ class ACTION_REPORT : public ACTION_BASE_PROPERTIES
 	public:
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 static ACTION_REPORT theAction;
@@ -121,7 +121,7 @@ const char *ACTION_REPORT::getLabel( void ) const
 }
 
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_REPORT::perform( PTR_ITEM theItem )
+RefhreshType ACTION_REPORT::perform( PTR_ITEM theItem )
 {
 	PTR_FILE	theFile;
 	PTR_ITEM	theXsltFolder = getXsltFolder( theItem );
@@ -216,7 +216,7 @@ REFRESH_TYPE ACTION_REPORT::perform( PTR_ITEM theItem )
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 
 //---------------------------------------------------------------------------

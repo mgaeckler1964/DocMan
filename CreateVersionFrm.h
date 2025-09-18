@@ -62,7 +62,7 @@ public:		// User declarations
 class ACTION_ADD_VERSION : public ACTION_BASE_VERSIONS
 {
 	public:
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 	virtual const char *getLabel( void ) const;
 	virtual bool acceptItem( THE_ITEM *theItem );
 };

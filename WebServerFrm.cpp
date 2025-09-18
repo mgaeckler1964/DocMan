@@ -64,7 +64,7 @@ class ACTION_BROWSER : private ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 //---------------------------------------------------------------------------
@@ -316,11 +316,11 @@ const char *ACTION_BROWSER::getLabel( void ) const
 	return "Browser...";
 }
 
-REFRESH_TYPE ACTION_BROWSER::perform( PTR_ITEM theItem )
+RefhreshType ACTION_BROWSER::perform( PTR_ITEM theItem )
 {
 	WebServerForm->setItem( theItem );
 	WebServerForm->ShowModal();
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 __fastcall TWebServerForm::TWebServerForm(TComponent* Owner)

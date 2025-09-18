@@ -49,7 +49,7 @@ class ACTION_SYNCED_LOCAL_PATH : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 bool ACTION_SYNCED_LOCAL_PATH::acceptItem( THE_ITEM *theItem )
@@ -64,7 +64,7 @@ bool ACTION_SYNCED_LOCAL_PATH::acceptItem( THE_ITEM *theItem )
 	return false;
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_SYNCED_LOCAL_PATH::perform( PTR_ITEM theItem )
+RefhreshType ACTION_SYNCED_LOCAL_PATH::perform( PTR_ITEM theItem )
 {
 	THE_LOCAL_FOLDER	*theFolder = dynamic_cast<THE_LOCAL_FOLDER *>(
 		static_cast<THE_ITEM*>( theItem )
@@ -85,12 +85,12 @@ REFRESH_TYPE ACTION_SYNCED_LOCAL_PATH::perform( PTR_ITEM theItem )
 				theFolder->setLocalPath( newPath );
 				theFolder->updateDatabase();
 
-				return REFRESH_RELOAD;
+				return rtRELOAD;
 			}
 		}
 	}
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 const char *ACTION_SYNCED_LOCAL_PATH::getLabel( void ) const

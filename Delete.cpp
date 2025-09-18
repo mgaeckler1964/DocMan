@@ -86,7 +86,7 @@ class ACTION_RESTORE : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 // --------------------------------------------------------------------- //
@@ -261,17 +261,17 @@ const char *ACTION_PURGE::getLabel( void ) const
 	return "Purge";
 }
 
-REFRESH_TYPE ACTION_DELETE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_DELETE::perform( PTR_ITEM theItem )
 {
 	ThreadDeletion *theThread = new ThreadDeletion( theItem );
 	theThread->StartThread();
 
-	return REFRESH_RELOAD;
+	return rtRELOAD;
 }
 
-REFRESH_TYPE ACTION_RESTORE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_RESTORE::perform( PTR_ITEM theItem )
 {
-	REFRESH_TYPE	refresh;
+	RefhreshType	refresh;
 	STRING			oldName = theItem->getName();
 	PTR_ITEM		oldParent = theItem->getOldParent();
 
@@ -284,21 +284,21 @@ REFRESH_TYPE ACTION_RESTORE::perform( PTR_ITEM theItem )
 			CopyMoveLinkForm->EditName->Text.c_str()
 		);
 		theItem->updateDatabase();
-		refresh = REFRESH_RELOAD;
+		refresh = rtRELOAD;
 	}
 	else
-		refresh = REFRESH_NONE;
+		refresh = rtNONE;
 
 	return refresh;
 }
 
-REFRESH_TYPE ACTION_PURGE::perform( PTR_ITEM theItem )
+RefhreshType ACTION_PURGE::perform( PTR_ITEM theItem )
 {
 	theItem->getContent();
 	ThreadPurging *theThread = new ThreadPurging( theItem );
 	theThread->StartThread();
 
-	return REFRESH_RELOAD;
+	return rtRELOAD;
 }
 
 // --------------------------------------------------------------------- //

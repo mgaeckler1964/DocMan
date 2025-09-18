@@ -435,7 +435,7 @@ class ACTION_WEB_WIZARD : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 static ACTION_WEB_WIZARD webWizard;
 
@@ -536,7 +536,7 @@ static void createContent(
 }
 
 
-REFRESH_TYPE ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
+RefhreshType ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 {
 	int				cssID = 0;
 
@@ -549,19 +549,19 @@ REFRESH_TYPE ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 	xml::Element	*titleElement;
 
 
-	PTR_FOLDER	theFolder = (*theItem).getContentItem( "_layout" );
+	PTR_FOLDER	theFolder = theItem->getContentItem( "_layout" );
 	if( !theFolder )
 	{
 		theFolder = createItem( TYPE_FOLDER );
-		(*theFolder).setData( theItem, "_layout", "created by web wizard" );
-		(*theFolder).updateDatabase();
+		theFolder->setData( theItem, "_layout", "created by web wizard" );
+		theFolder->updateDatabase();
 	}
 
 	WebWizardForm->dataLoaded = false;
-	PTR_FILE theFile = (*theFolder).getContentItem( "layout.xml" );
+	PTR_FILE theFile = theFolder->getContentItem( "layout.xml" );
 	if( theFile )
 	{
-		theConfig = (*theFile).getXmlDocument();
+		theConfig = theFile->getXmlDocument();
 		if( theConfig )
 		{
 			layoutElement = theConfig->getRoot();
@@ -600,7 +600,7 @@ REFRESH_TYPE ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 	}
 	WebWizardForm->configDocument = theConfig;
 
-	STRING newCaption = STRING( "Web Wizard " ) + (*theItem).getName();
+	STRING newCaption = STRING( "Web Wizard " ) + theItem->getName();
 	WebWizardForm->Caption = (const char *)newCaption;
 
 	if( WebWizardForm->ShowModal() == mrOk )
@@ -1097,7 +1097,7 @@ REFRESH_TYPE ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 				theFile->updateDatabase();
 			}
 
-			cssID = (*theFile).getID();
+			cssID = theFile->getID();
 		}
 
 		formElement = form2Xml( WebWizardForm );
@@ -1180,12 +1180,12 @@ REFRESH_TYPE ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 
 		delete xslRoot;
 
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	}
 
 	delete theConfig;
 
-	return REFRESH_NONE;
+	return rtNONE;
 }
 //---------------------------------------------------------------------------
 void __fastcall TWebWizardForm::EnableDisableLayout(TObject *)

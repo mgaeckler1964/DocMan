@@ -49,7 +49,7 @@ class ACTION_MULTIACTIONS : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 static ACTION_MULTIACTIONS	theAction;
@@ -69,13 +69,13 @@ const char *ACTION_MULTIACTIONS::getLabel( void ) const
 	return "Actions...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_MULTIACTIONS::perform( PTR_ITEM theItem )
+RefhreshType ACTION_MULTIACTIONS::perform( PTR_ITEM theItem )
 {
 	MultiActionForm->setItem( theItem );
 	if( MultiActionForm->ShowModal() == mrOk )
-		return REFRESH_RELOAD;
+		return rtRELOAD;
 	else
-		return REFRESH_NONE;
+		return rtNONE;
 }
 
 //---------------------------------------------------------------------------

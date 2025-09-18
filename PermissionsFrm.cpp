@@ -45,7 +45,7 @@ TPermissionsForm *PermissionsForm;
 class ACTION_PERMISSIONS : public ACTION_BASE_PERMISSIONS
 {
 	virtual const char *getLabel( void ) const;
-	virtual REFRESH_TYPE perform( PTR_ITEM theItem );
+	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 //---------------------------------------------------------------------------
 const char *ACTION_PERMISSIONS::getLabel( void ) const
@@ -53,12 +53,12 @@ const char *ACTION_PERMISSIONS::getLabel( void ) const
 	return "Permissions...";
 }
 //---------------------------------------------------------------------------
-REFRESH_TYPE ACTION_PERMISSIONS::perform( PTR_ITEM theItem )
+RefhreshType ACTION_PERMISSIONS::perform( PTR_ITEM theItem )
 {
 	PermissionsForm->setItem( theItem );
 	PermissionsForm->ShowModal();
 
-	return REFRESH_RELOAD;
+	return rtRELOAD;
 }
 
 //---------------------------------------------------------------------------
