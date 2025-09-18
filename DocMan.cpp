@@ -169,8 +169,8 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 	winlib::Application theVclApp;
 	theVclApp.setInstance( hInstance );
 
-	XML_MY_SCHEMA_MANAGER::setXmlDocLoadFunction( loadXmlDoc );
-	XML_MY_SCHEMA_MANAGER::setSchemaFile4NamespaceCB( getSchemaFile4Namespace );
+	XmlMySchemaManager::setXmlDocLoadFunction( loadXmlDoc );
+	XmlMySchemaManager::setSchemaFile4NamespaceCB( getSchemaFile4Namespace );
 	TxmlEditorFrame::setPlainTextLoader( loadCssDoc );
 	try
 	{

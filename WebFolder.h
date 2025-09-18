@@ -90,26 +90,26 @@
 class THE_FILE;
 
 
-struct XML_CACHE_ENTRY
+struct XmlCacheEntry
 {
 	STRING		fileName;
 	Document	*theDocument;
 	Element		*theRoot;
 };
-typedef Array<XML_CACHE_ENTRY>	XML_CACHE_ENTRYS;
+typedef Array<XmlCacheEntry>	XmlCacheEntries;
 
-struct XML_MENU_MAP
+struct XmlMenuMap
 {
 	Element *menuElement, *menuXslTree;
 };
-typedef Array<XML_MENU_MAP>		XML_MENU_MAPS;
+typedef Array<XmlMenuMap>		XmlMenuMaps;
 
 class THE_WEB_FOLDER : public THE_LOCAL_FOLDER
 {
 	private:
 	std::ofstream		logFile;
 	gak::IntStrMap		exportedFiles;
-	XML_CACHE_ENTRYS	xslCache;
+	XmlCacheEntries		xslCache;
 	Document			*theMenuDoc;
 
 	static Element *createXMLmenu( THE_ITEM *root, int level=0 );
@@ -128,13 +128,13 @@ class THE_WEB_FOLDER : public THE_LOCAL_FOLDER
 	void createLanguageChunk( PTR_FILE theItem, Document *theDoc );
 	void createHTMLmenuChunk(
 		gak::xml::XmlArray &menuElements, const STRING &styleSheetPath,
-		XML_MENU_MAPS *menuMap
+		XmlMenuMaps *menuMap
 	);
 
 	void testDocument( Document *theDocument )
 	{
 #ifndef DOCMANBG
-		std::auto_ptr<XML_MY_SCHEMA_MANAGER>	theManager( new XML_MY_SCHEMA_MANAGER );
+		std::auto_ptr<XmlMySchemaManager>	theManager( new XmlMySchemaManager );
 		STRING errText = theManager->testDocument( theDocument );
 		if( !errText.isEmpty() )
 			logFile <<

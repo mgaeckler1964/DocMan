@@ -310,13 +310,13 @@ xml::Element *THE_WEB_FOLDER::findEntryInMenu( PTR_ITEM file )
 void THE_WEB_FOLDER::clearXSLcache( void )
 {
 	for(
-		XML_CACHE_ENTRYS::const_iterator it = xslCache.cbegin(),
+		XmlCacheEntries::const_iterator it = xslCache.cbegin(),
 			endIT = xslCache.cend();
 		it != endIT;
 		++it
 	)
 	{
-		const XML_CACHE_ENTRY &theEntry = *it;
+		const XmlCacheEntry &theEntry = *it;
 		delete theEntry.theDocument;
 	}
 
@@ -328,20 +328,20 @@ xml::Element *THE_WEB_FOLDER::loadXSLfile( const STRING &fileName )
 	doEnterFunction("THE_WEB_FOLDER::loadXSLfile");
 
 	for(
-		XML_CACHE_ENTRYS::const_iterator it = xslCache.cbegin(),
+		XmlCacheEntries::const_iterator it = xslCache.cbegin(),
 			endIT = xslCache.cend();
 		it != endIT;
 		++it
 	)
 	{
-		const XML_CACHE_ENTRY &theEntry = *it;
+		const XmlCacheEntry &theEntry = *it;
 		if( theEntry.fileName == fileName )
 		{
 /***/		return theEntry.theRoot;
 		}
 	}
 
-	XML_CACHE_ENTRY	newValue;
+	XmlCacheEntry	newValue;
 
 	newValue.theDocument = loadXmlDoc( fileName );
 	if( newValue.theDocument )
@@ -609,7 +609,7 @@ void THE_WEB_FOLDER::createLanguageChunk( PTR_FILE theItem, xml::Document *theDo
 
 void THE_WEB_FOLDER::createHTMLmenuChunk(
 	xml::XmlArray &menuElements, const STRING &styleSheetPath,
-	XML_MENU_MAPS *menuMap
+	XmlMenuMaps *menuMap
 )
 {
 	doEnterFunction("THE_WEB_FOLDER::createHTMLmenuChunk");
@@ -662,7 +662,7 @@ void THE_WEB_FOLDER::createHTMLmenuChunk(
 						theMenuStyle->getParent()->replaceObject(
 							theMenuStyle, theMenuResult
 						);
-						XML_MENU_MAP	newMap;
+						XmlMenuMap	newMap;
 						newMap.menuElement = theMenuStyle;
 						newMap.menuXslTree = theMenuResult;
 						menuMap->addElement( newMap );
@@ -726,7 +726,7 @@ STRING THE_WEB_FOLDER::transformXmlFile(
 			*/
 
 			xml::XmlArray	menuElements;
-			XML_MENU_MAPS	menuMap;
+			XmlMenuMaps		menuMap;
 
 			stylesheet->getAllElements(
 				&menuElements, "menu", XMLNS_DOCMAN
@@ -778,13 +778,13 @@ STRING THE_WEB_FOLDER::transformXmlFile(
 				restore the original style sheet
 			*/
 			for(
-				XML_MENU_MAPS::const_iterator it = menuMap.cbegin(),
+				XmlMenuMaps::const_iterator it = menuMap.cbegin(),
 					endIT = menuMap.cend();
 				it != endIT;
 				++it
 			)
 			{
-				const XML_MENU_MAP	&map = *it;
+				const XmlMenuMap &map = *it;
 
 				map.menuXslTree->getParent()->replaceObject(
 					map.menuXslTree, map.menuElement
