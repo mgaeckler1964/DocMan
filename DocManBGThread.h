@@ -81,7 +81,7 @@ typedef DocManIndex::RelevantHits	DocManSearchResult;
 // --------------------------------------------------------------------- //
 
 #pragma option -RT-
-struct DOCMAN_DIRENTRY : public gak::DirectoryEntry
+struct DocmanDirEntry : public gak::DirectoryEntry
 {
 	gak::DateTime	dbCreatedDate, dbModifiedDate;
 	int				itemID;

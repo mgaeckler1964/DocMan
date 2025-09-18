@@ -52,7 +52,7 @@ class THE_TEST_EXEC_FOLDER : public THE_ITEM
 
 	static int itemCompare( const PTR_ITEM &e1, const PTR_ITEM &e2, int crit );
 
-	virtual COL_TITLE	*getColumnTitles( void ) const;
+	virtual ColumnTitle *getColumnTitles( void ) const;
 	virtual int getColCount( void ) const;
 	virtual int *getColWidth( void ) const;
 	virtual void sort( void );

@@ -54,7 +54,7 @@ class TLocalDataSet : public TDataSet
 };
 
 //---------------------------------------------------------------------------
-static int versionsCompare( const VERSIONS &e1, const VERSIONS &e2 )
+static int versionsCompare( const FileVersion &e1, const FileVersion &e2 )
 {
 	if( e1.STORAGE_ID > e2.STORAGE_ID )
 		return -1;
@@ -106,7 +106,7 @@ __fastcall TProjectHistoryForm::TProjectHistoryForm(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 void TProjectHistoryForm::appendVersions(
-	Array<VERSIONS> *dataArray, const PTR_ITEM &theItem
+	Array<FileVersion> *dataArray, const PTR_ITEM &theItem
 )
 {
 	doEnterFunction("TProjectHistoryForm::appendVersions");
@@ -120,7 +120,7 @@ void TProjectHistoryForm::appendVersions(
 		QueryVersions->Next()
 	)
 	{
-		VERSIONS	&data = dataArray->createElement();
+		FileVersion &data = dataArray->createElement();
 
 		data.NAME = path + '\\' + QueryVersionsNAME->AsString.c_str();
 
@@ -157,23 +157,23 @@ void TProjectHistoryForm::appendVersions(
 //---------------------------------------------------------------------------
 void __fastcall TProjectHistoryForm::FormShow(TObject *)
 {
-	int				storageId, lastStorageId = -1;
-	Array<VERSIONS>	dataArray;
-	STRING			path = theItem->getPath();
-	size_t			pathLen = path.strlen() + 1;
-	STRING			newCaption = "Versions of ";
+	int					storageId, lastStorageId = -1;
+	Array<FileVersion>	dataArray;
+	STRING				path = m_theItem->getPath();
+	size_t				pathLen = path.strlen() + 1;
+	STRING				newCaption = "Versions of ";
 
-	newCaption += (*theItem).getName();
-	Caption = (const char *)newCaption;
+	newCaption += m_theItem->getName();
+	Caption = newCaption.c_str();
 
 	::SetCursor( LoadCursor( NULL, IDC_WAIT ) );
 
-	appendVersions( &dataArray, theItem );
+	appendVersions( &dataArray, m_theItem );
 	dataArray.sort( versionsCompare );
 
 	for( std::size_t i = dataArray.size() -1; i != std::size_t(-1); i-- )
 	{
-		const VERSIONS	&element = dataArray[i];
+		const FileVersion &element = dataArray[i];
 		storageId = element.STORAGE_ID;
 		if( storageId == lastStorageId )
 		{
@@ -188,13 +188,13 @@ void __fastcall TProjectHistoryForm::FormShow(TObject *)
 	ClientDataSetVersions->ReadOnly = false;
 	ClientDataSetVersions->CreateDataSet();
 	for(
-		Array<VERSIONS>::const_iterator it = dataArray.cbegin(),
+		Array<FileVersion>::const_iterator it = dataArray.cbegin(),
 			endIT = dataArray.cend();
 		it != endIT;
 		++it
 	)
 	{
-		const VERSIONS	&element = *it;
+		const FileVersion &element = *it;
 		ClientDataSetVersions->Append();
 		ClientDataSetVersionsNAME->AsString = static_cast<const char *>(element.NAME) + pathLen;
 		ClientDataSetVersionsVERSION->AsInteger = element.versionID;

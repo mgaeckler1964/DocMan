@@ -56,7 +56,7 @@
 
 //---------------------------------------------------------------------------
 
-struct VERSIONS
+struct FileVersion
 {
 	STRING		NAME;
 	int			versionID, STORAGE_ID;
@@ -110,12 +110,12 @@ __published:	// Von der IDE verwaltete Komponenten
 private:	// Anwender-Deklarationen
 //	TLocalDataSet	*dataSet;
 
-	PTR_ITEM	theItem;
-	void	appendVersions( Array<VERSIONS>	*dataArray, const PTR_ITEM &theItem );
+	PTR_ITEM	m_theItem;
+	void	appendVersions( Array<FileVersion> *dataArray, const PTR_ITEM &theItem );
 public:		// Anwender-Deklarationen
 	void setItem( const PTR_ITEM &theItem )
 	{
-		this->theItem = theItem;
+		m_theItem = theItem;
 	}
 	__fastcall TProjectHistoryForm(TComponent* Owner);
 };

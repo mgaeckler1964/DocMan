@@ -117,10 +117,10 @@ typedef LockQueue<IndexResultPtr, IndexPriorityQueue>		IndexResultQueue;
 namespace gak
 {
 	template <>
-	class FixedComparator<DOCMAN_DIRENTRY>
+	class FixedComparator<DocmanDirEntry>
 	{
 		public:
-		int operator() ( const DOCMAN_DIRENTRY &t1, const DOCMAN_DIRENTRY &t2 ) const
+		int operator() ( const DocmanDirEntry &t1, const DocmanDirEntry &t2 ) const
 		{
 			int compareResult = t1.modifiedDate.compare( t2.modifiedDate );
 
@@ -353,7 +353,7 @@ void ThreadBackground::updateSyncFolders( void )
 	STRING			logPath = Session->PrivateDir.c_str();
 	STRING			logName = logPath + DIRECTORY_DELIMITER_STRING "refreshDB.log";;
 
-	SortedArray<DOCMAN_DIRENTRY>	localDirs;
+	SortedArray<DocmanDirEntry> localDirs;
 
 /*
 select it.ID, it.NAME
@@ -405,7 +405,7 @@ order by it.parentID, it.ID
 
 				try
 				{
-					DOCMAN_DIRENTRY	localStat;
+					DocmanDirEntry localStat;
 
 					localStat.findFile( localPath );
 
@@ -451,7 +451,7 @@ order by it.parentID, it.ID
 		i--
 	)
 	{
-		DOCMAN_DIRENTRY	&curEntry = localDirs[i];
+		DocmanDirEntry &curEntry = localDirs[i];
 		if( curEntry.dbModifiedDate < curEntry.modifiedDate )
 		{
 			int				currentID = curEntry.itemID;
@@ -499,7 +499,7 @@ order by it.parentID, it.ID
 		i--
 	)
 	{
-		DOCMAN_DIRENTRY	&curEntry = localDirs[i];
+		DocmanDirEntry &curEntry = localDirs[i];
 		if( curEntry.dbModifiedDate != curEntry.modifiedDate )
 		{
 			int				currentID = curEntry.itemID;
@@ -546,7 +546,7 @@ order by it.parentID, it.ID
 		i--
 	)
 	{
-		const DOCMAN_DIRENTRY	&curEntry = localDirs[i];
+		const DocmanDirEntry	&curEntry = localDirs[i];
 		int						currentID = curEntry.itemID;
 		PTR_FOLDER_REF			theFolder = getItem( currentID );
 		if( theFolder )

@@ -75,7 +75,7 @@
 
 class THE_TASKLIST : public THE_ITEM
 {
-	virtual COL_TITLE	*getColumnTitles( void ) const;
+	virtual ColumnTitle *getColumnTitles( void ) const;
 
 	static int itemCompare( const PTR_ITEM &e1, const PTR_ITEM &e2, int crit );
 

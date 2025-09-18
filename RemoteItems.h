@@ -170,7 +170,7 @@ class THE_REMOTE_FOLDER : public THE_LOCAL_FOLDER
 	bool isRootPurging( void );
 	virtual bool refresh( bool recursive = true, std::ostream *stream=NULL );
 
-	virtual COL_TITLE	*getColumnTitles( void ) const;
+	virtual ColumnTitle *getColumnTitles( void ) const;
 	virtual int getColCount( void ) const;
 	virtual int *getColWidth( void ) const;
 	virtual void sort( void );

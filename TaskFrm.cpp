@@ -49,13 +49,13 @@ using namespace gak;
 #pragma resource "*.dfm"
 TTaskForm *TaskForm;
 //---------------------------------------------------------------------------
-struct TASK_USER
+struct TaskUser
 {
 	int		id;
 	STRING	name;
 };
 //---------------------------------------------------------------------------
-static int TaskUserCompare( const TASK_USER &u1, const TASK_USER &u2, int sortType )
+static int TaskUserCompare( const TaskUser &u1, const TaskUser &u2, int sortType )
 {
 	if( !sortType )
 		return u2.id - u1.id;
@@ -63,13 +63,13 @@ static int TaskUserCompare( const TASK_USER &u1, const TASK_USER &u2, int sortTy
 		return strcmpi( u1.name, u2.name );
 }
 //---------------------------------------------------------------------------
-static SortedArray<TASK_USER, CompareFunction<TASK_USER,int> > theTaskUser( TaskUserCompare, 0 );
-static SortedArray<TASK_USER, CompareFunction<TASK_USER,int> > theTaskGroups( TaskUserCompare, 0 );
+static SortedArray<TaskUser, CompareFunction<TaskUser,int> > theTaskUser( TaskUserCompare, 0 );
+static SortedArray<TaskUser, CompareFunction<TaskUser,int> > theTaskGroups( TaskUserCompare, 0 );
 //---------------------------------------------------------------------------
 static void fillTaskUserByQuery( TQuery *theQuery, int groupPermissions=0 )
 {
 	size_t		pos;
-	TASK_USER	userFound;
+	TaskUser	userFound;
 
 	for( theQuery->Open(); !theQuery->Eof; theQuery->Next() )
 	{
@@ -254,7 +254,7 @@ void __fastcall TTaskForm::FormShow(TObject *Sender)
 	theTaskUser.resort( 1 );
 	for( i=0, itemIndex = -1; i<theTaskUser.size(); i++ )
 	{
-		const TASK_USER	&user = theTaskUser[i];
+		const TaskUser &user = theTaskUser[i];
 		ComboBoxAssignedTo->Items->Add( static_cast<const char *>(user.name) );
 		if( ComboBoxAssignedTo->Tag )
 		{

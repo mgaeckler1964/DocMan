@@ -174,7 +174,7 @@ void __fastcall TPermApplyDownForm::FormShow(TObject *)
 		StringGrid->RowCount = numAcls+1;
 		for( std::size_t i=0, row=1; i<numAcls; i++, row++ )
 		{
-			const ITEM_PERM &permEntry = acl[i];
+			const ItemPermissions &permEntry = acl[i];
 			if( theUser.ID != permEntry.user_id )
 				getUserById( "DocManDB", permEntry.user_id, &theUser );
 

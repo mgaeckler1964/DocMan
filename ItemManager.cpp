@@ -278,7 +278,7 @@ ArrayOfInts *THE_ITEM::loadAncestors( void )
 
 void THE_ITEM::loadACL( void )
 {
-	ITEM_PERM	itemPerm;
+	ItemPermissions	itemPerm;
 
 	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
@@ -658,7 +658,7 @@ void THE_ITEM::updateDatabase( void )
 					++it
 				)
 				{
-					const ITEM_PERM &itemPerm = *it;
+					const ItemPermissions &itemPerm = *it;
 					theQuery->Params->Items[0]->AsInteger = id;
 					theQuery->Params->Items[1]->AsInteger = itemPerm.user_id;
 					theQuery->Params->Items[2]->AsInteger = itemPerm.permissions;
@@ -813,9 +813,9 @@ int THE_ITEM::getRowCount( void ) const
 	return m_content.size();
 }
 
-COL_TITLE	*THE_ITEM::getColumnTitles( void ) const
+ColumnTitle *THE_ITEM::getColumnTitles( void ) const
 {
-	static COL_TITLE	colTitles[] =
+	static ColumnTitle colTitles[] =
 	{
 		{ "Order", SORT_ORDER },
 		{ "Type", SORT_TYPE },
@@ -838,7 +838,7 @@ STRING THE_ITEM::drawHeaderCell( int col, int, TCanvas *canvas, TRect &Rect, TIm
 {
 	STRING text;
 
-	COL_TITLE	*colTitles = getColumnTitles();
+	ColumnTitle *colTitles = getColumnTitles();
 	text = colTitles[col].title;
 
 	if( abs(sortType) == colTitles[col].sortType )
@@ -1627,11 +1627,11 @@ void THE_ITEM::setACL(
 				++it
 			)
 			{
-				bool processed = false;
-				const ITEM_PERM	&permToProcess = *it;
+				bool					processed = false;
+				const ItemPermissions	&permToProcess = *it;
 				for( size_t j=0; j<m_acl.size(); j++ )
 				{
-					ITEM_PERM	&curPerm = m_acl[j];
+					ItemPermissions &curPerm = m_acl[j];
 					if( curPerm.user_id == permToProcess.user_id )
 					{
 						if( applyMode == PERM_APPLY_DELETE )

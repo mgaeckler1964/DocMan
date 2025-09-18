@@ -1394,9 +1394,9 @@ int *THE_SOURCE_FOLDER::getColWidth( void ) const
 	return colWidth;
 }
 
-COL_TITLE *THE_SOURCE_FOLDER::getColumnTitles( void ) const
+ColumnTitle *THE_SOURCE_FOLDER::getColumnTitles( void ) const
 {
-	static COL_TITLE	colTitles[] =
+	static ColumnTitle colTitles[] =
 	{
 		{ "Order", SORT_ORDER },
 		{ "Type", SORT_TYPE },

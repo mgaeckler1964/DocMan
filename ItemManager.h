@@ -167,18 +167,18 @@ enum itemTypes
 	TYPE_REMOTE_FOLDER, TYPE_REMOTE_FILE, TYPE_CRYPTO_FILE, TYPE_REMOTE_CRYPTO_FILE
 };
 
-struct ITEM_PERM
+struct ItemPermissions
 {
 	int user_id, permissions;
 };
 
-typedef Array<ITEM_PERM>	ITEM_PERMLIST;
+typedef Array<ItemPermissions>	ITEM_PERMLIST;
 enum PERM_APPLY_MODE
 {
 	PERM_APPLY_OVERWRITE, PERM_APPLY_MERGE, PERM_APPLY_DELETE
 };
 
-struct COL_TITLE
+struct ColumnTitle
 {
 	const char	*title;
 	int			sortType;
@@ -576,7 +576,7 @@ class THE_ITEM : public gak::SharedObject
 --------------------------------------------------------------------------------
 */
 	private:
-	virtual COL_TITLE *getColumnTitles( void ) const;
+	virtual ColumnTitle *getColumnTitles( void ) const;
 
 	public:
 	virtual TBrowserFrame *getFrame( void ) const;
@@ -586,7 +586,7 @@ class THE_ITEM : public gak::SharedObject
 	virtual int getRowCount( void ) const;
 	int getSortType( int col ) const
 	{
-		COL_TITLE	*colTitles = getColumnTitles();
+		ColumnTitle	*colTitles = getColumnTitles();
 
 		return colTitles[col].sortType;
 	}

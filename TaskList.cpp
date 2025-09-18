@@ -387,9 +387,9 @@ int *THE_TASKLIST::getColWidth( void ) const
 	return colWidth;
 }
 
-COL_TITLE *THE_TASKLIST::getColumnTitles( void ) const
+ColumnTitle *THE_TASKLIST::getColumnTitles( void ) const
 {
-	static COL_TITLE	colTitles[] =
+	static ColumnTitle colTitles[] =
 	{
 		{ "Type",			SORT_TYPE },
 		{ "Name",			SORT_NAME },

@@ -280,7 +280,7 @@ typedef PTR_TEMPLATE<THE_SYNC_FOLDER> PTR_SYNC_FOLDER;
 
 class THE_SOURCE_FOLDER : public THE_LOCAL_FOLDER
 {
-	virtual COL_TITLE	*getColumnTitles( void ) const;
+	virtual ColumnTitle	*getColumnTitles( void ) const;
 	virtual int getColCount( void ) const;
 	virtual int *getColWidth( void ) const;
 	virtual void sort( void );
