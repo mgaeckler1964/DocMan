@@ -19,8 +19,8 @@ object VersionsForm: TVersionsForm
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 186
-    Width = 822
+    Top = 174
+    Width = 814
     Height = 5
     Cursor = crVSplit
     Align = alBottom
@@ -28,8 +28,8 @@ object VersionsForm: TVersionsForm
   object DBGridVersions: TDBGrid
     Left = 0
     Top = 41
-    Width = 822
-    Height = 145
+    Width = 814
+    Height = 133
     Align = alClient
     DataSource = DataSourceVersions
     DefaultDrawing = False
@@ -45,7 +45,7 @@ object VersionsForm: TVersionsForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 822
+    Width = 814
     Height = 41
     Align = alTop
     TabOrder = 1
@@ -208,8 +208,8 @@ object VersionsForm: TVersionsForm
   end
   object DBMemoDescription: TDBMemo
     Left = 0
-    Top = 191
-    Width = 822
+    Top = 179
+    Width = 814
     Height = 89
     Align = alBottom
     DataField = 'DESCRIPTION'

@@ -80,7 +80,10 @@
 
 enum CompareStatus
 {
-	csOK, csFOLDER, csLOCAL_MISSING, csDB_MISSING, csLOCAL_NEWER, csLOCAL_OLDER, csMD5_Changed
+	csOK, csFOLDER,
+	csLOCAL_MISSING, csDB_MISSING,
+	csLOCAL_NEWER, csLOCAL_OLDER,
+	csMD5_Changed
 };
 
 class FolderCompareEntry;

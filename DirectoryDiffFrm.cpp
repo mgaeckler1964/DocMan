@@ -250,9 +250,9 @@ void __fastcall TDirectoryDiffForm::PopupMenuPopup(TObject *)
 	const FolderCompareEntry	&theEntry = m_theList[StringGrid->Row-1];
 	const PTR_FILE				&theFile = theEntry.theFile;
 
-	// Add Version, if local file is newer, only
+	// Add Version, if local file is newer || MD5 checksum failure, only
 	MenuAddVersion->Enabled =
-		(theEntry.status == csLOCAL_NEWER)
+		(theEntry.status == csLOCAL_NEWER || theEntry.status == csMD5_Changed)
 		? theCreateVersionAction.acceptItem( theFile )
 		: false
 	;
@@ -263,7 +263,7 @@ void __fastcall TDirectoryDiffForm::PopupMenuPopup(TObject *)
 		: false
 	;
 
-	// Refresh, if file is in repository, only
+	// Refresh, if file is in repository, only, or checksum failure
 	// Add, if file is not in repository, only
 	if( theEntry.status == csDB_MISSING )
 	{

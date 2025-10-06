@@ -18,8 +18,8 @@ object EditFileForm: TEditFileForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 226
-    Width = 549
+    Top = 214
+    Width = 541
     Height = 41
     Align = alBottom
     BevelOuter = bvNone

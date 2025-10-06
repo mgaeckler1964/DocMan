@@ -17,8 +17,8 @@ object PermApplyDownForm: TPermApplyDownForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 172
-    Width = 776
+    Top = 160
+    Width = 768
     Height = 63
     Align = alBottom
     TabOrder = 0
@@ -72,8 +72,8 @@ object PermApplyDownForm: TPermApplyDownForm
   object StringGrid: TStringGrid
     Left = 0
     Top = 0
-    Width = 776
-    Height = 172
+    Width = 768
+    Height = 160
     Align = alClient
     ColCount = 3
     DefaultRowHeight = 20

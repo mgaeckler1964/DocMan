@@ -18,8 +18,8 @@ object TargetBrowseForm: TTargetBrowseForm
   object TreeView: TTreeView
     Left = 0
     Top = 0
-    Width = 446
-    Height = 213
+    Width = 438
+    Height = 201
     Align = alClient
     HideSelection = False
     Images = ImageList
@@ -29,8 +29,8 @@ object TargetBrowseForm: TTargetBrowseForm
   end
   object Panel1: TPanel
     Left = 0
-    Top = 213
-    Width = 446
+    Top = 201
+    Width = 438
     Height = 41
     Align = alBottom
     BevelOuter = bvNone

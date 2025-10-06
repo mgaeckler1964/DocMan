@@ -19,8 +19,8 @@ object ProjectHistoryForm: TProjectHistoryForm
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 186
-    Width = 804
+    Top = 174
+    Width = 796
     Height = 5
     Cursor = crVSplit
     Align = alBottom
@@ -28,8 +28,8 @@ object ProjectHistoryForm: TProjectHistoryForm
   object DBGridVersions: TDBGrid
     Left = 0
     Top = 41
-    Width = 804
-    Height = 145
+    Width = 796
+    Height = 133
     Align = alClient
     DataSource = DataSourceVersions
     DefaultDrawing = False
@@ -45,7 +45,7 @@ object ProjectHistoryForm: TProjectHistoryForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 804
+    Width = 796
     Height = 41
     Align = alTop
     TabOrder = 1
@@ -61,8 +61,8 @@ object ProjectHistoryForm: TProjectHistoryForm
   end
   object DBMemoDescription: TDBMemo
     Left = 0
-    Top = 191
-    Width = 804
+    Top = 179
+    Width = 796
     Height = 89
     Align = alBottom
     DataField = 'DESCRIPTION'

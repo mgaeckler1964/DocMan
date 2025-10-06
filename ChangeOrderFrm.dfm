@@ -16,8 +16,8 @@ object ChangeOrderForm: TChangeOrderForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 321
-    Width = 509
+    Top = 309
+    Width = 501
     Height = 41
     Align = alBottom
     TabOrder = 0
@@ -54,8 +54,8 @@ object ChangeOrderForm: TChangeOrderForm
   object ListBoxItems: TListBox
     Left = 0
     Top = 0
-    Width = 509
-    Height = 321
+    Width = 501
+    Height = 309
     Align = alClient
     DragMode = dmAutomatic
     ItemHeight = 13

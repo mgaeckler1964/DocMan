@@ -17,7 +17,7 @@ object AttributesForm: TAttributesForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 487
+    Width = 479
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -70,8 +70,8 @@ object AttributesForm: TAttributesForm
   end
   object Panel2: TPanel
     Left = 0
-    Top = 361
-    Width = 487
+    Top = 349
+    Width = 479
     Height = 41
     Align = alBottom
     TabOrder = 1
@@ -99,8 +99,8 @@ object AttributesForm: TAttributesForm
   object PageControl: TPageControl
     Left = 0
     Top = 41
-    Width = 487
-    Height = 320
+    Width = 479
+    Height = 308
     Align = alClient
     TabOrder = 2
     OnChange = PageControlChange

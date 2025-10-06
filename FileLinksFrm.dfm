@@ -18,8 +18,8 @@ object FileLinksForm: TFileLinksForm
   object DBGridLinks: TDBGrid
     Left = 0
     Top = 0
-    Width = 554
-    Height = 313
+    Width = 546
+    Height = 301
     Align = alClient
     DataSource = DataSourceLinks
     TabOrder = 0

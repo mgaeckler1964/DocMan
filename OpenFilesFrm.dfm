@@ -20,7 +20,7 @@ object OpenFilesForm: TOpenFilesForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 782
+    Width = 774
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -65,8 +65,8 @@ object OpenFilesForm: TOpenFilesForm
   object DBGrid: TDBGrid
     Left = 0
     Top = 41
-    Width = 782
-    Height = 224
+    Width = 774
+    Height = 212
     Align = alClient
     DataSource = DataSource
     TabOrder = 1

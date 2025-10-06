@@ -18,15 +18,15 @@ object WebWizardForm: TWebWizardForm
   object PaintBoxPreview: TPaintBox
     Left = 0
     Top = 137
-    Width = 774
-    Height = 410
+    Width = 766
+    Height = 398
     Align = alClient
     OnPaint = PaintBoxPreviewPaint
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 774
+    Width = 766
     Height = 137
     ActivePage = TabSheetLayout
     Align = alTop
@@ -587,8 +587,8 @@ object WebWizardForm: TWebWizardForm
   end
   object Panel1: TPanel
     Left = 0
-    Top = 547
-    Width = 774
+    Top = 535
+    Width = 766
     Height = 41
     Align = alBottom
     TabOrder = 1

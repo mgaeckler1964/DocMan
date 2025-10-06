@@ -18,7 +18,7 @@ object IndexForm: TIndexForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 742
+    Width = 734
     Height = 105
     Align = alTop
     TabOrder = 0
@@ -136,8 +136,8 @@ object IndexForm: TIndexForm
   object GridResult: TStringGrid
     Left = 0
     Top = 105
-    Width = 742
-    Height = 521
+    Width = 734
+    Height = 509
     Align = alClient
     ColCount = 6
     FixedCols = 0

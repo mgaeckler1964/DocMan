@@ -1,16 +1,16 @@
 object BrowserFrame: TBrowserFrame
   Left = 0
   Top = 0
-  Width = 443
-  Height = 277
+  Width = 435
+  Height = 265
   Align = alClient
   TabOrder = 0
   OnResize = FrameResize
   object DrawGridContent: TDrawGrid
     Left = 0
     Top = 0
-    Width = 443
-    Height = 277
+    Width = 435
+    Height = 265
     Align = alClient
     DefaultRowHeight = 20
     FixedCols = 0

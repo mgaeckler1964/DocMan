@@ -16,8 +16,8 @@ object DiffForm: TDiffForm
   object MemoDiff: TMemo
     Left = 0
     Top = 41
-    Width = 834
-    Height = 308
+    Width = 826
+    Height = 296
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -36,7 +36,7 @@ object DiffForm: TDiffForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 834
+    Width = 826
     Height = 41
     Align = alTop
     TabOrder = 1
