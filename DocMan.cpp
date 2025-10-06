@@ -1,7 +1,7 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			DocMan.cpp
+		Description:	The WinMain entry
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
@@ -162,6 +162,7 @@ static STRING getSchemaFile4Namespace( const STRING &nameSpace )
 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR , int)
 {
 	doEnableLogEx(gakLogging::llInfo);
+	doDisableLog();
 	doEnterFunctionEx(gakLogging::llInfo, "WinMain");
 
 	openStartup( NULL, "SPLASH_BITMAP" );

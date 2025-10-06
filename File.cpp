@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			File.cpp
+		Description:	the files stored in our database
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -164,6 +164,7 @@ const char STATUS_NEWER[] = "Newer";
 const char STATUS_OLDER[] = "Older";
 const char STATUS_MISSING[] = "Missing";
 const char STATUS_RESERVED[] = "Reserved";
+const char STATUS_CHECKSUM[] = "ChecksumErr";
 
 // --------------------------------------------------------------------- //
 // ----- module static data -------------------------------------------- //
@@ -217,13 +218,13 @@ THE_FILE_VERSION::THE_FILE_VERSION( int fileID, int version )
 
 		theQuery->SQL->Clear();
 	}
-	this->version = version;
+	m_version = version;
 
 	theQuery->SQL->Add(
 		"select fv.id, fv.mime_type, fv.filename, fv.filesize, fv.storage_id, "
 			"fv.createdDate, fv.modifiedDate, "
 			"fv.fileCreatedDate, fv.fileModifiedDate, "
-			"s.file_path, s.usage_count, fv.locked "
+			"s.file_path, s.usage_count, fv.locked, s.md5_checksum "
 		"from i_file_vers fv, i_storage s "
 		"where fv.file_id = :id and fv.version = :fileVersion "
 		"and s.id = fv.storage_id "
@@ -233,30 +234,31 @@ THE_FILE_VERSION::THE_FILE_VERSION( int fileID, int version )
 	theQuery->Open();
 	if( !theQuery->Eof )
 	{
-		versionID = theQuery->Fields->Fields[0]->AsInteger;
-		mimeType = theQuery->Fields->Fields[1]->AsString.c_str();
-		fileName = theQuery->Fields->Fields[2]->AsString.c_str();
-		size = theQuery->Fields->Fields[3]->AsInteger;
-		storageID = theQuery->Fields->Fields[4]->AsInteger;
-		versionCreatedDate = theQuery->Fields->Fields[5]->AsDateTime;
-		versionModifiedDate = theQuery->Fields->Fields[6]->AsDateTime;
-		fileCreatedDate = theQuery->Fields->Fields[7]->AsDateTime;
-		fileModifiedDate = theQuery->Fields->Fields[8]->AsDateTime;
-		storagePath = theQuery->Fields->Fields[9]->AsString.c_str();
-		storageUsageCount = theQuery->Fields->Fields[10]->AsInteger;
-		locked = theQuery->Fields->Fields[11]->AsInteger;
+		m_versionID = theQuery->Fields->Fields[0]->AsInteger;
+		m_mimeType = theQuery->Fields->Fields[1]->AsString.c_str();
+		m_fileName = theQuery->Fields->Fields[2]->AsString.c_str();
+		m_size = theQuery->Fields->Fields[3]->AsInteger;
+		m_storageID = theQuery->Fields->Fields[4]->AsInteger;
+		m_versionCreatedDate = theQuery->Fields->Fields[5]->AsDateTime;
+		m_versionModifiedDate = theQuery->Fields->Fields[6]->AsDateTime;
+		m_fileCreatedDate = theQuery->Fields->Fields[7]->AsDateTime;
+		m_fileModifiedDate = theQuery->Fields->Fields[8]->AsDateTime;
+		m_storagePath = theQuery->Fields->Fields[9]->AsString.c_str();
+		m_storageUsageCount = theQuery->Fields->Fields[10]->AsInteger;
+		m_locked = theQuery->Fields->Fields[11]->AsInteger;
+		m_md5CheckSum = theQuery->Fields->Fields[12]->AsString.c_str();
 	}
 	else
 	{
-		versionID = 0;
-		size = 0;
-		storageID = 0;
-		versionCreatedDate = 0;
-		versionModifiedDate = 0;
-		fileCreatedDate = 0;
-		fileModifiedDate = 0;
-		storageUsageCount = 0;
-		locked = 0;
+		m_versionID = 0;
+		m_size = 0;
+		m_storageID = 0;
+		m_versionCreatedDate = 0;
+		m_versionModifiedDate = 0;
+		m_fileCreatedDate = 0;
+		m_fileModifiedDate = 0;
+		m_storageUsageCount = 0;
+		m_locked = 0;
 	}
 	theQuery->Close();
 }
@@ -289,15 +291,13 @@ STRING THE_FILE::getStoragePath( int theVersionNum )
 	if( theVersionNum )
 	{
 		std::auto_ptr<THE_FILE_VERSION> theVersion( getVersion( theVersionNum ) );
-		STRING storagePath = theVersion->getStoragePath();
-
-		return storagePath;
+		return theVersion->getStoragePath();
 	}
 	else
 		return getLatestVersion()->getStoragePath();
 }
 
-int THE_FILE::createStorage( const STRING &filePath )
+int THE_FILE::createStorage( const STRING &filePath, STRING *md5Hash )
 {
 	if( exists( filePath ) )
 	{
@@ -343,7 +343,7 @@ int THE_FILE::createStorage( const STRING &filePath )
 		theQuery->Params->Items[2]->AsString = (const char *)md5base64;
 
 		theQuery->ExecSQL();
-
+		*md5Hash = md5base64;
 		return storageId;
 	}
 	else
@@ -610,24 +610,27 @@ void THE_FILE_BASE::loadFields( TQuery *query )
 {
 	THE_ITEM::loadFields( query );
 
-	reservedOn = query->FieldByName( "RESERVEDON" )->AsString.c_str();
-	reservedBy = query->FieldByName( "RESERVEDBY" )->AsInteger;
-	reservedFor = query->FieldByName( "RESERVEDFOR" )->AsInteger;
-	mimeType = query->FieldByName( "mime_type" )->AsString.c_str();
+	m_reservedOn = query->FieldByName( "RESERVEDON" )->AsString.c_str();
+	m_reservedBy = query->FieldByName( "RESERVEDBY" )->AsInteger;
+	m_reservedFor = query->FieldByName( "RESERVEDFOR" )->AsInteger;
+	m_mimeType = query->FieldByName( "mime_type" )->AsString.c_str();
 }
 
 void THE_FILE::loadFields( TQuery *query )
 {
-	doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::loadFields" );
+	doEnterFunctionEx(gakLogging::llInfo, "THE_FILE::loadFields" );
 
 	THE_FILE_BASE::loadFields( query );
 
 	m_fileID = query->FieldByName( "FILE_ID" )->AsInteger;
 
-
 	setFileModifiedDate( query->FieldByName( "fileModifiedDate" )->AsDateTime );
-	setFileSize( query->FieldByName( "fileSize" )->AsInteger );
+	doLogValueEx(gakLogging::llInfo, query->FieldByName( "storage_md5" )->AsString.c_str());
+	setFileSize(
+		query->FieldByName( "fileSize" )->AsInteger
+	);
 
+	m_md5hash = query->FieldByName( "storage_md5" )->AsString.c_str();
 	m_previousFilePath = getDownloadFile( getParent() );
 }
 
@@ -734,9 +737,9 @@ void THE_FILE_BASE::updateDatabase( void )
 		"where id=:theId"
 	);
 
-	theQuery->Params->Items[0]->AsInteger = reservedBy;
-	theQuery->Params->Items[1]->AsInteger = reservedFor;
-	theQuery->Params->Items[2]->AsString = (const char *)reservedOn;
+	theQuery->Params->Items[0]->AsInteger = m_reservedBy;
+	theQuery->Params->Items[1]->AsInteger = m_reservedFor;
+	theQuery->Params->Items[2]->AsString = (const char *)m_reservedOn;
 	theQuery->Params->Items[3]->AsInteger = getID();
 
 	theQuery->ExecSQL();
@@ -802,7 +805,7 @@ void THE_FILE::updateDatabase( void )
 
 TGraphic *THE_FILE_BASE::getStatusPicture( void ) const
 {
-	if( reservedBy )
+	if( m_reservedBy )
 	{
 		static Graphics::TBitmap *thePic = NULL;
 
@@ -1708,7 +1711,7 @@ bool THE_FILE::hasChanged(
 
 const STRING &THE_FILE_BASE::calcStatus( bool force )
 {
-	if( force || status.isEmpty() )
+	if( force || m_status.isEmpty() )
 	{
 		PTR_ITEM parent = getParent();
 		if( parent )
@@ -1723,25 +1726,25 @@ const STRING &THE_FILE_BASE::calcStatus( bool force )
 				DateTime	dbDate( false );
 
 				if( strAccess( downloadPath, 04 ) )
-					status = STATUS_MISSING;
+					m_status = STATUS_MISSING;
 				else if( hasChanged( downloadPath, &localDate, &dbDate ) )
 				{
 					if( localDate > dbDate  )
-						status = STATUS_NEWER;
+						m_status = STATUS_NEWER;
 					else
-						status = STATUS_OLDER;
+						m_status = STATUS_OLDER;
 				}
 				else if( getReservedBy() )
-					status = STATUS_RESERVED;
+					m_status = STATUS_RESERVED;
 				else
-					status = STATUS_OK;
+					m_status = STATUS_OK;
 			}
 		}
 		else
-			status = "-";
+			m_status = "-";
 	}
 
-	return status;
+	return m_status;
 }
 
 PTR_ITEM THE_FILE::link( const PTR_ITEM &target, const STRING &newName )
@@ -1984,6 +1987,7 @@ int THE_FILE::createVersion( int srcVersion )
 	theQuery->ExecSQL();
 
 	setFileSize( src.getSize() );
+//	, src.getMD5checksum()
 	setFileModifiedDate( src.getFileModifiedDate() );
 	setMimeType( src.getMimeType() );
 	clearLatestVersion();
@@ -2010,13 +2014,15 @@ void THE_FILE::createVersion( const STRING &filePath, const STRING &description 
 	int	version = vcl::getNewMaxValue(
 		"docManDB", "I_FILE_VERS", "VERSION", filter
 	);
-	int storageID = createStorage( filePath );
+	STRING md5Hash;
+	int storageID = createStorage( filePath, &md5Hash );
 	int srcVersion = getVersionNum();
 
 	struct stat statBuf;
 	stat( filePath, &statBuf );
 
 	setFileSize( statBuf.st_size );
+//	, md5Hash
 	setFileModifiedDate( vcl::EncodeDateTime(statBuf.st_mtime) );
 	setStatus( STATUS_OK );
 

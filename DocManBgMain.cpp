@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			DocManBgMain.cpp
+		Description:	The main form for the bachground processor
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -106,28 +106,9 @@ __fastcall TDocManBgMainForm::TDocManBgMainForm(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-const UserOrGroup *TDocManBgMainForm::login( void )
+inline const UserOrGroup *TDocManBgMainForm::login( void )
 {
-	doEnterFunction("TDocManBgMainForm::login");
-	const UserOrGroup *actUser = DocManDataModule->login();
-	if( actUser && actUser->ID )
-	{
-		print2StartWindow( "%s", "Init. Template Volume" );
-		getPublicVolume( TYPE_PUBLIC_TEMPLATE_FOLDER );
-
-		print2StartWindow( "%s", "Init. Archive Volume" );
-		getArchiveVolume();
-
-		print2StartWindow( "%s", "Loading Task Status" );
-		DocManDataModule->refreshTaskStatus();
-
-		print2StartWindow( "%s", "Loading Task Types" );
-		DocManDataModule->refreshTaskTypes();
-
-		print2StartWindow( "%s", "Loading Company Volume" );
-		getCompanyVolume();
-	}
-	return actUser;
+	return DocManDataModule->login();
 }
 //---------------------------------------------------------------------------
 void __fastcall TDocManBgMainForm::FormCreate(TObject *)

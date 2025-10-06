@@ -1,7 +1,7 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			Folder.h
+		Description:	the container stored in this database
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
@@ -80,7 +80,7 @@
 
 enum CompareStatus
 {
-	csOK, csFOLDER, csLOCAL_MISSING, csDB_MISSING, csLOCAL_NEWER, csLOCAL_OLDER
+	csOK, csFOLDER, csLOCAL_MISSING, csDB_MISSING, csLOCAL_NEWER, csLOCAL_OLDER, csMD5_Changed
 };
 
 class FolderCompareEntry;
@@ -301,16 +301,16 @@ class THE_SOURCE_FOLDER : public THE_LOCAL_FOLDER
 };
 typedef PTR_TEMPLATE<THE_SOURCE_FOLDER> PTR_SOURCE_FOLDER;
 
-class FolderCompareEntry
+struct FolderCompareEntry
 {
-	public:
 	typedef gak::F_STRING	key_type;
 
 	key_type			name, filePath;
 	TDateTime			dbModTime, localModTime;
 	unsigned long		dbSize, localSize;
+	STRING				dbMD5, localMD5;
 	PTR_LOCAL_FOLDER	theParent;
-	PTR_FILE_BASE		theFile;
+	PTR_FILE			theFile;
 	bool				inFS, reserved, folder;
 	STRING				statusSTR;
 	CompareStatus		status;
@@ -329,9 +329,8 @@ class FolderCompareEntry
 	}
 };
 
-class THE_RELEASE
+struct THE_RELEASE
 {
-	public:
 	int major, minor, patch;
 };
 

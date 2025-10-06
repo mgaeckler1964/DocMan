@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			File.h
+		Description:	the files stored in our database
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -77,6 +77,7 @@ extern const char STATUS_OLDER[];
 extern const char STATUS_NEWER[];
 extern const char STATUS_MISSING[];
 extern const char STATUS_RESERVED[];
+extern const char STATUS_CHECKSUM[];
 
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
@@ -93,114 +94,119 @@ class FACTORY_FILE : public FACTORY_BASE
 {
 	public:
 
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual const char *getName() const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parent ) const;
 };
 
 class THE_FILE_VERSION
 {
 	private:
-	int				versionID, version, storageID, storageUsageCount, locked;
-	unsigned long	size;
-	STRING			mimeType, fileName, storagePath;
-	TDateTime		versionCreatedDate, versionModifiedDate;
-	TDateTime		fileCreatedDate, fileModifiedDate;
+	int				m_versionID, m_version, m_storageID, m_storageUsageCount,
+					m_locked;
+	unsigned long	m_size;
+	STRING			m_mimeType, m_fileName, m_storagePath;
+	TDateTime		m_versionCreatedDate, m_versionModifiedDate;
+	TDateTime		m_fileCreatedDate, m_fileModifiedDate;
+	STRING			m_md5CheckSum;
 
 	public:
 	THE_FILE_VERSION( int fileId, int version=0 );
 
-	STRING getMimeType( void ) const
+	const STRING &getMimeType() const
 	{
-		return mimeType;
+		return m_mimeType;
 	}
-	STRING getStoragePath( void ) const
+	const STRING &getStoragePath() const
 	{
-		return storagePath;
+		return m_storagePath;
 	}
-	STRING getFileName( void ) const
+	const STRING &getFileName() const
 	{
-		return fileName;
+		return m_fileName;
 	}
-
-	int getStorageID( void ) const
+	const STRING &getMD5checksum() const
 	{
-		return storageID;
+		return m_md5CheckSum;
 	}
-	int getVersionID( void ) const
+	int getStorageID() const
 	{
-		return versionID;
+		return m_storageID;
 	}
-	int getUsageCount( void ) const
+	int getVersionID() const
 	{
-		return storageUsageCount;
+		return m_versionID;
 	}
-	int incrUsageCount( void )
+	int getUsageCount() const
 	{
-		return ++storageUsageCount;
+		return m_storageUsageCount;
 	}
-	unsigned long getSize( void ) const
+	int incrUsageCount()
 	{
-		return size;
+		return ++m_storageUsageCount;
 	}
-	TDateTime getVersionModifiedDate( void ) const
+	unsigned long getSize() const
 	{
-		return versionModifiedDate;
+		return m_size;
 	}
-	TDateTime getVersionCreationDate( void ) const
+	TDateTime getVersionModifiedDate() const
 	{
-		return versionCreatedDate;
+		return m_versionModifiedDate;
 	}
-	TDateTime getFileModifiedDate( void ) const
+	TDateTime getVersionCreationDate() const
 	{
-		return fileModifiedDate;
+		return m_versionCreatedDate;
 	}
-	TDateTime getFileCreationDate( void ) const
+	TDateTime getFileModifiedDate() const
 	{
-		return fileCreatedDate;
+		return m_fileModifiedDate;
 	}
-	int getVersionNum( void ) const
+	TDateTime getFileCreationDate() const
 	{
-		return version;
+		return m_fileCreatedDate;
 	}
-	bool getLocked( void ) const
+	int getVersionNum() const
 	{
-		return locked ? true : false;
+		return m_version;
+	}
+	bool getLocked() const
+	{
+		return m_locked ? true : false;
 	}
 };
 
 class THE_FILE_BASE : public THE_ITEM
 {
-	STRING				mimeType, reservedOn, status;
-	int					reservedBy, reservedFor;
-	TDateTime			fileModifiedDate;
-	unsigned long		fileSize;
+	STRING				m_mimeType, m_reservedOn, m_status;
+	int					m_reservedBy, m_reservedFor;
+	TDateTime			m_fileModifiedDate;
+	unsigned long		m_fileSize;
 
 	public:
 	THE_FILE_BASE( int flags, int id, const FACTORY_BASE *theFactory )
 	: THE_ITEM( flags, id, theFactory )
 	{
-		reservedFor = reservedBy = 0;
+		m_reservedFor = m_reservedBy = 0;
 	}
 
 	virtual STRING getDownloadPath( PTR_ITEM parent=PTR_ITEM() );
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 
-	static STRING getTempDownloadPath( void );
+	static STRING getTempDownloadPath();
 
 	virtual void loadFields( TQuery *query );
-	virtual void updateDatabase( void );
+	virtual void updateDatabase();
 
 	void openVersion( int version )
 	{
 		STRING dest = download( version, false, "" );
 		ShellExecute( NULL, NULL, dest, NULL, NULL, SW_SHOWDEFAULT );
 	}
-	virtual void open( void );
-	virtual STRING getVersionFileName( void ) = 0;
+	virtual void open();
+	virtual STRING getVersionFileName() = 0;
 	virtual STRING download( int version, bool protect, const STRING &dest ) = 0;
 	virtual STRING getDownloadFile( const STRING &downloadPath );
 	STRING getDownloadFile( const PTR_ITEM &parent=PTR_ITEM() )
@@ -211,86 +217,86 @@ class THE_FILE_BASE : public THE_ITEM
 	}
 
 	protected:
-	void setMimeType( const STRING &theMimeType )
+	void setMimeType( const STRING &mimeType )
 	{
-		mimeType = theMimeType;
+		m_mimeType = mimeType;
 	}
 	public:
-	const STRING &getMimeType( void ) const
+	const STRING &getMimeType() const
 	{
-		return mimeType;
+		return m_mimeType;
 	}
 	protected:
 	void setFileSize( unsigned long fileSize )
 	{
-		this->fileSize = fileSize;
+		m_fileSize = fileSize;
 	}
 	public:
-	unsigned long getSizeInBytes( void )
+	unsigned long getSizeInBytes() const
 	{
-		return fileSize;
+		return m_fileSize;
 	}
 
 	protected:
 	void setFileModifiedDate( TDateTime fileModifiedDate )
 	{
-		this->fileModifiedDate = fileModifiedDate;
+		m_fileModifiedDate = fileModifiedDate;
 	}
 
 	public:
-	TDateTime getFileModifiedDate( void ) const
+	TDateTime getFileModifiedDate() const
 	{
-		return fileModifiedDate;
+		return m_fileModifiedDate;
 	}
 
-	virtual bool canCreateVersion( void ) const = 0;
+	virtual bool canCreateVersion() const = 0;
 	virtual void createVersion( const STRING &filePath, const STRING &description ) = 0;
 	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=NULL, gak::DateTime *oRemoteDate=NULL ) = 0;
 	virtual const char *compare( int firstVersion=0, int secondVersion=-1  ) = 0;
-	virtual bool canReserve( void ) const = 0;
+	virtual bool canReserve() const = 0;
 	virtual bool canUnreserve( bool noAdminCheck ) const = 0;
 	virtual void reserve( int taskID=0, bool doNotOverwrite=false )
 	{
 		setTask( taskID );
-		reservedBy = gak::vcl::getActUserID();
-		reservedOn = TDocManDataModule::getMachine();
+		m_reservedBy = gak::vcl::getActUserID();
+		m_reservedOn = TDocManDataModule::getMachine();
 		setStatus( STATUS_RESERVED );
 	}
 	void setTask( int taskID=0 )
 	{
-		this->reservedFor = taskID;
+		m_reservedFor = taskID;
 	}
 	virtual void unreserve( bool doBranch, const STRING &description, const STRING &newVersion="" ) = 0;
 
-	virtual void cancelReserve( void )
+	virtual void cancelReserve()
 	{
-		reservedBy = 0;
-		reservedFor = 0;
-		reservedOn = "";
+		m_reservedBy = 0;
+		m_reservedFor = 0;
+		m_reservedOn = "";
 		setStatus( STATUS_OK );
 	}
-	const STRING &getReservedOn( void ) const
+	const STRING &getReservedOn() const
 	{
-		return reservedOn;
+		return m_reservedOn;
 	}
-	int getTask( void ) const
+	int getTask() const
 	{
-		return reservedFor;
+		return m_reservedFor;
 	}
-	int getReservedBy( void ) const
+	int getReservedBy() const
 	{
-		return reservedBy;
+		return m_reservedBy;
 	}
-	void setStatus( const STRING &newStatus )
+	void setStatus( const STRING &status )
 	{
-		status = newStatus;
+		m_status = status;
 	}
 	const STRING &calcStatus( bool force );
-	const STRING &getStatus( void ) const
+	const STRING &getStatus() const
 	{
-		return status;
+		return m_status;
 	}
-	virtual TGraphic *getStatusPicture( void ) const;
+	virtual TGraphic *getStatusPicture() const;
 };
 typedef PTR_TEMPLATE<THE_FILE_BASE> PTR_FILE_BASE;
 
@@ -300,16 +306,17 @@ class THE_FILE : public THE_FILE_BASE
 	gak::F_STRING		m_newFilePath, m_previousFilePath;
 
 	THE_FILE_VERSION	*m_latestVersion;
+	STRING				m_md5hash;
 
 	static STRING		s_externalStorage;
 
-	int createStorage( const STRING &filePath );
+	int createStorage( const STRING &filePath, STRING *md5Hash );
 
 	THE_FILE_VERSION *getVersion( int version )
 	{
 		return new THE_FILE_VERSION( m_fileID, version );
 	}
-	THE_FILE_VERSION *getLatestVersion( void )
+	THE_FILE_VERSION *getLatestVersion()
 	{
 		if( !m_latestVersion )
 		{
@@ -321,7 +328,7 @@ class THE_FILE : public THE_FILE_BASE
 
 		return m_latestVersion;
 	}
-	void clearLatestVersion( void )
+	void clearLatestVersion()
 	{
 		if( m_latestVersion )
 		{
@@ -329,7 +336,7 @@ class THE_FILE : public THE_FILE_BASE
 			m_latestVersion = NULL;
 		}
 	}
-	THE_FILE_VERSION *refreshLatestVersion( void )
+	THE_FILE_VERSION *refreshLatestVersion()
 	{
 		clearLatestVersion();
 		return getLatestVersion();
@@ -359,39 +366,43 @@ class THE_FILE : public THE_FILE_BASE
 		THE_ITEM::setData( parent, name, description );
 		m_newFilePath = newFilePath;
 	}
-	int getFileID( void ) const
+	int getFileID() const
 	{
 		return m_fileID;
 	}
 
 	virtual void loadFields( TQuery *query );
-	virtual int loadPermissions( void );
-	virtual void updateDatabase( void );
+	virtual int loadPermissions();
+	virtual void updateDatabase();
 
-	virtual bool canCreateVersion( void ) const;
+	virtual bool canCreateVersion() const;
 	int createVersion( int srcVersion );
 	virtual void createVersion( const STRING &filePath, const STRING &description );
 	void deleteVersion( int versionId, int storageId, bool updateMaxVersion );
-	virtual STRING getSize( void );
-	int getVersionNum( void )
+	virtual STRING getSize();
+	int getVersionNum()
 	{
 		THE_FILE_VERSION *latestVersion = getLatestVersion();
 
 		return latestVersion ? latestVersion->getVersionNum() : 0;
 	}
-	int getStorageID( void )
+	int getStorageID()
 	{
 		return getLatestVersion()->getStorageID();
 	}
-	TDateTime getFileCreationDate( void )
+	TDateTime getFileCreationDate()
 	{
 		return getLatestVersion()->getFileCreationDate();
 	}
 
-
-	TDateTime getVersionModifiedDate( void )
+	TDateTime getVersionModifiedDate()
 	{
 		return getLatestVersion()->getVersionModifiedDate();
+	}
+	const STRING &getMD5checksum()
+	{
+		return m_md5hash;
+		//return getLatestVersion()->getMD5checksum();
 	}
 
 	static void setExternalStorage( const STRING &newPath )
@@ -409,7 +420,7 @@ class THE_FILE : public THE_FILE_BASE
 			}
 		}
 	}
-	static const STRING &getExternalStorageBase( void )
+	static const STRING &getExternalStorageBase()
 	{
 		return s_externalStorage;
 	}
@@ -426,24 +437,24 @@ class THE_FILE : public THE_FILE_BASE
 		const STRING &newName=""
 	);
 	PTR_ITEM link( const PTR_ITEM &target, const STRING &newName="" );
-	void branch( void );
+	void branch();
 
 	virtual STRING download( int version, bool protect, const STRING &dest );
-	virtual STRING getVersionFileName( void );
+	virtual STRING getVersionFileName();
 
 	virtual bool canDelete( bool forPurge, bool recursive  );
-	virtual void purgeItem( void );
+	virtual void purgeItem();
 	virtual void purgeVersions( int numVersions );
 
-	virtual bool canReserve( void ) const;
+	virtual bool canReserve() const;
 	virtual bool canUnreserve( bool noAdminCheck ) const;
 	virtual void reserve( int reserveFor=0, bool doNotOverwrite=false );
 	virtual void unreserve( bool doBranch, const STRING &description, const STRING &newVersion="" );
-	virtual void cancelReserve( void );
+	virtual void cancelReserve();
 	virtual const char *compare( int firstVersion=0, int secondVersion=-1  );
 	virtual bool hasReserved( const STRING &machine, int userId );
 	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=NULL, gak::DateTime *oRemoteDate=NULL );
-	STRING getContent( void )
+	STRING getContent()
 	{
 		STRING	src = getExternalFile();
 		STRING	content;
@@ -455,7 +466,7 @@ class THE_FILE : public THE_FILE_BASE
 #pragma warn +inl
 	}
 
-	STRING getCSScontent( void )
+	STRING getCSScontent()
 	{
 		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getCSScontent");
 
@@ -466,7 +477,7 @@ class THE_FILE : public THE_FILE_BASE
 		return content;
 #pragma warn +inl
 	}
-	gak::xml::Document *getXmlDocument( void )
+	gak::xml::Document *getXmlDocument()
 	{
 		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getXmlDocument");
 		gak::xml::Document *result = NULL;
@@ -485,7 +496,7 @@ class THE_FILE : public THE_FILE_BASE
 
 		return result;
 	}
-	gak::html::Document *getHtmlDocument( void )
+	gak::html::Document *getHtmlDocument()
 	{
 		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getHtmlDocument");
 
@@ -505,8 +516,8 @@ class THE_FILE : public THE_FILE_BASE
 	}
 	virtual void createXMLattributes( gak::xml::Element *target );
 
-	virtual void lock( void );
-	virtual void unlock( void );
+	virtual void lock();
+	virtual void unlock();
 
 	STRING generateWebFile( bool forWebServer, STRING &mimeType );
 
@@ -562,7 +573,7 @@ class THE_FILE_REF : public THE_ITEM
 	{
 		m_size = 0;
 	}
-	virtual void open( void );
+	virtual void open();
 	void setData(
 		const PTR_ITEM		&parent,
 		const STRING		&name, const STRING &description,
@@ -587,17 +598,17 @@ class THE_FILE_REF : public THE_ITEM
 	{
 		m_md5CheckSum = md5CheckSum;
 	}
-	const STRING &getMD5CheckSum( void ) const
+	const STRING &getMD5CheckSum() const
 	{
 		return m_md5CheckSum;
 	}
 	virtual void loadFields( TQuery *query );
-	virtual void updateDatabase( void );
+	virtual void updateDatabase();
 
-	virtual TGraphic *getItemPicture( void ) const;
-	virtual TGraphic *getStatusPicture( void ) const;
-	virtual STRING getSize( void );
-	unsigned long getSizeInBytes( void )
+	virtual TGraphic *getItemPicture() const;
+	virtual TGraphic *getStatusPicture() const;
+	virtual STRING getSize();
+	unsigned long getSizeInBytes()
 	{
 		return m_size;
 	}
@@ -647,7 +658,7 @@ class THE_LANGUAGE_DOC : public THE_ITEM
 	)
 	{
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 	virtual STRING getDownloadPath( PTR_ITEM parent=PTR_ITEM() );
 };
 typedef PTR_TEMPLATE<THE_LANGUAGE_DOC> PTR_LANGUAGE_DOC;

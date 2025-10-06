@@ -1169,7 +1169,8 @@ ITEM_CONTENT *THE_ITEM::loadContent( void )
 		theQuery->SQL->Add(
 			// "select * from ITEM_TREE i where i.parentId = :theParent"
 			"SELECT i.*, "
-				"v.fileSize, v.fileModifiedDate, v.mime_type, f.usageCount as num_links "
+				"v.fileSize, v.fileModifiedDate, v.mime_type, f.usageCount as num_links, "
+				"s.md5_checksum as storage_md5 "
 			"FROM ITEM_TREE i "
 			"LEFT OUTER JOIN I_FILES f "
 			"ON i.FILE_ID = f.ID "

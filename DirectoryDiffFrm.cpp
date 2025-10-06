@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			DirectoryDiffFrm.cpp
+		Description:	Changes between local directory and repository
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -121,7 +121,6 @@ void __fastcall TDirectoryDiffForm::FormResize(TObject *)
 //---------------------------------------------------------------------------
 void TDirectoryDiffForm::refreshGrid( void )
 {
-	char		buffer[32];
 	size_t		col, row, numEntries;
 	TStringGrid	*theGrid = StringGrid;
 
@@ -136,21 +135,23 @@ void TDirectoryDiffForm::refreshGrid( void )
 		{
 			theGrid->Cells[col++][row] = "";
 			theGrid->Cells[col++][row] = "";
+			theGrid->Cells[col++][row] = "";
 		}
 		else
 		{
 			theGrid->Cells[col++][row] = theEntry.dbModTime.DateTimeString();
-			sprintf( buffer, "%lu", theEntry.dbSize );
-			theGrid->Cells[col++][row] = buffer;
+			theGrid->Cells[col++][row] = formatNumber(theEntry.dbSize);
+			theGrid->Cells[col++][row] = theEntry.dbMD5;
 		}
 		if( theEntry.inFS )
 		{
 			theGrid->Cells[col++][row] = theEntry.localModTime.DateTimeString();
-			sprintf( buffer, "%lu", theEntry.localSize );
-			theGrid->Cells[col++][row] = buffer;
+			theGrid->Cells[col++][row] = formatNumber(theEntry.localSize);
+			theGrid->Cells[col++][row] = theEntry.localMD5;
 		}
 		else
 		{
+			theGrid->Cells[col++][row] = "";
 			theGrid->Cells[col++][row] = "";
 			theGrid->Cells[col++][row] = "";
 		}
@@ -179,7 +180,7 @@ size_t TDirectoryDiffForm::setItem( const PTR_LOCAL_FOLDER &theFolder )
 
 		Caption = static_cast<const char *>(newCaption);
 
-		theGrid->ColCount = 6;
+		theGrid->ColCount = 8;
 
 		theGrid->RowCount = numEntries+1;
 
@@ -187,7 +188,9 @@ size_t TDirectoryDiffForm::setItem( const PTR_LOCAL_FOLDER &theFolder )
 		theGrid->ColWidths[col++] = 100;
 		theGrid->ColWidths[col++] = 110;
 		theGrid->ColWidths[col++] = 80;
+		theGrid->ColWidths[col++] = 80;
 		theGrid->ColWidths[col++] = 110;
+		theGrid->ColWidths[col++] = 80;
 		theGrid->ColWidths[col++] = 80;
 		theGrid->ColWidths[col++] = 120;
 
@@ -195,11 +198,15 @@ size_t TDirectoryDiffForm::setItem( const PTR_LOCAL_FOLDER &theFolder )
 		theGrid->Cells[col++][0] = "File";
 		theGrid->Cells[col++][0] = "Repository Time";
 		theGrid->Cells[col++][0] = "Repository Size";
+		theGrid->Cells[col++][0] = "Repository MD5";
 		theGrid->Cells[col++][0] = "Local Time";
 		theGrid->Cells[col++][0] = "Local Size";
+		theGrid->Cells[col++][0] = "Local MD5";
 		theGrid->Cells[col++][0] = "Status";
 
 		col = 0;
+		theGrid->Cells[col++][1] = "";
+		theGrid->Cells[col++][1] = "";
 		theGrid->Cells[col++][1] = "";
 		theGrid->Cells[col++][1] = "";
 		theGrid->Cells[col++][1] = "";
@@ -241,7 +248,7 @@ void __fastcall TDirectoryDiffForm::StringGridContextPopup(TObject *,
 void __fastcall TDirectoryDiffForm::PopupMenuPopup(TObject *)
 { 
 	const FolderCompareEntry	&theEntry = m_theList[StringGrid->Row-1];
-	const PTR_FILE_BASE			&theFile = theEntry.theFile;
+	const PTR_FILE				&theFile = theEntry.theFile;
 
 	// Add Version, if local file is newer, only
 	MenuAddVersion->Enabled =
@@ -300,7 +307,7 @@ void __fastcall TDirectoryDiffForm::MenuRefreshClick(TObject *)
 	try
 	{
 		FolderCompareEntry	&theEntry = m_theList[StringGrid->Row-1];
-		const PTR_FILE_BASE	&theFile = theEntry.theFile;
+		const PTR_FILE	&theFile = theEntry.theFile;
 
 		if( theFile )
 		{
@@ -347,7 +354,7 @@ void __fastcall TDirectoryDiffForm::MenuRemoveFromRepositoryClick(
 	try
 	{
 		FolderCompareEntry	&theEntry = m_theList[StringGrid->Row-1];
-		const PTR_FILE_BASE	&theFile = theEntry.theFile;
+		const PTR_FILE	&theFile = theEntry.theFile;
 
 		if( theFile )
 		{
@@ -452,7 +459,7 @@ void __fastcall TDirectoryDiffForm::MenuAddVersionClick(TObject *)
 	try
 	{
 		FolderCompareEntry	&theEntry = m_theList[StringGrid->Row-1];
-		const PTR_FILE_BASE	&theFile = theEntry.theFile;
+		const PTR_FILE	&theFile = theEntry.theFile;
 
 		if( theFile )
 		{
@@ -476,7 +483,7 @@ void __fastcall TDirectoryDiffForm::MenuCheckInClick(TObject *)
 	try
 	{
 		FolderCompareEntry	&theEntry = m_theList[StringGrid->Row-1];
-		const PTR_FILE_BASE	&theFile = theEntry.theFile;
+		const PTR_FILE	&theFile = theEntry.theFile;
 
 		if( theFile )
 		{
@@ -500,7 +507,7 @@ void __fastcall TDirectoryDiffForm::MenuShowDiffClick(TObject *)
 	try
 	{
 		const FolderCompareEntry	&theEntry = m_theList[StringGrid->Row-1];
-		const PTR_FILE_BASE			&theFile = theEntry.theFile;
+		const PTR_FILE				&theFile = theEntry.theFile;
 
 		if( theFile )
 		{

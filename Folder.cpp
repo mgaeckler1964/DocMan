@@ -1,7 +1,7 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			Folder.cpp
+		Description:	the container stored in this database
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
@@ -1826,7 +1826,7 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 	)
 	{
 		const PTR_ITEM	&theChild = *it;
-		PTR_FILE_BASE	theFile = theChild;
+		PTR_FILE		theFile = theChild;
 		if( theFile )
 		{
 			if( compareFiles )
@@ -1843,6 +1843,7 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 				theEntry.filePath = filePath;
 				theEntry.dbSize = theFile->getSizeInBytes();
 				theEntry.dbModTime = theFile->getFileModifiedDate();
+				theEntry.dbMD5 = theFile->getMD5checksum();
 				theEntry.theFile = theFile;
 				if( theFile->getReservedBy() )
 				{
@@ -1922,6 +1923,7 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 				theEntry.inFS = true;
 				theEntry.localSize = statBuf.st_size;
 				theEntry.localModTime = vcl::EncodeDateTime( statBuf.st_mtime );
+				theEntry.localMD5 = TDocManDataModule::md5file( filePath );
 			}
 		}
 
@@ -1983,6 +1985,11 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 			{
 				theEntry.status = csLOCAL_NEWER;
 				theEntry.statusSTR += STATUS_NEWER;
+			}
+			else if( theEntry.dbMD5 != theEntry.localMD5 )
+			{
+				theEntry.status = csMD5_Changed;
+				theEntry.statusSTR += STATUS_CHECKSUM;
 			}
 			else
 			{

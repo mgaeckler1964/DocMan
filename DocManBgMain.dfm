@@ -1,8 +1,8 @@
 object DocManBgMainForm: TDocManBgMainForm
-  Left = 730
-  Top = 377
+  Left = 452
+  Top = 372
   Width = 775
-  Height = 421
+  Height = 443
   Caption = 'Document Manager BG'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object DocManBgMainForm: TDocManBgMainForm
   TextHeight = 13
   object StatusBar: TStatusBar
     Left = 0
-    Top = 363
+    Top = 385
     Width = 759
     Height = 19
     Panels = <>
