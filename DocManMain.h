@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			DocManMain.h
+		Description:	the main vor for DocMan
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -129,6 +129,8 @@ __published:	// IDE-managed Components
 	TMenuItem *Reminder1;
 	TMenuItem *N4;
 	TTimer *ReminderTimer;
+	TMenuItem *MenuBookmarks;
+	TMenuItem *N10;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall ComboBoxAddItemTypesChange(TObject *Sender);
@@ -184,16 +186,17 @@ private:	// User declarations
 	PopupActions			m_popupActions;
 	gak::Stack<PTR_ITEM>	history, forwardHistory;
 
-	void fillCreateItems( void );
-	void fillParentItems( void );
+	void fillCreateItems();
+	void fillParentItems();
 	void fillContents( int selectID );
-	const UserOrGroup *login( void );
+	const UserOrGroup *login();
 	void __fastcall ReportClick(TObject *Sender);
+	void __fastcall OneBookmarkClick(TObject *Sender);
 	void __fastcall WmDropFiles(TWMDropFiles& Message);
 	void __fastcall AppWindowProc(TMessage &msg);
 	void __fastcall AppMinimize(TObject *Sender);
 
-	void initMenu( void );
+	void initMenu();
 public:		// User declarations
 	void openItem( PTR_ITEM newItem, int selectID=-1, bool handleHistory=true );
 	__fastcall TDocManMainForm(TComponent* Owner);

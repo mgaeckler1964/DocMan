@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			DocManMain.cpp
+		Description:	the main vor for DocMan
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -80,6 +80,7 @@
 #include "Folder.h"
 #include "RemoteServerFrm.h"
 #include "PasswordDlg.h"
+#include "Alias.h"
 
 //---------------------------------------------------------------------------
 using namespace gak;
@@ -108,7 +109,7 @@ __fastcall TDocManMainForm::TDocManMainForm(TComponent* Owner)
 	currentItem = NULL;
 }
 //---------------------------------------------------------------------------
-const UserOrGroup *TDocManMainForm::login( void )
+const UserOrGroup *TDocManMainForm::login()
 {
 	doEnterFunctionEx(gakLogging::llInfo, "TDocManMainForm::login");
 	const UserOrGroup *actUser = DocManDataModule->login();
@@ -139,7 +140,7 @@ const UserOrGroup *TDocManMainForm::login( void )
 	return actUser;
 }
 //---------------------------------------------------------------------------
-void TDocManMainForm::fillCreateItems( void )
+void TDocManMainForm::fillCreateItems()
 {
 	int perms = currentItem->loadPermissions();
 
@@ -177,7 +178,7 @@ void TDocManMainForm::fillCreateItems( void )
 }
 
 //---------------------------------------------------------------------------
-void TDocManMainForm::fillParentItems( void )
+void TDocManMainForm::fillParentItems()
 {
 	AnsiString	title;
 	STRING		path;
@@ -235,6 +236,12 @@ void TDocManMainForm::fillContents( int selectID )
 	browserFrame->fillContents( currentItem, selectID );
 //	Cursor = crDefault;
 	::SetCursor( LoadCursor( NULL, IDC_ARROW ) );
+}
+//---------------------------------------------------------------------------
+void __fastcall TDocManMainForm::OneBookmarkClick(TObject *Sender)
+{
+	int id = ((TMenuItem*)Sender)->Tag;
+	openItem( getItem(id) );
 }
 //---------------------------------------------------------------------------
 void __fastcall TDocManMainForm::ReportClick(TObject *Sender)
@@ -320,7 +327,7 @@ void __fastcall TDocManMainForm::AppWindowProc(TMessage &msg)
 }
 
 //---------------------------------------------------------------------------
-void TDocManMainForm::initMenu( void )
+void TDocManMainForm::initMenu()
 {
 	DirectoryList	reports;
 	STRING 			reportPath = ConfigDataModule->GetValue( "reportPath", "reports\\" );
@@ -343,6 +350,23 @@ void TDocManMainForm::initMenu( void )
 		newMenu->OnClick = ReportClick;
 
 		MenuReports->Add( newMenu );
+	}
+	PTR_BOOKMARK_FOLDER bmf = getPersonalItem( TYPE_BOOKMARK_FOLDER );
+	if( bmf )
+	{
+		bmf->getContent(SORT_ORDER);
+		for( int i=0; i<bmf->getChildCount(); ++i )
+		{
+			PTR_ALIAS	bm = bmf->getContentItem( i );
+
+			TMenuItem *newMenu = new TMenuItem( this );
+			newMenu->AutoHotkeys = maManual;
+			newMenu->Caption = static_cast<const char *>(bm->getName());
+			newMenu->OnClick = OneBookmarkClick;
+			newMenu->Tag = bm->getOriginalID();
+
+			MenuBookmarks->Add( newMenu );
+		}
 	}
 }
 
@@ -396,6 +420,7 @@ void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 		Application->Terminate();
 	}
 
+	print2StartWindow( "%s", "Creating Menus" );
 	initMenu();
 	closeStartup();
 	ReminderTimer->Enabled = true;

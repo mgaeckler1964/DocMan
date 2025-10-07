@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			Alias.cpp
+		Description:	Aliase (Bookmarks) for the user
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -79,10 +79,10 @@
 
 class FACTORY_ALIAS : private FACTORY_BASE
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 // --------------------------------------------------------------------- //
@@ -131,7 +131,7 @@ static FACTORY_ALIAS	theFactory;
 // ----- class virtuals ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
-int FACTORY_ALIAS::getItemType( void ) const
+int FACTORY_ALIAS::getItemType() const
 {
 	return TYPE_ALIAS;
 }
@@ -147,12 +147,12 @@ PTR_ITEM FACTORY_ALIAS::createItem( int id ) const
 	return new THE_ALIAS( id, this );
 }
 
-const char *FACTORY_ALIAS::getName( void ) const
+const char *FACTORY_ALIAS::getName() const
 {
 	return "ALias";
 }
 
-TGraphic *THE_ALIAS::getStatusPicture( void ) const
+TGraphic *THE_ALIAS::getStatusPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -164,19 +164,19 @@ TGraphic *THE_ALIAS::getStatusPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_ALIAS::getItemPicture( void ) const
+TGraphic *THE_ALIAS::getItemPicture() const
 {
 	PTR_ITEM	original = getOriginal();
-	return original ? (*original).getItemPicture() : NULL;
+	return original ? original->getItemPicture() : NULL;
 }
 
 void THE_ALIAS::loadFields( TQuery *query )
 {
 	THE_ITEM::loadFields( query );
-	originalID = query->FieldByName( "ORIGINAL_ID" )->AsInteger;
+	m_originalID = query->FieldByName( "ORIGINAL_ID" )->AsInteger;
 }
 
-void THE_ALIAS::updateDatabase( void )
+void THE_ALIAS::updateDatabase()
 {
 	THE_ITEM::updateDatabase();
 
@@ -189,17 +189,17 @@ void THE_ALIAS::updateDatabase( void )
 		"where id=:theId"
 	);
 
-	theQuery->Params->Items[0]->AsInteger = originalID;
+	theQuery->Params->Items[0]->AsInteger = m_originalID;
 	theQuery->Params->Items[1]->AsInteger = getID();
 
 	theQuery->ExecSQL();
 }
 
-void THE_ALIAS::open( void )
+void THE_ALIAS::open()
 {
-	PTR_ITEM	original = getItem( originalID );
+	PTR_ITEM	original = getItem( m_originalID );
 	if( original )
-		(*original).open();
+		original->open();
 	else
 		throw Exception( "Original could not be opened" );
 }

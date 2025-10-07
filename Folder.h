@@ -104,7 +104,7 @@ class THE_PUBLIC_TEMPLATE_FOLDER : public THE_ITEM
 	{
 		setName( theFactory->getName() );
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 };
 
 class THE_PERSONAL_TEMPLATE_FOLDER : public THE_ITEM
@@ -118,7 +118,7 @@ class THE_PERSONAL_TEMPLATE_FOLDER : public THE_ITEM
 	{
 		createPersonalName();
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 };
 
 class THE_FOLDER : public THE_ITEM
@@ -130,8 +130,8 @@ class THE_FOLDER : public THE_ITEM
 	)
 	: THE_ITEM(flags, id, theFactory )
 	{}
-	virtual TGraphic *getItemPicture( void ) const;
-	virtual void updateDatabase( void );
+	virtual TGraphic *getItemPicture() const;
+	virtual void updateDatabase();
 	STRING generateWebFolder( bool forWebServer, STRING &mimeType );
 };
 
@@ -148,7 +148,7 @@ class THE_PERSONAL_FOLDER : public THE_FOLDER
 	{
 		createPersonalName();
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 };
 
 class THE_BOOKMARK_FOLDER : public THE_PERSONAL_FOLDER
@@ -159,9 +159,11 @@ class THE_BOOKMARK_FOLDER : public THE_PERSONAL_FOLDER
 		int flags=ITEM_IS_CONTAINER
 	)
 	: THE_PERSONAL_FOLDER( id, theFactory, flags ) {}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 	virtual void getItemFactories( Array<const FACTORY_BASE*> *factory ) const;
 };
+
+typedef PTR_TEMPLATE<THE_BOOKMARK_FOLDER> PTR_BOOKMARK_FOLDER;
 
 class THE_COMPANY_FOLDER : public THE_FOLDER
 {
@@ -174,7 +176,7 @@ class THE_COMPANY_FOLDER : public THE_FOLDER
 	{
 		setName( theFactory->getName() );
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 };
 
 class THE_XSLT_FOLDER : public THE_COMPANY_FOLDER
@@ -186,7 +188,7 @@ class THE_XSLT_FOLDER : public THE_COMPANY_FOLDER
 	)
 	: THE_COMPANY_FOLDER( id, theFactory, flags ) {}
 	virtual void getItemFactories( Array<const FACTORY_BASE*> *factory ) const;
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 };
 
 class THE_FOLDER_REF : public THE_FOLDER
@@ -213,9 +215,9 @@ class THE_FOLDER_REF : public THE_FOLDER
 		setCreatedDate( createdDate );
 		setModifiedDate( createdDate );
 	}
-	virtual void updateDatabase( void );
+	virtual void updateDatabase();
 	virtual void getItemFactories( Array<const FACTORY_BASE*> *factory ) const;
-	virtual TGraphic *getStatusPicture( void ) const;
+	virtual TGraphic *getStatusPicture() const;
 };
 typedef PTR_TEMPLATE<THE_FOLDER_REF> PTR_FOLDER_REF;
 
@@ -245,9 +247,9 @@ class THE_LOCAL_FOLDER : public THE_FOLDER_REF
 		setLocalPath( newLocalPath );
 	}
 	virtual void loadFields( TQuery *query );
-	virtual void updateDatabase( void );
+	virtual void updateDatabase();
 
-	STRING getLocalPath( void ) const
+	STRING getLocalPath() const
 	{
 		return m_localPath;
 	}
@@ -261,8 +263,8 @@ class THE_LOCAL_FOLDER : public THE_FOLDER_REF
 		}
 	}
 	virtual STRING getDownloadPath( PTR_ITEM parent=PTR_ITEM() );
-	virtual void purgeItem( void );
-	virtual TGraphic *getStatusPicture( void ) const;
+	virtual void purgeItem();
+	virtual TGraphic *getStatusPicture() const;
 	void compare( FolderCompareList *theList );
 };
 typedef PTR_TEMPLATE<THE_LOCAL_FOLDER> PTR_LOCAL_FOLDER;
@@ -276,17 +278,17 @@ class THE_SYNC_FOLDER : public THE_LOCAL_FOLDER
 	) : THE_LOCAL_FOLDER( id, theFactory, flags )
 	{
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 	virtual void getItemFactories( Array<const FACTORY_BASE*> *factory ) const;
 };
 typedef PTR_TEMPLATE<THE_SYNC_FOLDER> PTR_SYNC_FOLDER;
 
 class THE_SOURCE_FOLDER : public THE_LOCAL_FOLDER
 {
-	virtual ColumnTitle	*getColumnTitles( void ) const;
-	virtual int getColCount( void ) const;
-	virtual int *getColWidth( void ) const;
-	virtual void sort( void );
+	virtual ColumnTitle	*getColumnTitles() const;
+	virtual int getColCount() const;
+	virtual int *getColWidth() const;
+	virtual void sort();
 	virtual STRING drawCell( int col, int row, TCanvas *canvas, TRect &Rect );
 
 	public:
@@ -294,9 +296,9 @@ class THE_SOURCE_FOLDER : public THE_LOCAL_FOLDER
 	: THE_LOCAL_FOLDER( id, theFactory )
 	{
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 	virtual bool refresh( bool recursive=true, std::ostream *stream=NULL );
-	void import( void );
+	void import();
 	void checkIn( bool doBranch, const STRING &description );
 	void reserve( int taskID, bool changedOnly );
 
@@ -322,7 +324,7 @@ struct FolderCompareEntry
 	{
 		folder = reserved = inFS = false;
 	}
-	key_type getKey( void ) const
+	key_type getKey() const
 	{
 		return name;
 	}
@@ -357,25 +359,25 @@ class THE_RELEASE_FOLDER : public THE_SOURCE_FOLDER
 		m_release.minor = minor;
 		m_release.patch = patch;
 	}
-	int getMajor( void ) const
+	int getMajor() const
 	{
 		return m_release.major;
 	}
-	int getMinor( void ) const
+	int getMinor() const
 	{
 		return m_release.minor;
 	}
-	int getPatch( void ) const
+	int getPatch() const
 	{
 		return m_release.patch;
 	}
-	const THE_RELEASE &getRelease( void ) const
+	const THE_RELEASE &getRelease() const
 	{
 		return m_release;
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 	virtual void loadFields( TQuery *query );
-	virtual void updateDatabase( void );
+	virtual void updateDatabase();
 	virtual STRING getDownloadPath( PTR_ITEM parent=PTR_ITEM() );
 };
 
@@ -383,17 +385,17 @@ typedef PTR_TEMPLATE<THE_RELEASE_FOLDER> PTR_RELEASE_FOLDER;
 
 class FACTORY_FOLDER : public FACTORY_SIMPLE_BASE
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_PERSONAL_FOLDER : public FACTORY_ROOT_FOLDER
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_LOCAL_FOLDER : public FACTORY_FOLDER

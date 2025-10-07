@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			Alias.ch
+		Description:	Aliase (Bookmarks) for the user
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -79,30 +79,35 @@
 
 class THE_ALIAS : public THE_ITEM
 {
-	int			originalID;
+	int			m_originalID;
 
 	private:
-	PTR_ITEM getOriginal( void ) const
+	PTR_ITEM getOriginal() const
 	{
-		return getItem( originalID );
+		return getItem( m_originalID );
 	}
 	public:
 	THE_ALIAS( int id, const FACTORY_BASE *theFactory )
 	: THE_ITEM( ITEM_IS_MOVEABLE|ITEM_IS_COPYABLE, id, theFactory )
 	{
-		this->originalID = 0;
+		m_originalID = 0;
 	}
 	void setData( const PTR_ITEM &parent, const STRING &name, const STRING &description, int originalID )
 	{
 		THE_ITEM::setData( parent, name, description );
-		this->originalID = originalID;
+		m_originalID = originalID;
 	}
 
-	virtual TGraphic *getStatusPicture( void ) const;
-	virtual TGraphic *getItemPicture( void ) const;
+	int getOriginalID() const
+	{
+		return m_originalID;
+	}
+
+	virtual TGraphic *getStatusPicture() const;
+	virtual TGraphic *getItemPicture() const;
 	virtual void loadFields( TQuery *query );
-	virtual void updateDatabase( void );
-	virtual void open( void );
+	virtual void updateDatabase();
+	virtual void open();
 };
 typedef PTR_TEMPLATE<THE_ALIAS> PTR_ALIAS;
 

@@ -100,74 +100,74 @@ static char GITIGNORE[] = ".gitignore";
 
 class FACTORY_PUBLIC_TEMPLATE_FOLDER : public FACTORY_ROOT_FOLDER
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_PERSONAL_TEMPLATE_FOLDER : public FACTORY_ROOT_FOLDER
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_BOOKMARK_FOLDER : public FACTORY_ROOT_FOLDER
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_COMPANY_FOLDER : public FACTORY_ROOT_FOLDER
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_XSLT_FOLDER : public FACTORY_BASE
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 };
 
 class FACTORY_SYNC_FOLDER : public FACTORY_LOCAL_FOLDER
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual const char *getName() const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parent ) const;
 };
 
 class FACTORY_FOLDER_REF : public FACTORY_BASE
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_SOURCE_FOLDER : public FACTORY_SYNC_FOLDER
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual const char *getName() const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parent ) const;
 };
 
 class FACTORY_RELEASE_FOLDER : public FACTORY_BASE
 {
 	public:
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual const char *getName() const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parent ) const;
 	virtual PTR_ITEM createItemFromTemplate(
 		const PTR_ITEM &parent,
@@ -179,42 +179,42 @@ class FACTORY_RELEASE_FOLDER : public FACTORY_BASE
 class ACTION_REFRESH : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_IMPORT : public ACTION_BASE_MOVE
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_EXPLORER : public ACTION_BASE_PROPERTIES
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_LOCK_TREE : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_UNLOCK_TREE : public ACTION_BASE_VERSIONS
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class THREAD_IMPORTING : public ThreadDocMan
 {
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 
 	public:
 	THREAD_IMPORTING( const PTR_ITEM &theItemToHandle )
@@ -223,8 +223,8 @@ class THREAD_IMPORTING : public ThreadDocMan
 
 class THREAD_REFRESHING : public ThreadDocMan
 {
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 
 	public:
 	THREAD_REFRESHING( const PTR_ITEM &theItemToHandle )
@@ -233,8 +233,8 @@ class THREAD_REFRESHING : public ThreadDocMan
 
 class THREAD_LOCK_TREE : public ThreadDocMan
 {
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 
 	public:
 	THREAD_LOCK_TREE( const PTR_ITEM &theItemToHandle ) : ThreadDocMan(theItemToHandle) {};
@@ -242,8 +242,8 @@ class THREAD_LOCK_TREE : public ThreadDocMan
 
 class THREAD_UNLOCK_TREE : public ThreadDocMan
 {
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 
 	public:
 	THREAD_UNLOCK_TREE( const PTR_ITEM &theItemToHandle ) : ThreadDocMan(theItemToHandle) {};
@@ -343,58 +343,58 @@ int THE_LOCAL_FOLDER::itemCompare( const PTR_ITEM &e1, const PTR_ITEM &e2, int t
 // --------------------------------------------------------------------- //
 
 
-int FACTORY_PUBLIC_TEMPLATE_FOLDER::getItemType( void ) const
+int FACTORY_PUBLIC_TEMPLATE_FOLDER::getItemType() const
 {
 	return (int)TYPE_PUBLIC_TEMPLATE_FOLDER;
 }
 
-int FACTORY_PERSONAL_TEMPLATE_FOLDER::getItemType( void ) const
+int FACTORY_PERSONAL_TEMPLATE_FOLDER::getItemType() const
 {
 	return (int)TYPE_PERSONAL_TEMPLATE_FOLDER;
 }
 
-int FACTORY_FOLDER::getItemType( void ) const
+int FACTORY_FOLDER::getItemType() const
 {
 	return (int)TYPE_FOLDER;
 }
 
-int FACTORY_PERSONAL_FOLDER::getItemType( void ) const
+int FACTORY_PERSONAL_FOLDER::getItemType() const
 {
 	return (int)TYPE_PERSONAL_FOLDER;
 }
 
 
-int FACTORY_COMPANY_FOLDER::getItemType( void ) const
+int FACTORY_COMPANY_FOLDER::getItemType() const
 {
 	return (int)TYPE_COMPANY_FOLDER;
 }
 
-int FACTORY_XSLT_FOLDER::getItemType( void ) const
+int FACTORY_XSLT_FOLDER::getItemType() const
 {
 	return (int)TYPE_XSLT_FOLDER;
 }
 
-int FACTORY_SYNC_FOLDER::getItemType( void ) const
+int FACTORY_SYNC_FOLDER::getItemType() const
 {
 	return (int)TYPE_SYNC_FOLDER;
 }
 
-int FACTORY_FOLDER_REF::getItemType( void ) const
+int FACTORY_FOLDER_REF::getItemType() const
 {
 	return (int)TYPE_FOLDER_REF;
 }
 
-int FACTORY_SOURCE_FOLDER::getItemType( void ) const
+int FACTORY_SOURCE_FOLDER::getItemType() const
 {
 	return (int)TYPE_SOURCE_FOLDER;
 }
 
-int FACTORY_RELEASE_FOLDER::getItemType( void ) const
+int FACTORY_RELEASE_FOLDER::getItemType() const
 {
 	return (int)TYPE_RELEASE_FOLDER;
 }
 
-int FACTORY_BOOKMARK_FOLDER::getItemType( void ) const
+int FACTORY_BOOKMARK_FOLDER::getItemType() const
 {
 	return TYPE_BOOKMARK_FOLDER;
 }
@@ -511,62 +511,62 @@ PTR_ITEM FACTORY_BOOKMARK_FOLDER::createItem( int id ) const
 
 
 
-const char *FACTORY_PUBLIC_TEMPLATE_FOLDER::getName( void ) const
+const char *FACTORY_PUBLIC_TEMPLATE_FOLDER::getName() const
 {
 	return "Public Template Folder";
 }
 
-const char *FACTORY_PERSONAL_TEMPLATE_FOLDER::getName( void ) const
+const char *FACTORY_PERSONAL_TEMPLATE_FOLDER::getName() const
 {
 	return "Personal Template Folder";
 }
 
-const char *FACTORY_FOLDER::getName( void ) const
+const char *FACTORY_FOLDER::getName() const
 {
 	return "Folder";
 }
 
-const char *FACTORY_PERSONAL_FOLDER::getName( void ) const
+const char *FACTORY_PERSONAL_FOLDER::getName() const
 {
 	return "Personal Folder";
 }
 
-const char *FACTORY_COMPANY_FOLDER::getName( void ) const
+const char *FACTORY_COMPANY_FOLDER::getName() const
 {
 	return "Company Folder";
 }
 
-const char *FACTORY_XSLT_FOLDER::getName( void ) const
+const char *FACTORY_XSLT_FOLDER::getName() const
 {
 	return "XSLT Folder";
 }
 
-const char *FACTORY_SYNC_FOLDER::getName( void ) const
+const char *FACTORY_SYNC_FOLDER::getName() const
 {
 	return "Sync Folder";
 }
 
-const char *FACTORY_FOLDER_REF::getName( void ) const
+const char *FACTORY_FOLDER_REF::getName() const
 {
 	return "Folder Reference";
 }
 
-const char *FACTORY_SOURCE_FOLDER::getName( void ) const
+const char *FACTORY_SOURCE_FOLDER::getName() const
 {
 	return "Source Folder";
 }
 
-const char *FACTORY_RELEASE_FOLDER::getName( void ) const
+const char *FACTORY_RELEASE_FOLDER::getName() const
 {
 	return "Release";
 }
 
-const char *FACTORY_BOOKMARK_FOLDER::getName( void ) const
+const char *FACTORY_BOOKMARK_FOLDER::getName() const
 {
 	return "Bookmark Folder";
 }
 
-TItemCreateForm *FACTORY_SYNC_FOLDER::getForm( void ) const
+TItemCreateForm *FACTORY_SYNC_FOLDER::getForm() const
 {
 #ifdef DOCMANBG
 	return NULL;
@@ -575,7 +575,7 @@ TItemCreateForm *FACTORY_SYNC_FOLDER::getForm( void ) const
 #endif
 }
 
-TItemCreateForm *FACTORY_SOURCE_FOLDER::getForm( void ) const
+TItemCreateForm *FACTORY_SOURCE_FOLDER::getForm() const
 {
 #ifdef DOCMANBG
 	return NULL;
@@ -584,7 +584,7 @@ TItemCreateForm *FACTORY_SOURCE_FOLDER::getForm( void ) const
 #endif
 }
 
-TItemCreateForm *FACTORY_RELEASE_FOLDER::getForm( void ) const
+TItemCreateForm *FACTORY_RELEASE_FOLDER::getForm() const
 {
 #ifdef DOCMANBG
 	return NULL;
@@ -732,7 +732,7 @@ PTR_ITEM FACTORY_RELEASE_FOLDER::createItemFromTemplate(
 
 
 
-TGraphic *THE_PUBLIC_TEMPLATE_FOLDER::getItemPicture( void ) const
+TGraphic *THE_PUBLIC_TEMPLATE_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -744,7 +744,7 @@ TGraphic *THE_PUBLIC_TEMPLATE_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_PERSONAL_TEMPLATE_FOLDER::getItemPicture( void ) const
+TGraphic *THE_PERSONAL_TEMPLATE_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -756,7 +756,7 @@ TGraphic *THE_PERSONAL_TEMPLATE_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_FOLDER::getItemPicture( void ) const
+TGraphic *THE_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -768,7 +768,7 @@ TGraphic *THE_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_PERSONAL_FOLDER::getItemPicture( void ) const
+TGraphic *THE_PERSONAL_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -780,7 +780,7 @@ TGraphic *THE_PERSONAL_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_BOOKMARK_FOLDER::getItemPicture( void ) const
+TGraphic *THE_BOOKMARK_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -792,7 +792,7 @@ TGraphic *THE_BOOKMARK_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_SYNC_FOLDER::getItemPicture( void ) const
+TGraphic *THE_SYNC_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -804,7 +804,7 @@ TGraphic *THE_SYNC_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_SOURCE_FOLDER::getItemPicture( void ) const
+TGraphic *THE_SOURCE_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -816,7 +816,7 @@ TGraphic *THE_SOURCE_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_RELEASE_FOLDER::getItemPicture( void ) const
+TGraphic *THE_RELEASE_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -828,7 +828,7 @@ TGraphic *THE_RELEASE_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_XSLT_FOLDER::getItemPicture( void ) const
+TGraphic *THE_XSLT_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -840,7 +840,7 @@ TGraphic *THE_XSLT_FOLDER::getItemPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_COMPANY_FOLDER::getItemPicture( void ) const
+TGraphic *THE_COMPANY_FOLDER::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -892,7 +892,7 @@ void THE_RELEASE_FOLDER::loadFields( TQuery *query )
 	m_release.patch = query->FieldByName( "patch_release" )->AsInteger;
 }
 
-void THE_FOLDER::updateDatabase( void )
+void THE_FOLDER::updateDatabase()
 {
 	STRING	localPath = getDownloadPath();
 	int		id = getID();
@@ -919,7 +919,7 @@ void THE_FOLDER::updateDatabase( void )
 	}
 }
 
-void THE_LOCAL_FOLDER::updateDatabase( void )
+void THE_LOCAL_FOLDER::updateDatabase()
 {
 	THE_FOLDER::updateDatabase();
 
@@ -960,7 +960,7 @@ void THE_LOCAL_FOLDER::updateDatabase( void )
 	}
 }
 
-void THE_LOCAL_FOLDER::purgeItem( void )
+void THE_LOCAL_FOLDER::purgeItem()
 {
 	if( !isDeleted() && isMoveable() )
 		throw Exception( "Cannot purge items not deleted"  );
@@ -980,7 +980,7 @@ void THE_LOCAL_FOLDER::purgeItem( void )
 	THE_ITEM::purgeItem();
 }
 
-void THE_RELEASE_FOLDER::updateDatabase( void )
+void THE_RELEASE_FOLDER::updateDatabase()
 {
 	THE_LOCAL_FOLDER::updateDatabase();
 
@@ -1309,7 +1309,7 @@ bool THE_FOLDER_REF::refresh( bool recursive, ostream *stream )
 	return hasChanged;
 }
 
-void THE_FOLDER_REF::updateDatabase( void )
+void THE_FOLDER_REF::updateDatabase()
 {
 	TDateTime	createdDate = getCreatedDate();
 	TDateTime	modifiedDate = getModifiedDate();
@@ -1332,7 +1332,7 @@ void THE_FOLDER_REF::updateDatabase( void )
 	theQuery->ExecSQL();
 }
 
-TGraphic *THE_FOLDER_REF::getStatusPicture( void ) const
+TGraphic *THE_FOLDER_REF::getStatusPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -1344,7 +1344,7 @@ TGraphic *THE_FOLDER_REF::getStatusPicture( void ) const
 	return thePic;
 }
 
-TGraphic *THE_LOCAL_FOLDER::getStatusPicture( void ) const
+TGraphic *THE_LOCAL_FOLDER::getStatusPicture() const
 {
 	return NULL;
 }
@@ -1373,12 +1373,12 @@ void THE_XSLT_FOLDER::getItemFactories( Array<const FACTORY_BASE*> *factory ) co
 	}
 }
 
-int THE_SOURCE_FOLDER::getColCount( void ) const
+int THE_SOURCE_FOLDER::getColCount() const
 {
 	return 8;
 }
 
-int *THE_SOURCE_FOLDER::getColWidth( void ) const
+int *THE_SOURCE_FOLDER::getColWidth() const
 {
 	static int colWidth[] =
 	{
@@ -1394,7 +1394,7 @@ int *THE_SOURCE_FOLDER::getColWidth( void ) const
 	return colWidth;
 }
 
-ColumnTitle *THE_SOURCE_FOLDER::getColumnTitles( void ) const
+ColumnTitle *THE_SOURCE_FOLDER::getColumnTitles() const
 {
 	static ColumnTitle colTitles[] =
 	{
@@ -1411,7 +1411,7 @@ ColumnTitle *THE_SOURCE_FOLDER::getColumnTitles( void ) const
 	return colTitles;
 }
 
-void THE_SOURCE_FOLDER::sort( void )
+void THE_SOURCE_FOLDER::sort()
 {
 	getContent()->sort( itemCompare, getSortType() );
 }
@@ -1440,17 +1440,17 @@ bool ACTION_REFRESH::acceptItem( THE_ITEM *theItem )
 	return theFolder ? ACTION_BASE::acceptItem( theItem ) : false;
 }
 
-const char *ACTION_REFRESH::getLabel( void ) const
+const char *ACTION_REFRESH::getLabel() const
 {
 	return "Refresh";
 }
 
-const char *THREAD_REFRESHING::getTitle( void ) const
+const char *THREAD_REFRESHING::getTitle() const
 {
 	return "Refresh";
 }
 
-void THREAD_REFRESHING::perform( void )
+void THREAD_REFRESHING::perform()
 {
 	doEnterFunction("THREAD_REFRESHING::perform");
 
@@ -1488,17 +1488,17 @@ bool ACTION_IMPORT::acceptItem( THE_ITEM *theItem )
 	;
 }
 
-const char *ACTION_IMPORT::getLabel( void ) const
+const char *ACTION_IMPORT::getLabel() const
 {
 	return "Import";
 }
 
-const char *THREAD_IMPORTING::getTitle( void ) const
+const char *THREAD_IMPORTING::getTitle() const
 {
 	return "Import";
 }
 
-void THREAD_IMPORTING::perform( void )
+void THREAD_IMPORTING::perform()
 {
 	THE_SOURCE_FOLDER *theFolder = dynamic_cast<THE_SOURCE_FOLDER *>(
 		static_cast<THE_ITEM*>(theItemToHandle)
@@ -1528,7 +1528,7 @@ bool ACTION_EXPLORER::acceptItem( THE_ITEM *theItem )
 	return theFolder ? ACTION_BASE::acceptItem( theItem ) : false;
 }
 
-const char *ACTION_EXPLORER::getLabel( void ) const
+const char *ACTION_EXPLORER::getLabel() const
 {
 	return "Explorer";
 }
@@ -1559,7 +1559,7 @@ bool ACTION_LOCK_TREE::acceptItem( THE_ITEM *theItem )
 
 	return ACTION_BASE_VERSIONS::acceptItem( theItem );
 }
-const char *ACTION_LOCK_TREE::getLabel( void ) const
+const char *ACTION_LOCK_TREE::getLabel() const
 {
 	return "Lock Versions...";
 }
@@ -1590,7 +1590,7 @@ bool ACTION_UNLOCK_TREE::acceptItem( THE_ITEM *theItem )
 	return ACTION_BASE_VERSIONS::acceptItem( theItem );
 }
 
-const char *ACTION_UNLOCK_TREE::getLabel( void ) const
+const char *ACTION_UNLOCK_TREE::getLabel() const
 {
 	return "Unlock Versions...";
 }
@@ -1610,22 +1610,22 @@ RefhreshType ACTION_UNLOCK_TREE::perform( PTR_ITEM theItem )
 	return rtNONE;
 }
 
-const char *THREAD_LOCK_TREE::getTitle( void ) const
+const char *THREAD_LOCK_TREE::getTitle() const
 {
 	return "Lock Tree";
 }
 
-void THREAD_LOCK_TREE::perform( void )
+void THREAD_LOCK_TREE::perform()
 {
 	(*theItemToHandle).lock();
 }
 
-const char *THREAD_UNLOCK_TREE::getTitle( void ) const
+const char *THREAD_UNLOCK_TREE::getTitle() const
 {
 	return "Unlock Tree";
 }
 
-void THREAD_UNLOCK_TREE::perform( void )
+void THREAD_UNLOCK_TREE::perform()
 {
 	(*theItemToHandle).unlock();
 }
@@ -1634,7 +1634,7 @@ void THREAD_UNLOCK_TREE::perform( void )
 // ----- class publics ------------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-void THE_SOURCE_FOLDER::import( void )
+void THE_SOURCE_FOLDER::import()
 {
 	F_STRING localPath = getDownloadPath();
 

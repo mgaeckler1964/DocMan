@@ -246,13 +246,19 @@ object DocManMainForm: TDocManMainForm
         Caption = '&Personal Folder'
         OnClick = PersonalFolderClick
       end
-      object Bookmarks: TMenuItem
-        Caption = '&Bookmarks'
-        OnClick = BookmarksClick
-      end
       object Trash: TMenuItem
         Caption = '&Trash'
         OnClick = TrashClick
+      end
+      object MenuBookmarks: TMenuItem
+        Caption = '&Bookmarks'
+        object Bookmarks: TMenuItem
+          Caption = 'Edit &Bookmarks'
+          OnClick = BookmarksClick
+        end
+        object N10: TMenuItem
+          Caption = '-'
+        end
       end
       object PersonalTemplateFolder: TMenuItem
         Caption = 'Template &Folder'
