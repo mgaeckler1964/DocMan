@@ -8,11 +8,11 @@
 
 		Copyright:		(c) 1988-2025 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
@@ -83,6 +83,19 @@ using namespace gak;
 // --------------------------------------------------------------------- //
 // ----- constants ----------------------------------------------------- //
 // --------------------------------------------------------------------- //
+
+#define ITEM_SELECT_SQL									\
+	"SELECT i.*, "										\
+		"v.fileSize, v.fileModifiedDate, v.mime_type, "	\
+		"f.usageCount as num_links, "					\
+		"s.md5_checksum as storage_md5 "				\
+	"FROM ITEM_TREE i "									\
+	"LEFT OUTER JOIN I_FILES f "						\
+	"ON i.FILE_ID = f.ID "								\
+	"LEFT OUTER JOIN I_FILE_VERS v "					\
+	"ON f.ID = v.file_id and f.version = v.version "	\
+	"LEFT OUTER JOIN I_STORAGE s "						\
+	"ON s.ID = v.storage_id "
 
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
@@ -1167,17 +1180,7 @@ ITEM_CONTENT *THE_ITEM::loadContent( void )
 		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add(
-			// "select * from ITEM_TREE i where i.parentId = :theParent"
-			"SELECT i.*, "
-				"v.fileSize, v.fileModifiedDate, v.mime_type, f.usageCount as num_links, "
-				"s.md5_checksum as storage_md5 "
-			"FROM ITEM_TREE i "
-			"LEFT OUTER JOIN I_FILES f "
-			"ON i.FILE_ID = f.ID "
-			"LEFT OUTER JOIN I_FILE_VERS v "
-			"ON f.ID = v.file_id and f.version = v.version "
-			"LEFT OUTER JOIN I_STORAGE s "
-			"ON s.ID = v.storage_id "
+			ITEM_SELECT_SQL
 			"where i.parentId = :theParent"
 		);
 
@@ -1818,15 +1821,7 @@ PTR_ITEM getItem( int id )
 			std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 			theQuery->DatabaseName = "docManDB";
 			theQuery->SQL->Add(
-				"SELECT i.*, "
-					"v.fileSize, v.fileModifiedDate, v.mime_type, f.usageCount as num_links "
-				"FROM ITEM_TREE i "
-				"LEFT OUTER JOIN I_FILES f "
-				"ON i.FILE_ID = f.ID "
-				"LEFT OUTER JOIN I_FILE_VERS v "
-				"ON f.ID = v.file_id and f.version = v.version "
-				"LEFT OUTER JOIN I_STORAGE s "
-				"ON s.ID = v.storage_id "
+				ITEM_SELECT_SQL
 				"where i.id = :theID"
 			);
 			theQuery->Params->Items[0]->AsInteger = id;
@@ -1865,15 +1860,7 @@ PTR_ITEM getItemByName( int id, const char *name )
 	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
-		"SELECT i.*, "
-			"v.fileSize, v.fileModifiedDate, v.mime_type, f.usageCount as num_links "
-		"FROM ITEM_TREE i "
-		"LEFT OUTER JOIN I_FILES f "
-		"ON i.FILE_ID = f.ID "
-		"LEFT OUTER JOIN I_FILE_VERS v "
-		"ON f.ID = v.file_id and f.version = v.version "
-		"LEFT OUTER JOIN I_STORAGE s "
-		"ON s.ID = v.storage_id "
+		ITEM_SELECT_SQL
 		"where i.parentId = :theID and i.name=:theName"
 	);
 	theQuery->Params->Items[0]->AsInteger = id;
