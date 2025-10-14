@@ -73,7 +73,7 @@
 // ----- type definitions ---------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-typedef gak::Index<StorageKey>		DocManIndex;
+typedef gak::ai::Index<StorageKey>	DocManIndex;
 typedef DocManIndex::RelevantHits	DocManSearchResult;
 
 // --------------------------------------------------------------------- //
