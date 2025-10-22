@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			DocManDM.cpp
+		Description:	The data module for DocMan
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -58,35 +58,35 @@ TDocManDataModule *DocManDataModule;
 char registryKey[] = "\\Software\\gak\\DocMan";
 //---------------------------------------------------------------------------
 
-const char *THREAD_CHECK_DB::getTitle( void ) const
+const char *THREAD_CHECK_DB::getTitle() const
 {
 	return "Check Database";
 }
 
 //---------------------------------------------------------------------------
-void THREAD_CHECK_DB::perform( void )
+void THREAD_CHECK_DB::perform()
 {
 	DocManDataModule->checkDB( false );
 }
 //---------------------------------------------------------------------------
-const char *THREAD_REFRESH_EXIFS::getTitle( void ) const
+const char *THREAD_REFRESH_EXIFS::getTitle() const
 {
 	return "Refresh Exifs";
 }
 
 //---------------------------------------------------------------------------
-void THREAD_REFRESH_EXIFS::perform( void )
+void THREAD_REFRESH_EXIFS::perform()
 {
 	DocManDataModule->refreshExifs();
 }
 //---------------------------------------------------------------------------
-const char *THREAD_REFRESH_MIME_TYPES::getTitle( void ) const
+const char *THREAD_REFRESH_MIME_TYPES::getTitle() const
 {
 	return "Refresh Mime Types";
 }
 
 //---------------------------------------------------------------------------
-void THREAD_REFRESH_MIME_TYPES::perform( void )
+void THREAD_REFRESH_MIME_TYPES::perform()
 {
 	DocManDataModule->refreshMimeTypes();
 }
@@ -848,7 +848,7 @@ bool TDocManDataModule::updateExifData( const PTR_ITEM &theItem, int version, co
 	return dataOK;
 }
 //---------------------------------------------------------------------------
-void TDocManDataModule::refreshExifs( void )
+void TDocManDataModule::refreshExifs()
 {
 	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::refreshExifs");
 	PTR_FILE		theFile;
@@ -988,7 +988,7 @@ void TDocManDataModule::refreshExifs( void )
 #endif
 }
 //---------------------------------------------------------------------------
-void TDocManDataModule::refreshMimeTypes( void )
+void TDocManDataModule::refreshMimeTypes()
 {
 	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::refreshMimeTypes");
 	STRING fileName, oldMimeType, newMimeType;
@@ -1223,10 +1223,13 @@ void TDocManDataModule::loadStorageInfos( int storageID, StorageInfos *result )
 	QueryStorageItems->Close();
 }
 
-void TDocManDataModule::loadAllStorageInfos( int minStorageID, StorageInfos *result )
+//---------------------------------------------------------------------------
+
+int TDocManDataModule::loadAllStorageInfos( int minStorageID, StorageInfos *result )
 {
+	int maxStorageId = minStorageID+1000;
 	QueryAllStorageItems->Params->Items[0]->AsInteger = minStorageID;
-	QueryAllStorageItems->Params->Items[1]->AsInteger = minStorageID+10000;
+	QueryAllStorageItems->Params->Items[1]->AsInteger = maxStorageId;
 	for(
 		QueryAllStorageItems->Open();
 		!QueryAllStorageItems->Eof;
@@ -1246,11 +1249,23 @@ void TDocManDataModule::loadAllStorageInfos( int minStorageID, StorageInfos *res
 		info.storageFile = QueryAllStorageItemsFILE_PATH->AsString.c_str();
 	}
 	QueryAllStorageItems->Close();
+	return maxStorageId;
 }
 
 //---------------------------------------------------------------------------
 
-const UserOrGroup *TDocManDataModule::login( void )
+int TDocManDataModule::selectMaxStorageID()
+{
+	QueryMaxStorageID->Open();
+	int maxStorageID = QueryMaxStorageIDMAXOFID->AsInteger;
+	QueryMaxStorageID->Close();
+
+	return maxStorageID;
+}
+
+//---------------------------------------------------------------------------
+
+const UserOrGroup *TDocManDataModule::login()
 {
 	doEnterFunctionEx(gakLogging::llInfo, "TDocManDataModule::login");
 	bool	showLogin;
@@ -1321,7 +1336,7 @@ const UserOrGroup *TDocManDataModule::login( void )
 
 //---------------------------------------------------------------------------
 
-CryptoRSA &TDocManDataModule::getPrivateKey( void )
+CryptoRSA &TDocManDataModule::getPrivateKey()
 {
 	if( !m_privateKey.hasKey() )
 	{
@@ -1339,7 +1354,7 @@ CryptoRSA &TDocManDataModule::getPrivateKey( void )
 	return m_privateKey;
 }
 //---------------------------------------------------------------------------
-const STRING &TDocManDataModule::getMachine( void )
+const STRING &TDocManDataModule::getMachine()
 {
 	static STRING machine;
 	if( machine.isEmpty() )

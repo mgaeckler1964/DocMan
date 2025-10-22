@@ -1,7 +1,7 @@
 object DocManDataModule: TDocManDataModule
   OldCreateOrder = False
-  Left = 198
-  Top = 163
+  Left = 130
+  Top = 164
   Height = 688
   Width = 1000
   object TableTaskTypes: TTable
@@ -1255,10 +1255,7 @@ object DocManDataModule: TDocManDataModule
       'join I_FILE_VERS v on v.STORAGE_ID = s.ID'
       'join ITEM_TREE i on v.FILE_ID = i.FILE_ID'
       'join I_FILES f on i.FILE_ID = f.ID'
-      'where s.ID > :storageID and s.ID < :maxStorageID'
-      ' '
-      ' '
-      ' ')
+      'where s.ID > :storageID and s.ID < :maxStorageID')
     Left = 240
     Top = 368
     ParamData = <
@@ -1309,9 +1306,23 @@ object DocManDataModule: TDocManDataModule
   end
   object theDatabase: TDatabase
     AliasName = 'DOCMAN'
+    Connected = True
     DatabaseName = 'docManDB'
     SessionName = 'Default'
     Left = 40
     Top = 504
+  end
+  object QueryMaxStorageID: TQuery
+    DatabaseName = 'docManDB'
+    SQL.Strings = (
+      'select'#9'max(ID)'
+      'from'#9'I_STORAGE'
+      ' ')
+    Left = 344
+    Top = 368
+    object QueryMaxStorageIDMAXOFID: TIntegerField
+      FieldName = 'MAX OF ID'
+      Origin = 'DOCMANDB."I_STORAGE.DB".ID'
+    end
   end
 end

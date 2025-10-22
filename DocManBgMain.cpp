@@ -1,7 +1,7 @@
 /*
 		Project:		DocMan
 		Module:			DocManBgMain.cpp
-		Description:	The main form for the bachground processor
+		Description:	The main form for the background processor
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
@@ -106,7 +106,7 @@ __fastcall TDocManBgMainForm::TDocManBgMainForm(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-inline const UserOrGroup *TDocManBgMainForm::login( void )
+inline const UserOrGroup *TDocManBgMainForm::login()
 {
 	return DocManDataModule->login();
 }
@@ -180,7 +180,7 @@ void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 }
 
 //---------------------------------------------------------------------------
-void TDocManBgMainForm::performBackgroundTasks( void )
+void TDocManBgMainForm::performBackgroundTasks()
 {
 	doEnterFunction( "TDocManBgMainForm::performBackgroundTasks(" );
 	NOTIFYICONDATA	IconData;
@@ -201,6 +201,12 @@ void TDocManBgMainForm::performBackgroundTasks( void )
 	SharedObjectPointer<ThreadBackground> theThread = new ThreadBackground;
 
 	theThread->StartThread( true, true );
+
+#ifndef NDEBUG
+	StatusForm->WindowState = wsNormal;
+	StatusForm->Show();
+	StatusForm->SetFocus();
+#endif
 
 	while( theThread->isRunning && !Thread::waitForMsgThreads() )
 	{

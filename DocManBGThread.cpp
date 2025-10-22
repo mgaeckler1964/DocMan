@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:
-		Description:
+		Module:			DocManBGThread.cpp
+		Description:	The background processor thread
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
+		This program is free software: you can redistribute it and/or modify  
+		it under the terms of the GNU General Public License as published by  
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License
+		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -43,6 +43,7 @@
 #include <gak/threadPool.h>
 #include <gak/priorityQueue.h>
 #include <gak/lockQueue.h>
+#include <gak/math.h>
 
 #pragma hdrstop
 
@@ -215,7 +216,7 @@ static const int IDLE_TIMEOUT = 60000;
 // ----- class privates ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
-void ThreadBackground::updateIndex( void )
+bool ThreadBackground::updateIndex()
 {
 	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::updateIndex");
 
@@ -226,7 +227,8 @@ void ThreadBackground::updateIndex( void )
 	DocManIndex			globalIndex;
 	F_STRING			storageBase = THE_FILE::getExternalStorageBase();
 	F_STRING			stopWordsFile = storageBase + "stop.words.txt";
-	int 				maxStorageID = ConfigDataModule->GetValue( "indexStart", 0 );
+	int 				indexStart = ConfigDataModule->GetValue( "indexStart", 0 );
+	int					oldIndex = indexStart;
 	bool				hasLogChanged = false;
 	bool				hasStopChanged = false;
 
@@ -271,7 +273,8 @@ void ThreadBackground::updateIndex( void )
 	indexPool.setObjectProcessor( indexProcessor );
 	indexPool.start();
 	StorageInfos	infos;
-	DocManDataModule->loadAllStorageInfos( maxStorageID, &infos );
+	int maxStorageID = DocManDataModule->selectMaxStorageID();
+	int nextIndexStart = DocManDataModule->loadAllStorageInfos( indexStart, &infos )-1;
 	for(
 		StorageInfos::const_iterator it = infos.cbegin(),
 			endIT = infos.cend();
@@ -296,7 +299,13 @@ void ThreadBackground::updateIndex( void )
 		}
 	}
 	StatusForm->setStatus( STATUS_VERB, "Stoping Pool" );
+	while( size_t size = indexPool.size() )
+	{
+		StatusForm->setStatus( STATUS_VERB, "Flush Pool " + formatNumber(size) );
+		Sleep( 1000 );
+	}
 	indexPool.flush();
+	StatusForm->setStatus( STATUS_VERB, "shutdown Pool" );
 	indexPool.shutdown();
 	StatusForm->restore();
 	while( indexResult.size() && !StatusForm->isTerminated() )
@@ -314,15 +323,14 @@ void ThreadBackground::updateIndex( void )
 			+ ')'
 		;
 		IndexResultPtr	result = indexResult.pop();
-		maxStorageID = result->m_source.storageID;
 		StatusForm->setStatus( title, result->m_source.storageFile );
 		globalIndex.mergeIndexPositions( result->m_source, result->m_indexPositions );
 	}
+	indexStart = gak::math::min( nextIndexStart, maxStorageID );
 
 	if( hasLogChanged )
 	{
 		StatusForm->setStatus( STATUS_VERB, "Saving Index" );
-		ConfigDataModule->SetValue( "indexStart", maxStorageID );
 		writeDocManIndex( globalIndex );
 
 		if( !StatusForm->isTerminated() )
@@ -340,10 +348,13 @@ void ThreadBackground::updateIndex( void )
 			ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
 		}
 	}
+	if( indexStart != oldIndex )
+		ConfigDataModule->SetValue( "indexStart", indexStart );
 	StatusForm->restore();
+	return hasLogChanged;
 }
 
-void ThreadBackground::updateSyncFolders( void )
+void ThreadBackground::updateSyncFolders()
 {
 	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::updateSyncFolders");
 
@@ -575,7 +586,7 @@ order by it.parentID, it.ID
 	}
 }
 
-void ThreadBackground::reminderCheck( void )
+void ThreadBackground::reminderCheck()
 {
 	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::reminderCheck" );
 	STRING oldState = m_state;
@@ -596,12 +607,12 @@ void ThreadBackground::reminderCheck( void )
 // ----- class virtuals ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
-const char *ThreadBackground::getTitle( void ) const
+const char *ThreadBackground::getTitle() const
 {
 	return "Background Process";
 }
 
-void ThreadBackground::perform( void )
+void ThreadBackground::perform()
 {
 	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::perform");
 
@@ -623,7 +634,7 @@ void ThreadBackground::perform( void )
 			reminderCheck();
 
 			m_state = "updateIndex";
-			updateIndex();
+			bool hasIndexChanged = updateIndex();
 			if( StatusForm->isTerminated() )
 			{
 /*v*/			break;
@@ -631,24 +642,28 @@ void ThreadBackground::perform( void )
 
 			reminderCheck();
 
-			m_state = "updateSyncFolders";
-			updateSyncFolders();
-			if( StatusForm->isTerminated() )
+			if( !hasIndexChanged )
 			{
-/*v*/			break;
-			}
+				m_state = "updateSyncFolders";
+				updateSyncFolders();
+				if( StatusForm->isTerminated() )
+				{
+/*v*/				break;
+				}
 
-			reminderCheck();
+				reminderCheck();
 
-			m_state = "checkDB";
-			if( (int(TDateTime::CurrentDate()) - int(lastCheck)) >= 7 )
-			{
-				DocManDataModule->checkDB( true );
-				lastCheck = TDateTime::CurrentDate();
+				m_state = "checkDB";
+				if( (int(TDateTime::CurrentDate()) - int(lastCheck)) >= 7 )
+				{
+					DocManDataModule->checkDB( true );
+					lastCheck = TDateTime::CurrentDate();
 #ifndef _DEBUG
-				registry->WriteDate( "bgLastCheck", lastCheck );
+					registry->WriteDate( "bgLastCheck", lastCheck );
 #endif
+				}
 			}
+
 			if( StatusForm->isTerminated() )
 			{
 /*v*/			break;
@@ -657,24 +672,27 @@ void ThreadBackground::perform( void )
 
 			reminderCheck();
 
-			m_state = "Sleep";
-			StatusForm->pushStatus( "Sleeping", "" );
-			gak::DateTime	now;
-			STRING dateTime = now.getLocalTime();
-			do
+			if( !hasIndexChanged )
 			{
-				gak::Time	inpTime( GetLastInputTime() );
-				STRING		inputTime = inpTime.toString();
+				m_state = "Sleep";
+				StatusForm->pushStatus( "Sleeping", "" );
+				gak::DateTime	now;
+				STRING dateTime = now.getLocalTime();
+				do
+				{
+					gak::Time	inpTime( GetLastInputTime() );
+					STRING		inputTime = inpTime.toString();
 
-				StatusForm->pushStatus( "Sleeping since ", dateTime + " Idle for: " + inputTime );
-				Sleep( 60000 );
-				reminderCheck();
+					StatusForm->pushStatus( "Sleeping since ", dateTime + " Idle for: " + inputTime );
+					Sleep( 60000  );
+					reminderCheck();
+					StatusForm->restore();
+				}
+				while( GetLastInputTime() > 600000 && !StatusForm->isTerminated() );
+
+
 				StatusForm->restore();
 			}
-			while( GetLastInputTime() > 600000 && !StatusForm->isTerminated() );
-
-
-			StatusForm->restore();
 		}
 	}
 	catch( Exception &e )

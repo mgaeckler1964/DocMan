@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:
-		Description:
+		Module:			DocManDM.h
+		Description:	The data module for DocMan
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
+		This program is free software: you can redistribute it and/or modify  
+		it under the terms of the GNU General Public License as published by  
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License
+		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -318,6 +318,8 @@ __published:	// IDE-managed Components
 	TIntegerField *TableItemTreeREMOTE_ID;
 	TDatabase *theDatabase;
 	TIntegerField *TableItemTreeREMINDERDATE;
+	TQuery *QueryMaxStorageID;
+	TIntegerField *QueryMaxStorageIDMAXOFID;
 	void __fastcall TableTaskTypesBeforePost(TDataSet *DataSet);
 private:	// User declarations
 	gak::IntStrMap 	idPathMapping;
@@ -336,10 +338,10 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TDocManDataModule(TComponent* Owner);
 
-	gak::CryptoRSA &getPrivateKey( void );
+	gak::CryptoRSA &getPrivateKey();
 
-	const UserOrGroup *login( void );
-	const UserOrGroup *getActUser( void ) const
+	const UserOrGroup *login();
+	const UserOrGroup *getActUser() const
 	{
 		return m_actUser;
 	}
@@ -352,26 +354,26 @@ public:		// User declarations
 	static STRING md5file( const STRING &filePath );
 
 	void checkDB( bool silent );
-	void refreshExifs( void );
-	void refreshMimeTypes( void );
+	void refreshExifs();
+	void refreshMimeTypes();
 
 	void refreshTaskTypes( TStrings *items=NULL );
 	void refreshTaskStatus( TStrings *items=NULL );
-	int getDefaultTaskType( void )
+	int getDefaultTaskType()
 	{
 		if( !defaultTaskType )
 			refreshTaskTypes();
 
 		return defaultTaskType;
 	}
-	int getDefaultTaskStatus( void )
+	int getDefaultTaskStatus()
 	{
 		if( !defaultTaskStatus )
 			refreshTaskStatus();
 
 		return defaultTaskStatus;
 	}
-	void initPathMapping( void )
+	void initPathMapping()
 	{
 		idPathMapping.clear();
 	}
@@ -409,28 +411,30 @@ public:		// User declarations
 	);
 
 	void loadStorageInfos( int storageID, StorageInfos *result );
-	void loadAllStorageInfos( int storageID, StorageInfos *result );
+	int loadAllStorageInfos( int storageID, StorageInfos *result );
 
-	static const STRING &getMachine( void );
+	int selectMaxStorageID();
+
+	static const STRING &getMachine();
 };
 //---------------------------------------------------------------------------
 #pragma option -RT-
 class THREAD_CHECK_DB : public ThreadDocMan
 {
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 };
 
 class THREAD_REFRESH_EXIFS : public ThreadDocMan
 {
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 };
 
 class THREAD_REFRESH_MIME_TYPES : public ThreadDocMan
 {
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 };
 
 

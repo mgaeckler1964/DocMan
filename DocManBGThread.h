@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			DocManBGThread.h
+		Description:	The background processor thread
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -92,15 +92,15 @@ class ThreadBackground : public ThreadDocMan
 	STRING		m_state;
 	STRING		m_errorText;
 
-	void reminderCheck( void );
-	void updateSyncFolders( void );
-	void updateIndex( void );
+	void reminderCheck();
+	void updateSyncFolders();
+	bool updateIndex();
 
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 
 	public:
-	const STRING &getError( void ) const
+	const STRING &getError() const
 	{
 		return m_errorText;
 	}
