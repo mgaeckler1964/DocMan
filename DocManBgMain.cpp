@@ -263,7 +263,7 @@ void __fastcall TDocManBgMainForm::FormShow(TObject *)
 
 	print2StartWindow( "%s", "Creating Session" );
 
-	STRING externalStorage = ConfigDataModule->GetValue( "externalStorage", "" );
+	STRING externalStorage = ConfigDataModule->GetValue( EXTERNAL_STORAGE, "" );
 	if( externalStorage.isEmpty() )
 	{
 		errorText = STRING("External Storage unknown.\n");
@@ -274,9 +274,9 @@ void __fastcall TDocManBgMainForm::FormShow(TObject *)
 	else
 		THE_FILE::setExternalStorage( externalStorage );
 
-	STRING proxyServer = ConfigDataModule->GetValue( "proxyServer", "" );
-	int proxyPort = ConfigDataModule->GetValue( "proxyPort", 0 );
-	STRING noProxy = ConfigDataModule->GetValue( "noProxy", "" );
+	STRING proxyServer = ConfigDataModule->GetValue( PROXY_SERVER, "" );
+	int proxyPort = ConfigDataModule->GetValue( PROXY_PORT, 0 );
+	STRING noProxy = ConfigDataModule->GetValue( NO_PROXY, "" );
 	net::HTTPrequest::setProxy( proxyServer, proxyPort, noProxy );
 
 	const UserOrGroup *actUser = login();

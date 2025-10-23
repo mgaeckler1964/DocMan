@@ -56,6 +56,13 @@ using namespace gak;
 #pragma resource "*.dfm"
 TDocManDataModule *DocManDataModule;
 char registryKey[] = "\\Software\\gak\\DocMan";
+char EXTERNAL_STORAGE[] = "externalStorage";
+char REPORT_PATH[] = "reportPath";
+char PROXY_SERVER[] = "proxyServer";
+char PROXY_PORT[] = "proxyPort";
+char NO_PROXY[] = "noProxy";
+
+
 //---------------------------------------------------------------------------
 
 const char *THREAD_CHECK_DB::getTitle() const

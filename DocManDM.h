@@ -443,5 +443,11 @@ class THREAD_REFRESH_MIME_TYPES : public ThreadDocMan
 //---------------------------------------------------------------------------
 extern PACKAGE TDocManDataModule *DocManDataModule;
 extern char registryKey[];
+extern char EXTERNAL_STORAGE[];
+extern char REPORT_PATH[];
+extern char PROXY_SERVER[];
+extern char PROXY_PORT[];
+extern char NO_PROXY[];
+
 //---------------------------------------------------------------------------
 #endif

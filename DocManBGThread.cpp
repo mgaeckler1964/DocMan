@@ -77,6 +77,7 @@ using namespace ai;
 
 static const uint32 indexMagic = 0x8456;
 static const uint16 indexVersion = 3;
+static const char INDEX_START[] = "indexStart";
 
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
@@ -227,7 +228,7 @@ bool ThreadBackground::updateIndex()
 	DocManIndex			globalIndex;
 	F_STRING			storageBase = THE_FILE::getExternalStorageBase();
 	F_STRING			stopWordsFile = storageBase + "stop.words.txt";
-	int 				indexStart = ConfigDataModule->GetValue( "indexStart", 0 );
+	int 				indexStart = ConfigDataModule->GetValue( INDEX_START, 0 );
 	int					oldIndex = indexStart;
 	bool				hasLogChanged = false;
 	bool				hasStopChanged = false;
@@ -349,7 +350,7 @@ bool ThreadBackground::updateIndex()
 		}
 	}
 	if( indexStart != oldIndex )
-		ConfigDataModule->SetValue( "indexStart", indexStart );
+		ConfigDataModule->SetValue( INDEX_START, indexStart );
 	StatusForm->restore();
 	return hasLogChanged;
 }
@@ -744,7 +745,7 @@ void deleteDocManIndex()
 {
 	F_STRING indexFile = getIndexFileName();
 	strRemove(indexFile);
-	ConfigDataModule->SetValue( "indexStart", 0 );
+	ConfigDataModule->SetValue( INDEX_START, 0 );
 }
 
 #ifdef __BORLANDC__

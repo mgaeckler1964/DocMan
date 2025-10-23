@@ -246,7 +246,7 @@ void __fastcall TDocManMainForm::OneBookmarkClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TDocManMainForm::ReportClick(TObject *Sender)
 {
-	STRING theReport = ConfigDataModule->GetValue( "reportPath", "reports\\" );
+	STRING theReport = ConfigDataModule->GetValue( REPORT_PATH, "reports\\" );
 	theReport += ((TMenuItem*)Sender)->Caption.c_str();
 
 	theReport = makeFullPath( Application->ExeName.c_str(), theReport );
@@ -330,7 +330,7 @@ void __fastcall TDocManMainForm::AppWindowProc(TMessage &msg)
 void TDocManMainForm::initMenu()
 {
 	DirectoryList	reports;
-	STRING 			reportPath = ConfigDataModule->GetValue( "reportPath", "reports\\" );
+	STRING 			reportPath = ConfigDataModule->GetValue( REPORT_PATH, "reports\\" );
 
 	reportPath += "*.srx";
 	reportPath = makeFullPath( Application->ExeName.c_str(), reportPath );
@@ -403,15 +403,15 @@ void __fastcall TDocManMainForm::FormShow(TObject *Sender)
 
 	print2StartWindow( "%s", "Creating Session" );
 
-	STRING externalStorage = ConfigDataModule->GetValue( "externalStorage", "" );
+	STRING externalStorage = ConfigDataModule->GetValue( EXTERNAL_STORAGE, "" );
 	if( externalStorage.isEmpty() )
 		AdminConfigureClick( Sender );
 	else
 		THE_FILE::setExternalStorage( externalStorage );
 
-	STRING proxyServer = ConfigDataModule->GetValue( "proxyServer", "" );
-	int proxyPort = ConfigDataModule->GetValue( "proxyPort", 0 );
-	STRING noProxy = ConfigDataModule->GetValue( "noProxy", "" );
+	STRING proxyServer = ConfigDataModule->GetValue( PROXY_SERVER, "" );
+	int proxyPort = ConfigDataModule->GetValue( PROXY_PORT, 0 );
+	STRING noProxy = ConfigDataModule->GetValue( NO_PROXY, "" );
 	net::HTTPrequest::setProxy( proxyServer, proxyPort, noProxy );
 
 	const UserOrGroup *actUser = login();
@@ -650,37 +650,37 @@ void __fastcall TDocManMainForm::ActionClick( TObject *Sender )
 
 void __fastcall TDocManMainForm::AdminConfigureClick(TObject *)
 {
-	STRING externalStorage = ConfigDataModule->GetValue( "externalStorage", "" );
+	STRING externalStorage = ConfigDataModule->GetValue( EXTERNAL_STORAGE, "" );
 	ConfigForm->EditExternalStorage->Text = (const char *)externalStorage;
-	STRING reportPath = ConfigDataModule->GetValue( "reportPath", "reports\\" );
+	STRING reportPath = ConfigDataModule->GetValue( REPORT_PATH, "reports\\" );
 	ConfigForm->EditReports->Text = (const char *)reportPath;
-	STRING proxyServer = ConfigDataModule->GetValue( "proxyServer", "" );
+	STRING proxyServer = ConfigDataModule->GetValue( PROXY_SERVER, "" );
 	ConfigForm->EditProxyServer->Text = (const char *)proxyServer;
-	int proxyPort = ConfigDataModule->GetValue( "proxyPort", 0 );
+	int proxyPort = ConfigDataModule->GetValue( PROXY_PORT, 0 );
 	ConfigForm->UpDownProxyPort->Position = short(proxyPort);
-	STRING noProxy = ConfigDataModule->GetValue( "noProxy", "" );
+	STRING noProxy = ConfigDataModule->GetValue( NO_PROXY, "" );
 	ConfigForm->MemoNoProxy->Text = (const char *)noProxy;
 
 	if( ConfigForm->ShowModal() == mrOk )
 	{
 		externalStorage = ConfigForm->EditExternalStorage->Text.c_str();
-		ConfigDataModule->SetValue( "externalStorage", externalStorage );
+		ConfigDataModule->SetValue( EXTERNAL_STORAGE, externalStorage );
 		THE_FILE::setExternalStorage( externalStorage );
 
 		reportPath = ConfigForm->EditReports->Text.c_str();
 		if( !reportPath.isEmpty() && !reportPath.endsWith( DIRECTORY_DELIMITER ) )
 			reportPath += DIRECTORY_DELIMITER;
 
-		ConfigDataModule->SetValue( "reportPath", reportPath );
+		ConfigDataModule->SetValue( REPORT_PATH, reportPath );
 
 		proxyServer = ConfigForm->EditProxyServer->Text.c_str();
-		ConfigDataModule->SetValue( "proxyServer", proxyServer );
+		ConfigDataModule->SetValue( PROXY_SERVER, proxyServer );
 
 		proxyPort = ConfigForm->UpDownProxyPort->Position;
-		ConfigDataModule->SetValue( "proxyPort", proxyPort );
+		ConfigDataModule->SetValue( PROXY_PORT, proxyPort );
 
 		noProxy = ConfigForm->MemoNoProxy->Text.c_str();
-		ConfigDataModule->SetValue( "noProxy", noProxy );
+		ConfigDataModule->SetValue( NO_PROXY, noProxy );
 
 		net::HTTPrequest::setProxy( proxyServer, proxyPort, noProxy );
 	}
