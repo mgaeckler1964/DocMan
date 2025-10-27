@@ -1065,7 +1065,7 @@ bool THE_SOURCE_FOLDER::refresh( bool recursive, ostream * )
 				{
 /*v*/				break;
 				}
-				file->download( 0, true, localPath+name );
+				file->download( 0, PROTECT_DOWNLOAD, localPath+name );
 				if( StatusForm->restore() )
 				{
 /*v*/				break;

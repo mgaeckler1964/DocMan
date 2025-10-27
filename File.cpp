@@ -1529,7 +1529,7 @@ RefhreshType ACTION_DOWNLOAD::perform( PTR_ITEM theItem )
 
 		saveDialog->FileName = (const char *)theItem->getName();
 		if( saveDialog->Execute() )
-			theFile->download( 0, false, saveDialog->FileName.c_str() );
+			theFile->download( 0, 0, saveDialog->FileName.c_str() );
 	}
 
 	return rtNONE;
@@ -2190,7 +2190,7 @@ void THE_FILE::deleteVersion( int versionId, int storageId, bool updateMaxVersio
 	}
 }
 
-STRING THE_FILE::download( int version, bool protect, const STRING &i_dest )
+STRING THE_FILE::download( int version, int flags, const STRING &i_dest )
 {
 	STRING		dest = i_dest;
 
@@ -2217,26 +2217,35 @@ STRING THE_FILE::download( int version, bool protect, const STRING &i_dest )
 
 			if( version || getReservedOn() != TDocManDataModule::getMachine() )
 			{
-				struct stat localStat;
-				strStat( dest, &localStat );
+				bool doDownLoad = (flags & FORCE_DOWNLOAD);
 
-				TDateTime localTime = vcl::EncodeDateTime( localStat.st_mtime );
+				if( !doDownLoad )
+				{
+					struct stat localStat;
+					strStat( dest, &localStat );
 
-				long difference = (
-					(double)localTime - (double)theFileVersion->getFileModifiedDate()
-				)*3600.0*24.0;
-				if( abs( difference ) <= 2 )
-					difference = 0;
+					TDateTime localTime = vcl::EncodeDateTime( localStat.st_mtime );
 
-				if( difference
-				|| (unsigned long)localStat.st_size != theFileVersion->getSize() )
+					long difference = (
+						(double)localTime - (double)theFileVersion->getFileModifiedDate()
+					)*3600.0*24.0;
+					if( abs( difference ) <= 2 )
+						difference = 0;
+
+					if( difference
+					|| (unsigned long)localStat.st_size != theFileVersion->getSize() )
+					{
+						doDownLoad = true;
+					}
+				}
+				if( doDownLoad )
 				{
 					chmod( dest, S_IREAD|S_IWRITE );
 					makePath( dest );
 					fcopy( src, dest );
 				}
 
-				if( protect )
+				if( flags & PROTECT_DOWNLOAD )
 					chmod( dest, S_IREAD );
 			}
 			if( version )

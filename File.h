@@ -79,6 +79,9 @@ extern const char STATUS_MISSING[];
 extern const char STATUS_RESERVED[];
 extern const char STATUS_CHECKSUM[];
 
+#define PROTECT_DOWNLOAD	0x01
+#define FORCE_DOWNLOAD		0x02
+
 // --------------------------------------------------------------------- //
 // ----- macros -------------------------------------------------------- //
 // --------------------------------------------------------------------- //
@@ -202,12 +205,12 @@ class THE_FILE_BASE : public THE_ITEM
 
 	void openVersion( int version )
 	{
-		STRING dest = download( version, false, "" );
+		STRING dest = download( version, 0, "" );
 		ShellExecute( NULL, NULL, dest, NULL, NULL, SW_SHOWDEFAULT );
 	}
 	virtual void open();
 	virtual STRING getVersionFileName() = 0;
-	virtual STRING download( int version, bool protect, const STRING &dest ) = 0;
+	virtual STRING download( int version, int flags, const STRING &dest ) = 0;
 	virtual STRING getDownloadFile( const STRING &downloadPath );
 	STRING getDownloadFile( const PTR_ITEM &parent=PTR_ITEM() )
 	{
@@ -439,7 +442,7 @@ class THE_FILE : public THE_FILE_BASE
 	PTR_ITEM link( const PTR_ITEM &target, const STRING &newName="" );
 	void branch();
 
-	virtual STRING download( int version, bool protect, const STRING &dest );
+	virtual STRING download( int version, int flags, const STRING &dest );
 	virtual STRING getVersionFileName();
 
 	virtual bool canDelete( bool forPurge, bool recursive  );

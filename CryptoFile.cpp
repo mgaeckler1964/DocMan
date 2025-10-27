@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			CryptoFile.n
+		Description:	Encrypted files
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -118,11 +118,11 @@ static FACTORY_REMOTE_CRYPTO_FILE theRemoteFactory;
 // --------------------------------------------------------------------- //
 
 static template <typename ITEM>
-STRING dowload( ITEM *theItem, int version, bool protect, const STRING &dest )
+STRING dowload( ITEM *theItem, int version, int flags, const STRING &dest )
 {
 	doEnterFunction("template <typename ITEM>::dowload");
 	CryptoShared	theCrypto;
-	STRING			cryptedFile = theItem->downloadCrypted( version, false, dest );
+	STRING			cryptedFile = theItem->downloadCrypted( version, 0, dest );
 	STRING			result = cryptedFile;
 
 	try
@@ -138,7 +138,7 @@ STRING dowload( ITEM *theItem, int version, bool protect, const STRING &dest )
 			result
 		);
 
-		if( protect )
+		if( flags&PROTECT_DOWNLOAD )
 			chmod( result, S_IREAD );
 
 		if( result != cryptedFile )
@@ -169,7 +169,7 @@ void createVersion( ITEM *theItem, const STRING &filePath, const STRING &descrip
 
 		try
 		{
-			STRING		cryptedFile = theItem->downloadCrypted( 0, false, "" );
+			STRING		cryptedFile = theItem->downloadCrypted( 0, 0, "" );
 
 			readFromBinaryFile( cryptedFile, &theCrypto, cryptoMagic, cryptoVersion, false );
 			theCrypto.decryptAesKey( actUser, DocManDataModule->getPrivateKey() );
@@ -254,9 +254,9 @@ void THE_CRYPTO_FILE::createVersion( const STRING &filePath, const STRING &descr
 	::createVersion( this, filePath, description );
 }
 
-STRING THE_CRYPTO_FILE::download( int version, bool protect, const STRING &dest )
+STRING THE_CRYPTO_FILE::download( int version, int flags, const STRING &dest )
 {
-	return ::dowload( this, version, protect, dest );
+	return ::dowload( this, version, flags, dest );
 }
 
 TGraphic *THE_CRYPTO_FILE::getItemPicture( void ) const
@@ -283,9 +283,9 @@ void THE_REMOTE_CRYPTO_FILE::createVersion( const STRING &filePath, const STRING
 	::createVersion( this, filePath, description );
 }
 
-STRING THE_REMOTE_CRYPTO_FILE::download( int version, bool protect, const STRING &iDest )
+STRING THE_REMOTE_CRYPTO_FILE::download( int version, int flags, const STRING &iDest )
 {
-	STRING dest = ::dowload( this, version, protect, iDest );
+	STRING dest = ::dowload( this, version, flags, iDest );
 	if( !version )
 	{
 		chmod( dest, S_IREAD|S_IWRITE );
@@ -293,7 +293,7 @@ STRING THE_REMOTE_CRYPTO_FILE::download( int version, bool protect, const STRING
 		const DocManService::VersionRecord_t *theVersion = getLatestVersion();
 		setModTime( dest, theVersion->modifiedDate );
 
-		if( protect )
+		if( flags&PROTECT_DOWNLOAD )
 			chmod( dest, S_IREAD );
 	}
 

@@ -312,7 +312,7 @@ void __fastcall TDirectoryDiffForm::MenuRefreshClick(TObject *)
 		if( theFile )
 		{
 			const STRING &filePath = theEntry.filePath;
-			theFile->download( 0, true, filePath );
+			theFile->download( 0, PROTECT_DOWNLOAD|FORCE_DOWNLOAD, filePath );
 
 			theEntry.status = csOK;
 			theEntry.statusSTR = "File refreshed";

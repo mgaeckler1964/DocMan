@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			RemoteItems.cpp
+		Description:	Manage files and folders on the remnote server
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -639,7 +639,7 @@ bool THE_REMOTE_FOLDER::refresh( bool recursive, ostream * )
 				STRING	name = file->getName();
 				if( StatusForm->pushStatus( "Refreshing", path ) )
 /*v*/				break;
-				file->download( 0, true, localPath+name );
+				file->download( 0, PROTECT_DOWNLOAD, localPath+name );
 				if( StatusForm->restore() )
 /*v*/				break;
 			}
@@ -794,7 +794,7 @@ void THE_REMOTE_FILE::reserve( int reserveFor, bool doNotOverwrite )
 			if( message.isEmpty()
 			|| Application->MessageBox( (const char *)message, "DocMan", MB_YESNO|MB_ICONQUESTION ) == IDYES )
 			{
-				download( 0, false, downloadPath );
+				download( 0, 0, downloadPath );
 			}
 		}
 	}
@@ -922,7 +922,7 @@ void THE_REMOTE_FILE::cancelReserve( void )
 				MB_ICONQUESTION|MB_YESNO
 			) == IDYES )
 			{
-				download( 0, true, downloadPath );
+				download( 0, PROTECT_DOWNLOAD, downloadPath );
 			}
 			else
 /*@*/			throw EAbort("Abort");
@@ -1266,7 +1266,7 @@ STRING THE_REMOTE_FILE::getVersionFileName( void )
 	return getName();
 }
 
-STRING THE_REMOTE_FILE::download( int version, bool protect, const STRING &i_dest )
+STRING THE_REMOTE_FILE::download( int version, int flags, const STRING &i_dest )
 {
 	doEnterFunction("THE_REMOTE_FILE::download");
 
@@ -1288,14 +1288,14 @@ STRING THE_REMOTE_FILE::download( int version, bool protect, const STRING &i_des
 
 	if( version || !i_dest.isEmpty() || getReservedOn() != TDocManDataModule::getMachine() )
 	{
-		if( (version || hasChanged( dest )) && theService->Get( src ) )
+		if( (version || (flags&FORCE_DOWNLOAD) || hasChanged( dest )) && theService->Get( src ) )
 		{
 			makePath( dest );
 
 			struct stat localStat;
 
 			if( !strStat( dest, &localStat ) && !(localStat.st_mode & S_IWRITE) )
-				protect = true;
+				flags |= PROTECT_DOWNLOAD;
 
 			chmod( dest, S_IREAD|S_IWRITE );
 			FILE *fp = fopen( dest, "wb" );
@@ -1311,7 +1311,7 @@ STRING THE_REMOTE_FILE::download( int version, bool protect, const STRING &i_des
 					const DocManService::VersionRecord_t *theVersion = getLatestVersion();
 					setModTime( dest, theVersion->modifiedDate );
 
-					if( protect )
+					if( flags&PROTECT_DOWNLOAD )
 						chmod( dest, S_IREAD );
 				}
 			}
@@ -1335,7 +1335,7 @@ const char *THE_REMOTE_FILE::compare( int firstVersion, int secondVersion )
 			firstFile = getenv( "TMP" );
 			firstFile += DIRECTORY_DELIMITER_STRING "tmp1.txt";
 
-			firstFile = download( firstVersion, false, firstFile );
+			firstFile = download( firstVersion, 0, firstFile );
 		}
 		else
 		{
@@ -1348,7 +1348,7 @@ const char *THE_REMOTE_FILE::compare( int firstVersion, int secondVersion )
 			secondFile = getenv( "TMP" );
 			secondFile += DIRECTORY_DELIMITER_STRING "tmp2.txt";
 
-			secondFile = download( secondVersion, false, secondFile );
+			secondFile = download( secondVersion, 0, secondFile );
 		}
 		else
 		{

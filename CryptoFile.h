@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			CryptoFile.n
+		Description:	Encrypted files
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2025 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -98,10 +98,10 @@ class THE_CRYPTO_FILE : public THE_FILE
 	{
 		THE_FILE::createVersion( filePath, description );
 	}
-	virtual STRING download( int version, bool protect, const STRING &dest );
-	STRING downloadCrypted( int version, bool protect, const STRING &dest )
+	virtual STRING download( int version, int flags, const STRING &dest );
+	STRING downloadCrypted( int version, int flags, const STRING &dest )
 	{
-		return THE_FILE::download( version, protect, dest );
+		return THE_FILE::download( version, flags, dest );
 	}
 };
 typedef PTR_TEMPLATE<THE_CRYPTO_FILE> PTR_CRYPTO_FILE;
@@ -123,10 +123,10 @@ class THE_REMOTE_CRYPTO_FILE : public THE_REMOTE_FILE
 	{
 		THE_REMOTE_FILE::createVersion( filePath, description );
 	}
-	virtual STRING download( int version, bool protect, const STRING &dest );
-	STRING downloadCrypted( int version, bool protect, const STRING &dest )
+	virtual STRING download( int version, int flags, const STRING &dest );
+	STRING downloadCrypted( int version, int flags, const STRING &dest )
 	{
-		return THE_REMOTE_FILE::download( version, protect, dest );
+		return THE_REMOTE_FILE::download( version, flags, dest );
 	}
 	virtual STRING getVersionFileName( void );
 };
