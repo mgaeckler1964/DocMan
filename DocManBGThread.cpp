@@ -164,14 +164,14 @@ namespace gak
 			F_STRING	storageFile = m_storageBase + filePath;
 			STRING		fileContent;
 			fileContent.readFromFile( storageFile );
-			IndexResultPtr	result = IndexResultPtr(
-				new IndexResult(
-					*indexSource,
-					indexString( fileContent, *m_stopWords )
-				)
-			);
 
+			StringIndex	sIndex;
+			indexString( fileContent, *m_stopWords, IS_ANY, &sIndex );
+			IndexResultPtr	result = IndexResultPtr(
+				new IndexResult( *indexSource, sIndex )
+			);
 			m_resultQueue->push( result );
+
 		}
 	};
 }
@@ -337,7 +337,8 @@ bool ThreadBackground::updateIndex()
 		if( !StatusForm->isTerminated() )
 		{
 			StatusForm->setStatus( STATUS_VERB, "Creating Stat" );
-			StatistikData	data = globalIndex.getStatistik();
+			StatistikData	data;
+			globalIndex.getStatistik(&data);
 
 			StatusForm->setStatus( STATUS_VERB, "Saving Stat" );
 			STRING	logPath = Session->PrivateDir.c_str();
