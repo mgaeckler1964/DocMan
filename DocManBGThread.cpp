@@ -154,7 +154,7 @@ namespace gak
 			m_stopWords = stopWords;
 			m_resultQueue = resultQueue;
 		}
-		void process( const IndexSourcePtr &indexSource )
+		void process( const IndexSourcePtr &indexSource, void *, void *  )
 		{
 			doEnterFunctionEx(gakLogging::llDetail,"ProcessorType<IndexSourcePtr>::process");
 			assert( m_resultQueue );
