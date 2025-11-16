@@ -325,7 +325,7 @@ bool ThreadBackground::updateIndex()
 		;
 		IndexResultPtr	result = indexResult.pop();
 		StatusForm->setStatus( title, result->m_source.storageFile );
-		globalIndex.mergeIndexPositions( result->m_source, &result->m_indexPositions );
+		globalIndex.moveIndexPositions( result->m_source, &result->m_indexPositions );
 	}
 	indexStart = gak::math::min( nextIndexStart, maxStorageID );
 
