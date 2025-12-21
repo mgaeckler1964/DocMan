@@ -23,7 +23,7 @@ https://www.gaeckler.at/Software/software.htm#DocMan
 
 The archive also contains the required tables.
 
-A web site generated with DochMan:
+A web site generated with DocMan:
 http://www.bigtown-music.de/homepage.html
 
 A DocMan Cloud Server is here:
