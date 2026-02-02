@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -533,8 +533,12 @@ void TDocManMainForm::openItem( PTR_ITEM newItem, int selectID, bool handleHisto
 		bool	acceptFiles = currentItem->acceptDropFiles();
 		DragAcceptFiles( Handle, acceptFiles );
 
-		STRING	localPath = newItem->getDownloadPath( newItem->getParent() );
-		StatusBar->SimpleText = (const char *)localPath;
+		STRING	statusText = newItem->getDownloadPath( newItem->getParent() );
+		if( statusText.isEmpty() )
+		{
+			statusText = STRING("Hello ") + DocManDataModule->getActUser()->userName;
+		}
+		StatusBar->SimpleText = statusText.c_str();;
 	}
 	else if( selectID > 0 )
 	{
