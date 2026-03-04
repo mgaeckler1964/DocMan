@@ -188,6 +188,7 @@ typedef ThreadPool<IndexSourcePtr>		IndexPool;
 // --------------------------------------------------------------------- //
 
 static const int IDLE_TIMEOUT = 60000;
+static const char STATUS_VERB[] = "Update Index";
 
 // --------------------------------------------------------------------- //
 // ----- class static data --------------------------------------------- //
@@ -217,12 +218,11 @@ static const int IDLE_TIMEOUT = 60000;
 // ----- class privates ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
-bool ThreadBackground::updateIndex()
-{
-	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::updateIndex");
+// -----------------------------------------------------------------------------
 
-	static const char STATUS_VERB[] = "Update Index";
-	StatusForm->pushStatus( STATUS_VERB, STATUS_VERB );
+bool ThreadBackground::updateIndex2()
+{
+	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::updateIndex2");
 
 	gak::Set<STRING>	stopWords;
 	DocManIndex			globalIndex;
@@ -352,13 +352,37 @@ bool ThreadBackground::updateIndex()
 	}
 	if( indexStart != oldIndex )
 		ConfigDataModule->SetValue( INDEX_START, indexStart );
-	StatusForm->restore();
 	return hasLogChanged;
 }
 
-void ThreadBackground::updateSyncFolders()
+bool ThreadBackground::updateIndex()
 {
-	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::updateSyncFolders");
+	static unsigned s_ExceptionCount = 0;
+	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::updateIndex");
+
+	bool hasIndexChanged = false;
+
+	StatusForm->pushStatus( STATUS_VERB, STATUS_VERB );
+	try
+	{
+		hasIndexChanged = updateIndex2();
+		s_ExceptionCount = 0;
+	}
+	catch( ... )
+	{
+		if( ++s_ExceptionCount>3 )
+			throw;
+	}
+	StatusForm->restore();
+
+	return hasIndexChanged;
+}
+
+// -----------------------------------------------------------------------------
+
+void ThreadBackground::updateSyncFolders2()
+{
+	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::updateSyncFolders2");
 
 	gak::DateTime	now;
 	STRING			localPath;
@@ -588,15 +612,47 @@ order by it.parentID, it.ID
 	}
 }
 
+void ThreadBackground::updateSyncFolders()
+{
+
+	static unsigned s_ExceptionCount = 0;
+	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::updateSyncFolders");
+
+	try
+	{
+		updateSyncFolders2();
+		s_ExceptionCount = 0;
+	}
+	catch( ... )
+	{
+		if( ++s_ExceptionCount>3 )
+			throw;
+	}
+}
+
+// -----------------------------------------------------------------------------
+
 void ThreadBackground::reminderCheck()
 {
+	static unsigned s_ExceptionCount = 0;
+
 	doEnterFunctionEx( gakLogging::llInfo, "ThreadBackground::reminderCheck" );
 	STRING oldState = m_state;
 
 	m_state = "openChecked";
-	if( ReminderFilesForm->openChecked() )
+	try
 	{
-		Application->MessageBox("There are files to keep in mind.", "Doc Man", MB_OK);
+
+		if( ReminderFilesForm->openChecked() )
+		{
+			Application->MessageBox("There are files to keep in mind.", "Doc Man", MB_OK);
+		}
+		s_ExceptionCount = 0;
+	}
+	catch( ... )
+	{
+		if( ++s_ExceptionCount > 3 )
+			throw;
 	}
 	m_state = oldState;
 }

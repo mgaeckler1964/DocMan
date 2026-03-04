@@ -93,7 +93,9 @@ class ThreadBackground : public ThreadDocMan
 	STRING		m_errorText;
 
 	void reminderCheck();
+	void updateSyncFolders2();
 	void updateSyncFolders();
+	bool updateIndex2();
 	bool updateIndex();
 
 	virtual const char *getTitle() const;
