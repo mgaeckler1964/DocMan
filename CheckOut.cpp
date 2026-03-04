@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:
-		Description:
+		Module:			CheckOut.cpp
+		Description:	Check out a file and dialog
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
+		This program is free software: you can redistribute it and/or modify  
+		it under the terms of the GNU General Public License as published by  
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License
+		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -52,28 +52,28 @@ TCheckOutForm *CheckOutForm;
 class ACTION_CHECK_OUT : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_CHECK_OUT_TREE : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_ASSIGNED_TASK : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
 class ACTION_CANCEL_CHECK_OUT : public ACTION_BASE_CHECK
 {
 	virtual bool acceptItem( THE_ITEM *theItem );
-	virtual const char *getLabel( void ) const;
+	virtual const char *getLabel() const;
 	virtual RefhreshType perform( PTR_ITEM theItem );
 };
 
@@ -83,8 +83,8 @@ class THREAD_CHECK_OUT_TREE : public ThreadDocMan
 	int m_taskID;
 	bool m_changedOnly;
 
-	virtual const char *getTitle( void ) const;
-	virtual void perform( void );
+	virtual const char *getTitle() const;
+	virtual void perform();
 
 	public:
 	THREAD_CHECK_OUT_TREE( const PTR_ITEM &theItemToHandle, int taskID, bool changedOnly )
@@ -111,7 +111,7 @@ bool ACTION_CHECK_OUT::acceptItem( THE_ITEM *theItem )
 	return false;
 }
 
-const char *ACTION_CHECK_OUT::getLabel( void ) const
+const char *ACTION_CHECK_OUT::getLabel() const
 {
 	return "Check Out...";
 }
@@ -125,16 +125,18 @@ RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 		{
 			theFile->reserve( CheckOutForm->getSelectedTaskID() );
 			theFile->updateDatabase();
-			if( CheckOutForm->CheckBoxFlag->Checked )
+			if( CheckOutForm->CheckBoxFlag1->Checked
+			||  CheckOutForm->CheckBoxFlag2->Checked )
 			{
 				PTR_ITEM parent = theItem->getParent();
 				if( parent )
 				{
-					CI_STRING	childName, baseName = theItem->getName();
+					CI_STRING	baseName = theItem->getName(), baseExt;
 					size_t		dotPos = baseName.searchRChar( '.' );
 					if( dotPos != baseName.no_index )
 					{
-						baseName.cut( dotPos +1 );
+						baseExt = baseName.subString( dotPos );
+						baseName.cut( dotPos );
 					}
 
 					ITEM_CONTENT *theContent = parent->getContent();
@@ -143,11 +145,22 @@ RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 						theFile = parent->getContentItem( i );
 						if( theFile && theFile->canReserve() )
 						{
-							childName = theFile->getName();
+							CI_STRING	childName = theFile->getName(), childExt;
 							dotPos = childName.searchRChar( '.' );
-							if( dotPos != (size_t)-1 )
-								childName.cut( dotPos + 1 );
-							if( childName == baseName )
+							if( dotPos != childName.no_index )
+							{
+								childExt = childName.subString( dotPos );
+								childName.cut( dotPos );
+							}
+							if( (
+									CheckOutForm->CheckBoxFlag1->Checked &&
+									childName == baseName
+								)
+							||  (
+									CheckOutForm->CheckBoxFlag2->Checked &&
+									childExt == baseExt
+								)
+							)
 							{
 								theFile->reserve(
 									CheckOutForm->getSelectedTaskID()
@@ -174,17 +187,17 @@ bool ACTION_CHECK_OUT_TREE::acceptItem( THE_ITEM *theItem )
 	return theFolder ? ACTION_BASE::acceptItem( theItem ) : false;
 }
 
-const char *ACTION_CHECK_OUT_TREE::getLabel( void ) const
+const char *ACTION_CHECK_OUT_TREE::getLabel() const
 {
 	return "Check Out...";
 }
 
-const char *THREAD_CHECK_OUT_TREE::getTitle( void ) const
+const char *THREAD_CHECK_OUT_TREE::getTitle() const
 {
 	return "Check Out";
 }
 
-void THREAD_CHECK_OUT_TREE::perform( void )
+void THREAD_CHECK_OUT_TREE::perform()
 {
 	PTR_SOURCE_FOLDER theFolder = theItemToHandle;
 	if( theFolder )
@@ -207,7 +220,7 @@ RefhreshType ACTION_CHECK_OUT_TREE::perform( PTR_ITEM theItem )
 			THREAD_CHECK_OUT_TREE *theThread = new THREAD_CHECK_OUT_TREE(
 				theFolder,
 				CheckOutForm->getSelectedTaskID(),
-				CheckOutForm->CheckBoxFlag->Checked
+				CheckOutForm->CheckBoxFlag1->Checked
 			);
 			theThread->StartThread();
 			return rtRELOAD;
@@ -226,7 +239,7 @@ bool ACTION_ASSIGNED_TASK::acceptItem( THE_ITEM *theItem )
 	return false;
 }
 
-const char *ACTION_ASSIGNED_TASK::getLabel( void ) const
+const char *ACTION_ASSIGNED_TASK::getLabel() const
 {
 	return "Assinged Task...";
 }
@@ -255,7 +268,7 @@ bool ACTION_CANCEL_CHECK_OUT::acceptItem( THE_ITEM *theItem )
 
 	return false;
 }
-const char *ACTION_CANCEL_CHECK_OUT::getLabel( void ) const
+const char *ACTION_CANCEL_CHECK_OUT::getLabel() const
 {
 	return "Cancel";
 }
@@ -277,7 +290,7 @@ RefhreshType ACTION_CANCEL_CHECK_OUT::perform( PTR_ITEM theItem )
 
 //---------------------------------------------------------------------------
 __fastcall TCheckOutForm::TCheckOutForm(TComponent* Owner)
-	: TForm(Owner), m_lastTaskID( 0 ), m_regKey(NULL)
+	: TForm(Owner), m_lastTaskID( 0 ), m_regKey1(NULL), m_regKey2(NULL)
 {
 }
 
@@ -286,22 +299,28 @@ int TCheckOutForm::ShowModal( FormMode mode )
 	if( mode == CHECKOUT_FILE )
 	{
 		Caption = "Check Out";
-		CheckBoxFlag->Visible = true;
-		CheckBoxFlag->Caption = "Include Other File Extensions";
-		m_regKey = "CheckBoxIncludeExtensions";
+		CheckBoxFlag1->Visible = true;
+		CheckBoxFlag1->Caption = "Include Other File Extensions";
+		CheckBoxFlag2->Visible = true;
+		m_regKey1 = "CheckBoxIncludeExtensions";
+		m_regKey2 = "CheckBoxIncludeNames";
 	}
 	else if( mode == CHECKOUT_TREE )
 	{
 		Caption = "Check Out";
-		CheckBoxFlag->Visible = true;
-		CheckBoxFlag->Caption = "Changed Files, only";
-		m_regKey = "CheckBoxChangedOnly";
+		CheckBoxFlag1->Visible = true;
+		CheckBoxFlag1->Caption = "Changed Files, only";
+		CheckBoxFlag2->Visible = false;
+		m_regKey1 = "CheckBoxChangedOnly";
+		m_regKey2 = NULL;
 	}
 	else if( mode == CHANGE_TASK )
 	{
 		Caption = "Assigned Task";
-		CheckBoxFlag->Visible = false;
-		m_regKey = NULL;
+		CheckBoxFlag1->Visible = false;
+		CheckBoxFlag2->Visible = false;
+		m_regKey1 = NULL;
+		m_regKey2 = NULL;
 	}
 
 	return TForm::ShowModal();
@@ -323,8 +342,11 @@ void __fastcall TCheckOutForm::FormShow(TObject *)
 			if( reg->ValueExists( "lastTaskID" ) )
 				m_lastTaskID = reg->ReadInteger( "lastTaskID" );
 
-			if( m_regKey && reg->ValueExists( m_regKey ) )
-				CheckBoxFlag->Checked = reg->ReadBool( m_regKey );
+			if( m_regKey1 && reg->ValueExists( m_regKey1 ) )
+				CheckBoxFlag1->Checked = reg->ReadBool( m_regKey1 );
+
+			if( m_regKey2 && reg->ValueExists( m_regKey2 ) )
+				CheckBoxFlag2->Checked = reg->ReadBool( m_regKey2 );
 
 			reg->CloseKey();
 		}
@@ -368,9 +390,13 @@ void __fastcall TCheckOutForm::ButtonOKClick(TObject *)
 
 	reg->OpenKey( registryKey, true );
 	reg->WriteInteger( "lastTaskID", m_lastTaskID );
-	if( m_regKey )
+	if( m_regKey1 )
 	{
-		reg->WriteBool( m_regKey, CheckBoxFlag->Checked );
+		reg->WriteBool( m_regKey1, CheckBoxFlag1->Checked );
+	}
+	if( m_regKey2 )
+	{
+		reg->WriteBool( m_regKey2, CheckBoxFlag2->Checked );
 	}
 	reg->CloseKey();
 }

@@ -53,13 +53,21 @@ object CheckOutForm: TCheckOutForm
     ItemHeight = 13
     TabOrder = 0
   end
-  object CheckBoxFlag: TCheckBox
+  object CheckBoxFlag1: TCheckBox
     Left = 8
     Top = 40
     Width = 265
     Height = 17
     Caption = 'Include Other File Extensions'
     TabOrder = 1
+  end
+  object CheckBoxFlag2: TCheckBox
+    Left = 208
+    Top = 40
+    Width = 265
+    Height = 17
+    Caption = 'Include Other File Names'
+    TabOrder = 4
   end
   object QueryOpenTasks: TQuery
     DatabaseName = 'docManDB'

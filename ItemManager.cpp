@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -252,13 +252,13 @@ int THE_ITEM::itemCompare( const PTR_ITEM &item1, const PTR_ITEM &item2, int the
 // ----- class privates ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
-void THE_ITEM::clearAncestors( void )
+void THE_ITEM::clearAncestors()
 {
 	m_ancestors.clear();
 	m_ancestorsLoaded = false;
 }
 
-int THE_ITEM::loadChildCount( void )
+int THE_ITEM::loadChildCount()
 {
 	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
@@ -273,7 +273,7 @@ int THE_ITEM::loadChildCount( void )
 	return childCount;
 }
 
-ArrayOfInts *THE_ITEM::loadAncestors( void )
+ArrayOfInts *THE_ITEM::loadAncestors()
 {
 	clearAncestors();
 
@@ -289,7 +289,7 @@ ArrayOfInts *THE_ITEM::loadAncestors( void )
 	return &m_ancestors;
 }
 
-void THE_ITEM::loadACL( void )
+void THE_ITEM::loadACL()
 {
 	ItemPermissions	itemPerm;
 
@@ -320,9 +320,15 @@ void THE_ITEM::acceptParent( THE_ITEM *newParent, bool forDelete )
 			"Permission on target denied"
 		);
 	if( !forDelete && !theFactory->acceptParent( newParent ) )
+	{
+		STRING newParentType = newParent->getItemTypeString();
+		STRING myType = getItemTypeString();
+		STRING error = myType + " in target " + newParentType + " not acceptable";
 		throw Exception(
-			"Target not acceptable"
+			error.c_str()
+//			"Target not acceptable"
 		);
+	}
 }
 
 void THE_ITEM::setParent( const PTR_ITEM &newParent, bool forDelete )
@@ -361,13 +367,13 @@ void THE_ITEM::setParent( const PTR_ITEM &newParent, bool forDelete )
 // ----- class protected ----------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-void THE_ITEM::clearContent( void )
+void THE_ITEM::clearContent()
 {
 	m_content.clear();
 	m_contentLoaded = false;
 }
 
-void THE_ITEM::createPersonalName( void )
+void THE_ITEM::createPersonalName()
 {
 	STRING name = getItemTypeString();
 	name += " of ";
@@ -381,7 +387,7 @@ void THE_ITEM::createPersonalName( void )
 // ----- class virtuals ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
-int FACTORY_VIRTUAL_ROOT::getItemType( void ) const
+int FACTORY_VIRTUAL_ROOT::getItemType() const
 {
 	return (int)TYPE_ROOT;
 }
@@ -401,17 +407,17 @@ PTR_ITEM FACTORY_VIRTUAL_ROOT::createItem( int ) const
 	return new THE_ROOT( this );
 }
 
-const char *FACTORY_VIRTUAL_ROOT::getName( void ) const
+const char *FACTORY_VIRTUAL_ROOT::getName() const
 {
 	return "Virtual Root";
 }
 
-TItemCreateForm *FACTORY_BASE::getForm( void ) const
+TItemCreateForm *FACTORY_BASE::getForm() const
 {
 	return NULL;
 }
 
-TItemCreateForm *FACTORY_SIMPLE_BASE::getForm( void ) const
+TItemCreateForm *FACTORY_SIMPLE_BASE::getForm() const
 {
 	return ItemCreateForm;
 }
@@ -483,7 +489,7 @@ void THE_ITEM::loadFields( TQuery *query )
 	m_previousName = m_name;
 }
 
-int THE_ITEM::loadPermissions( void )
+int THE_ITEM::loadPermissions()
 {
 	doEnterFunctionEx( gakLogging::llDetail, "THE_ITEM::loadPermissions()" );
 
@@ -534,7 +540,7 @@ int THE_ITEM::loadPermissions( void )
 	return userPermissions;
 }
 
-void THE_ITEM::updateDatabase( void )
+void THE_ITEM::updateDatabase()
 {
 	doEnterFunctionEx(gakLogging::llInfo, "THE_ITEM::updateDatabase");
 
@@ -767,7 +773,7 @@ PTR_ITEM THE_ITEM::copy(
 	return newItem;
 }
 
-STRING THE_ITEM::getSize( void )
+STRING THE_ITEM::getSize()
 {
 	if( isContainer() )
 	{
@@ -782,7 +788,7 @@ STRING THE_ITEM::getSize( void )
 		return "";
 }
 
-TBrowserFrame *THE_ITEM::getFrame( void ) const
+TBrowserFrame *THE_ITEM::getFrame() const
 {
 #ifndef DOCMANBG
 	static TBrowserFrame *theFrame = NULL;
@@ -796,12 +802,12 @@ TBrowserFrame *THE_ITEM::getFrame( void ) const
 #endif
 }
 
-int THE_ITEM::getColCount( void ) const
+int THE_ITEM::getColCount() const
 {
 	return 7;
 }
 
-int *THE_ITEM::getColWidth( void ) const
+int *THE_ITEM::getColWidth() const
 {
 	static int colWidth[] =
 	{
@@ -816,17 +822,17 @@ int *THE_ITEM::getColWidth( void ) const
 	return colWidth;
 }
 
-int THE_ITEM::getHeaderCount( void ) const
+int THE_ITEM::getHeaderCount() const
 {
 	return 1;
 }
 
-int THE_ITEM::getRowCount( void ) const
+int THE_ITEM::getRowCount() const
 {
 	return m_content.size();
 }
 
-ColumnTitle *THE_ITEM::getColumnTitles( void ) const
+ColumnTitle *THE_ITEM::getColumnTitles() const
 {
 	static ColumnTitle colTitles[] =
 	{
@@ -842,7 +848,7 @@ ColumnTitle *THE_ITEM::getColumnTitles( void ) const
 	return colTitles;
 }
 
-void THE_ITEM::sort( void )
+void THE_ITEM::sort()
 {
 	m_content.sort( itemCompare, sortType );
 }
@@ -868,7 +874,7 @@ STRING THE_ITEM::drawHeaderCell( int col, int, TCanvas *canvas, TRect &Rect, TIm
 	return text;
 }
 
-TGraphic *THE_ITEM::getStatusPicture( void ) const
+TGraphic *THE_ITEM::getStatusPicture() const
 {
 	return NULL;
 }
@@ -926,7 +932,7 @@ STRING THE_ITEM::drawCell( int col, int row, TCanvas *canvas, TRect &Rect )
 	return text;
 }
 
-void THE_ITEM::open( void )
+void THE_ITEM::open()
 {
 #ifndef DOCMANBG
 	DocManMainForm->openItem( this );
@@ -1056,7 +1062,7 @@ bool THE_ITEM::acceptChildType(
 	return false;
 }
 
-bool THE_ITEM::acceptDropFiles( void ) const
+bool THE_ITEM::acceptDropFiles() const
 {
 	doEnterFunctionEx(gakLogging::llDetail, "FACTORY_BASE::acceptDropFiles");
 	bool	acceptFiles = false;
@@ -1157,7 +1163,7 @@ void THE_ITEM::dropFolder( const STRING &path )
 	}
 }
 
-TGraphic *THE_ROOT::getItemPicture( void ) const
+TGraphic *THE_ROOT::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -1169,7 +1175,7 @@ TGraphic *THE_ROOT::getItemPicture( void ) const
 	return thePic;
 }
 
-ITEM_CONTENT *THE_ITEM::loadContent( void )
+ITEM_CONTENT *THE_ITEM::loadContent()
 {
 	doEnterFunctionEx( gakLogging::llInfo, "THE_ITEM::loadContent()" );
 
@@ -1234,7 +1240,7 @@ bool THE_ITEM::hasReserved( const STRING &machine, int userId )
 	return false;
 }
 
-void THE_ITEM::lock( void )
+void THE_ITEM::lock()
 {
 	if( StatusForm->pushStatus( "Locking", getName() ) )
 	{
@@ -1257,7 +1263,7 @@ void THE_ITEM::lock( void )
 	StatusForm->restore();
 }
 
-void THE_ITEM::unlock( void )
+void THE_ITEM::unlock()
 {
 	if( StatusForm->setStatus( "Unlocking", getName() ) )
 	{
@@ -1284,7 +1290,7 @@ PTR_ITEM THE_ITEM::getArchive( bool create )
 
 	PTR_ITEM archiveVolume = getArchiveVolume();
 
-	TQuery *theQuery = new TQuery( NULL );
+	std::auto_ptr<TQuery> theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"select ID "
@@ -1323,14 +1329,14 @@ PTR_ITEM THE_ITEM::getArchive( bool create )
 	return theArchive;
 }
 
-void THE_ITEM::archive( void )
+void THE_ITEM::archive()
 {
 	PTR_ITEM	parent = getParent();
 	if( parent )
 	{
 		PTR_ITEM	archive = parent->getArchive( true );
 		oldParentID = getParentID();
-		setParent( archive );
+		setParent( archive, true );
 		updateDatabase();
 	}
 }
@@ -1339,7 +1345,7 @@ void THE_ITEM::archive( void )
 // ----- class publics ------------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-STRING THE_ITEM::getPath( void ) const
+STRING THE_ITEM::getPath() const
 {
 	doEnterFunctionEx(gakLogging::llDetail, "THE_ITEM::getPath");
 	STRING	path;
@@ -1353,16 +1359,16 @@ STRING THE_ITEM::getPath( void ) const
 	return path;
 }
 
-PTR_ITEM THE_ITEM::getParent( void ) const
+PTR_ITEM THE_ITEM::getParent() const
 {
 	return (parentID > 0) ? getItem( parentID ) : PTR_ITEM();
 }
 
-PTR_ITEM THE_ITEM::getVolume( void ) const
+PTR_ITEM THE_ITEM::getVolume() const
 {
 	return (volumeID > 0) ? getItem( volumeID ) : PTR_ITEM();
 }
-PTR_ITEM THE_ITEM::getOldParent( void ) const
+PTR_ITEM THE_ITEM::getOldParent() const
 {
 	if( id > 0 && oldParentID > 0 )
 		return getItem( oldParentID );
@@ -1382,7 +1388,7 @@ void THE_ITEM::moveTo( const PTR_ITEM &newParent, const STRING &newName )
 		setName( newName );
 }
 
-bool THE_ITEM::isDeleted( void )
+bool THE_ITEM::isDeleted()
 {
 	if( getID() == getVolumeID() )
 		return false;
@@ -1392,7 +1398,7 @@ bool THE_ITEM::isDeleted( void )
 	return ! (!theVolume);
 }
 
-bool THE_ITEM::isArchived( void )
+bool THE_ITEM::isArchived()
 {
 	PTR_ARCHIVE_FOLDER	theVolume = getVolume();
 
@@ -1440,7 +1446,7 @@ bool THE_ITEM::canDelete( bool forPurge, bool recursive )
 	return !StatusForm->isTerminated();
 }
 
-void THE_ITEM::purgeItem( void )
+void THE_ITEM::purgeItem()
 {
 	STRING	path = getPath();
 
@@ -1528,7 +1534,7 @@ void THE_ITEM::purgeVersions( int numVersions )
 	}
 }
 
-void THE_ITEM::deleteItem( void )
+void THE_ITEM::deleteItem()
 {
 	if( !isMoveable() )
 	{
@@ -1738,7 +1744,7 @@ xml::Element *THE_ITEM::createXML( size_t maxLevel, size_t curLevel )
 	return theElement;
 }
 
-STRING THE_ITEM::getAssignedToUserName( void ) const
+STRING THE_ITEM::getAssignedToUserName() const
 {
 	UserOrGroup	theUser;
 
@@ -1985,7 +1991,7 @@ PTR_ITEM getPublicVolume( int itemType )
 	return newItem;
 }
 
-PTR_ITEM getArchiveVolume( void )
+PTR_ITEM getArchiveVolume()
 {
 	static PTR_ITEM archiveVolume;
 
@@ -1995,7 +2001,7 @@ PTR_ITEM getArchiveVolume( void )
 	return archiveVolume;
 }
 
-PTR_ITEM getCompanyVolume( void )
+PTR_ITEM getCompanyVolume()
 {
 	static PTR_ITEM companyVolume;
 

@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -260,27 +260,27 @@ class THE_ITEM : public gak::SharedObject
 	checklng flags
 --------------------------------------------------------------------------------
 */
-	bool isContainer( void ) const
+	bool isContainer() const
 	{
 		return flags & ITEM_IS_CONTAINER;
 	}
-	bool isBrowseable( void ) const
+	bool isBrowseable() const
 	{
 		return flags & ITEM_IS_BROWSEABLE;
 	}
-	bool isMoveable( void ) const
+	bool isMoveable() const
 	{
 		return flags & ITEM_IS_MOVEABLE;
 	}
-	bool isCopyable( void ) const
+	bool isCopyable() const
 	{
 		return flags & ITEM_IS_COPYABLE;
 	}
-	bool isVersioned( void ) const
+	bool isVersioned() const
 	{
 		return flags & ITEM_IS_VERSIONED;
 	}
-	bool isCompletable( void ) const
+	bool isCompletable() const
 	{
 		return flags & ITEM_IS_COMPLETABLE;
 	}
@@ -291,7 +291,7 @@ class THE_ITEM : public gak::SharedObject
 --------------------------------------------------------------------------------
 */
 	protected:
-	void createPersonalName( void );
+	void createPersonalName();
 
 	public:
 	void setName( const STRING &name )
@@ -315,11 +315,11 @@ class THE_ITEM : public gak::SharedObject
 		this->ordering = order;
 	}
 
-	int getID( void ) const
+	int getID() const
 	{
 		return id;
 	}
-	const STRING &getName( void ) const
+	const STRING &getName() const
 	{
 		if( !m_oldName.isEmpty() )
 			return m_oldName;
@@ -330,19 +330,19 @@ class THE_ITEM : public gak::SharedObject
 	{
 		return gak::net::webUnEscape(getName());
 	}
-	const STRING &getPreviousName( void ) const
+	const STRING &getPreviousName() const
 	{
 		return m_previousName;
 	}
-	const STRING &getPreviousDownloadPath( void ) const
+	const STRING &getPreviousDownloadPath() const
 	{
 		return m_previousDownloadPath;
 	}
-	const STRING &getExtension( void ) const
+	const STRING &getExtension() const
 	{
 		return m_extension;
 	}
-	const STRING &getDescription( void ) const
+	const STRING &getDescription() const
 	{
 		return m_description;
 	}
@@ -350,11 +350,11 @@ class THE_ITEM : public gak::SharedObject
 	{
 		m_description = newDescription;
 	}
-	int getCreator( void ) const
+	int getCreator() const
 	{
 		return createdBy;
 	}
-	TDateTime getCreatedDate( void ) const
+	TDateTime getCreatedDate() const
 	{
 		return m_createdDate;
 	}
@@ -366,7 +366,7 @@ class THE_ITEM : public gak::SharedObject
 	{
 		m_createdDate = gak::DateTime( unixTime ).calcOriginalTime();
 	}
-	TDateTime getModifiedDate( void ) const
+	TDateTime getModifiedDate() const
 	{
 		return m_modifiedDate;
 	}
@@ -378,7 +378,7 @@ class THE_ITEM : public gak::SharedObject
 	{
 		m_modifiedDate = gak::DateTime( unixTime ).calcOriginalTime();
 	}
-	gak::uint32 getReminderDate( void ) const
+	gak::uint32 getReminderDate() const
 	{
 		return m_reminderDate;
 	}
@@ -386,12 +386,12 @@ class THE_ITEM : public gak::SharedObject
 	{
 		m_reminderDate = reminderDate;
 	}
-	virtual STRING getSize( void );
-	int getOrder( void ) const
+	virtual STRING getSize();
+	int getOrder() const
 	{
 		return ordering;
 	}
-	int getNumLinks( void ) const
+	int getNumLinks() const
 	{
 		return numLinks;
 	}
@@ -401,14 +401,14 @@ class THE_ITEM : public gak::SharedObject
 --------------------------------------------------------------------------------
 */
 	private:
-	int loadChildCount( void );
+	int loadChildCount();
 
 	protected:
-	void clearContent( void );
+	void clearContent();
 
 	public:
-	virtual ITEM_CONTENT *loadContent( void );
-	ITEM_CONTENT *getContent( void )
+	virtual ITEM_CONTENT *loadContent();
+	ITEM_CONTENT *getContent()
 	{
 		if( !m_contentLoaded )
 			loadContent();
@@ -436,7 +436,7 @@ class THE_ITEM : public gak::SharedObject
 	}
 	int getContentIndex( int ID );
 	PTR_ITEM getContentItem( const char *name );
-	int getChildCount( void )
+	int getChildCount()
 	{
 		if( childCount < 0 )
 		{
@@ -444,12 +444,12 @@ class THE_ITEM : public gak::SharedObject
 		}
 		return childCount;
 	}
-	void incChildCount( void )
+	void incChildCount()
 	{
 		if( childCount >= 0 )
 			childCount++;
 	}
-	void decChildCount( void )
+	void decChildCount()
 	{
 		childCount--;
 	}
@@ -460,10 +460,10 @@ class THE_ITEM : public gak::SharedObject
 --------------------------------------------------------------------------------
 */
 	private:
-	void loadACL( void );
+	void loadACL();
 
 	public:
-	const ITEM_PERMLIST &getACL( void )
+	const ITEM_PERMLIST &getACL()
 	{
 		if( !m_aclLoaded )
 			loadACL();
@@ -481,12 +481,12 @@ class THE_ITEM : public gak::SharedObject
 		this->permissionID = permissionID;
 		userPermissions = newPerms;
 	}
-	int getPermissionID( void ) const
+	int getPermissionID() const
 	{
 		return permissionID;
 	}
-	virtual int loadPermissions( void );
-	int getUserPermissions( void ) const
+	virtual int loadPermissions();
+	int getUserPermissions() const
 	{
 		return userPermissions;
 	}
@@ -502,9 +502,9 @@ class THE_ITEM : public gak::SharedObject
 --------------------------------------------------------------------------------
 */
 	private:
-	void clearAncestors( void );
+	void clearAncestors();
 
-	gak::ArrayOfInts *loadAncestors( void );
+	gak::ArrayOfInts *loadAncestors();
 
 	bool acceptChildType( const Array<const FACTORY_BASE*> &factories, itemTypes theType ) const;
 	void acceptParent( THE_ITEM *newParent, bool forDelete );
@@ -515,30 +515,30 @@ class THE_ITEM : public gak::SharedObject
 	}
 
 	public:
-	gak::ArrayOfInts *getAncestors( void )
+	gak::ArrayOfInts *getAncestors()
 	{
 		if( !m_ancestorsLoaded )
 			loadAncestors();
 
 		return &m_ancestors;
 	}
-	STRING getPath( void ) const;
+	STRING getPath() const;
 
 	PTR_ITEM getAncestorItem( int index );
 
-	int getParentID( void ) const
+	int getParentID() const
 	{
 		return parentID;
 	}
-	PTR_ITEM getParent( void ) const;
+	PTR_ITEM getParent() const;
 
-	int getVolumeID( void ) const
+	int getVolumeID() const
 	{
 		return volumeID;
 	}
-	PTR_ITEM getVolume( void ) const;
+	PTR_ITEM getVolume() const;
 
-	PTR_ITEM getOldParent( void ) const;
+	PTR_ITEM getOldParent() const;
 	void acceptParent( THE_ITEM *newParent )
 	{
 		return acceptParent( newParent, false );
@@ -551,7 +551,7 @@ class THE_ITEM : public gak::SharedObject
 	DB access
 --------------------------------------------------------------------------------
 */
-	virtual void updateDatabase( void );
+	virtual void updateDatabase();
 	virtual void loadFields( TQuery *query );
 
 /*
@@ -559,14 +559,14 @@ class THE_ITEM : public gak::SharedObject
 	factory
 --------------------------------------------------------------------------------
 */
-	int getItemType( void ) const;
-	const char *getItemTypeString( void ) const;
-	const FACTORY_BASE *getFactory( void ) const
+	int getItemType() const;
+	const char *getItemTypeString() const;
+	const FACTORY_BASE *getFactory() const
 	{
 		return theFactory;
 	}
 	virtual void getItemFactories( Array<const FACTORY_BASE*> *factory ) const;
-	virtual bool acceptDropFiles( void ) const;
+	virtual bool acceptDropFiles() const;
 	virtual void dropFile( const STRING &path );
 	virtual void dropFolder( const STRING &path );
 
@@ -576,21 +576,21 @@ class THE_ITEM : public gak::SharedObject
 --------------------------------------------------------------------------------
 */
 	private:
-	virtual ColumnTitle *getColumnTitles( void ) const;
+	virtual ColumnTitle *getColumnTitles() const;
 
 	public:
-	virtual TBrowserFrame *getFrame( void ) const;
-	virtual int getColCount( void ) const;
-	virtual int *getColWidth( void ) const;
-	virtual int getHeaderCount( void ) const;
-	virtual int getRowCount( void ) const;
+	virtual TBrowserFrame *getFrame() const;
+	virtual int getColCount() const;
+	virtual int *getColWidth() const;
+	virtual int getHeaderCount() const;
+	virtual int getRowCount() const;
 	int getSortType( int col ) const
 	{
 		ColumnTitle	*colTitles = getColumnTitles();
 
 		return colTitles[col].sortType;
 	}
-	int getSortType( void ) const
+	int getSortType() const
 	{
 		return sortType;
 	}
@@ -614,7 +614,7 @@ class THE_ITEM : public gak::SharedObject
 
 		return oldSort;
 	}
-	virtual void sort( void );
+	virtual void sort();
 	virtual STRING drawHeaderCell(
 		int col, int row,
 		TCanvas *canvas,
@@ -622,8 +622,8 @@ class THE_ITEM : public gak::SharedObject
 		TImageList *ImageListSort
 	);
 	virtual STRING drawCell( int col, int row, TCanvas *canvas, TRect &Rect );
-	virtual TGraphic *getStatusPicture( void ) const;
-	virtual TGraphic *getItemPicture( void ) const = 0;
+	virtual TGraphic *getStatusPicture() const;
+	virtual TGraphic *getItemPicture() const = 0;
 
 /*
 --------------------------------------------------------------------------------
@@ -640,7 +640,7 @@ class THE_ITEM : public gak::SharedObject
 	}
 
 	public:
-	virtual void open( void );
+	virtual void open();
 	virtual void openItem( int itemIdx );
 	virtual STRING getDownloadPath( PTR_ITEM parent=PTR_ITEM() );
 
@@ -654,24 +654,24 @@ class THE_ITEM : public gak::SharedObject
 	{
 		this->copyID = copyID;
 	}
-	int getCopyID( void ) const
+	int getCopyID() const
 	{
 		return copyID;
 	}
 	virtual bool hasReserved( const STRING &machine, int userId );
 
-	virtual void lock( void );
-	virtual void unlock( void );
+	virtual void lock();
+	virtual void unlock();
 
 	void setAssignedTo( int assignedTo )
 	{
 		this->assignedTo = assignedTo;
 	}
-	int getAssignedTo( void ) const
+	int getAssignedTo() const
 	{
 		return assignedTo;
 	}
-	STRING getAssignedToUserName( void ) const;
+	STRING getAssignedToUserName() const;
 
 	virtual void createXMLattributes( gak::xml::Element *target );
 	gak::xml::Element *createXML( size_t maxLevel=-1, size_t curLevel=0 );
@@ -680,10 +680,10 @@ class THE_ITEM : public gak::SharedObject
 	trash & archive
 --------------------------------------------------------------------------------
 */
-	bool isDeleted( void );
+	bool isDeleted();
 	virtual bool canDelete( bool forPurge, bool recursive );
-	virtual void deleteItem( void );
-	virtual void purgeItem( void );
+	virtual void deleteItem();
+	virtual void purgeItem();
 	virtual void purgeVersions( int numVersions );
 	void restoreItem( const PTR_ITEM &parent, const STRING &name )
 	{
@@ -693,9 +693,9 @@ class THE_ITEM : public gak::SharedObject
 		setParent( parent );
 	}
 
-	bool isArchived( void );
+	bool isArchived();
 	virtual PTR_ITEM getArchive( bool create );
-	virtual void archive( void );
+	virtual void archive();
 };
 
 class THE_ROOT : public THE_ITEM
@@ -705,7 +705,7 @@ class THE_ROOT : public THE_ITEM
 	: THE_ITEM( ITEM_IS_CONTAINER, -1, theFactory )
 	{
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 };
 
 class TItemCreateForm;
@@ -714,12 +714,12 @@ class FACTORY_BASE
 	public:
 	FACTORY_BASE();
 
-	virtual int getItemType( void ) const = 0;
+	virtual int getItemType() const = 0;
 	virtual bool acceptParent( const THE_ITEM *parent ) const = 0;
 	virtual PTR_ITEM createItem( int id ) const = 0;
-	virtual const char *getName( void ) const = 0;
+	virtual const char *getName() const = 0;
 
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parent ) const;
 	virtual PTR_ITEM createItemFromTemplate(
 		const PTR_ITEM &parent,
@@ -730,16 +730,16 @@ class FACTORY_BASE
 
 class FACTORY_SIMPLE_BASE : public FACTORY_BASE
 {
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parent ) const;
 };
 
 class FACTORY_VIRTUAL_ROOT : public FACTORY_BASE
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
+	virtual const char *getName() const;
 };
 
 class FACTORY_ROOT_FOLDER : public FACTORY_BASE
@@ -772,8 +772,8 @@ PTR_ITEM getItemByName( int parentId, const char *name );
 PTR_ITEM getItemByPath( gak::T_STRING path );
 PTR_ITEM getPersonalItem( int itemType );
 PTR_ITEM getPublicVolume( int itemType );
-PTR_ITEM getCompanyVolume( void );
-PTR_ITEM getArchiveVolume( void );
+PTR_ITEM getCompanyVolume();
+PTR_ITEM getArchiveVolume();
 
 void clearItemCache( const PTR_ITEM &holdItem=PTR_ITEM() );
 
@@ -785,12 +785,12 @@ void clearItemCache( const PTR_ITEM &holdItem=PTR_ITEM() );
 // ----- class inlines ------------------------------------------------- //
 // --------------------------------------------------------------------- //
 
-inline int THE_ITEM::getItemType( void ) const
+inline int THE_ITEM::getItemType() const
 {
 	return theFactory->getItemType();
 }
 
-inline const char *THE_ITEM::getItemTypeString( void ) const
+inline const char *THE_ITEM::getItemTypeString() const
 {
 	return theFactory->getName();
 }
