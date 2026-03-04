@@ -372,6 +372,7 @@ bool ThreadBackground::updateIndex()
 	{
 		if( ++s_ExceptionCount>3 )
 			throw;
+		StatusForm->incrementCounter();
 	}
 	StatusForm->restore();
 
@@ -627,6 +628,7 @@ void ThreadBackground::updateSyncFolders()
 	{
 		if( ++s_ExceptionCount>3 )
 			throw;
+		StatusForm->incrementCounter();
 	}
 }
 
@@ -653,6 +655,7 @@ void ThreadBackground::reminderCheck()
 	{
 		if( ++s_ExceptionCount > 3 )
 			throw;
+		StatusForm->incrementCounter();
 	}
 	m_state = oldState;
 }

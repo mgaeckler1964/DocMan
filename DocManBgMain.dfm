@@ -1,6 +1,6 @@
 object DocManBgMainForm: TDocManBgMainForm
-  Left = 452
-  Top = 372
+  Left = 885
+  Top = 535
   Width = 775
   Height = 443
   Caption = 'Document Manager BG'
