@@ -116,6 +116,18 @@ const char *ACTION_CHECK_OUT::getLabel() const
 	return "Check Out...";
 }
 
+inline CI_STRING splitFname( CI_STRING &fname )
+{
+	CI_STRING fext;
+	size_t dotPos = fname.searchChar( '.' );
+	if( dotPos != fname.no_index )
+	{
+		fext = fname.subString( dotPos );
+		fname.cut( dotPos );
+	}
+	return fext;
+}
+
 RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 {
 	PTR_FILE_BASE theFile = theItem;
@@ -125,42 +137,50 @@ RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 		{
 			theFile->reserve( CheckOutForm->getSelectedTaskID() );
 			theFile->updateDatabase();
-			if( CheckOutForm->CheckBoxFlag1->Checked
-			||  CheckOutForm->CheckBoxFlag2->Checked )
+
+			bool otherExt = CheckOutForm->CheckBoxFlag1->Checked;
+			bool otherNames = CheckOutForm->CheckBoxFlag2->Checked;
+
+			if( otherExt || otherNames )
 			{
 				PTR_ITEM parent = theItem->getParent();
 				if( parent )
 				{
-					CI_STRING	baseName = theItem->getName(), baseExt;
-					size_t		dotPos = baseName.searchRChar( '.' );
-					if( dotPos != baseName.no_index )
-					{
-						baseExt = baseName.subString( dotPos );
-						baseName.cut( dotPos );
-					}
+					Array<CI_STRING> goodNames;
+					CI_STRING	baseName = theItem->getName();
+					CI_STRING	baseExt = splitFname(baseName);
 
 					ITEM_CONTENT *theContent = parent->getContent();
+
+					if(otherExt && otherNames)
+					{
+						for( size_t i=0; i<theContent->size(); i++ )
+						{
+							theFile = parent->getContentItem( i );
+							if( theFile )
+							{
+								CI_STRING	childName = theFile->getName();
+								CI_STRING	childExt = splitFname(childName);
+								if( childExt == baseExt )
+									goodNames.addElement( childName );
+							}
+						}
+					}
+
 					for( size_t i=0; i<theContent->size(); i++ )
 					{
 						theFile = parent->getContentItem( i );
 						if( theFile && theFile->canReserve() )
 						{
-							CI_STRING	childName = theFile->getName(), childExt;
-							dotPos = childName.searchRChar( '.' );
-							if( dotPos != childName.no_index )
-							{
-								childExt = childName.subString( dotPos );
-								childName.cut( dotPos );
-							}
+							CI_STRING	childName = theFile->getName();
+							CI_STRING	childExt = splitFname(childName);
 							if( (
-									CheckOutForm->CheckBoxFlag1->Checked &&
-									childName == baseName
+									otherExt &&	childName == baseName
 								)
 							||  (
-									CheckOutForm->CheckBoxFlag2->Checked &&
-									childExt == baseExt
+									otherNames && childExt == baseExt
 								)
-							)
+							|| goodNames.findElement(childName) != goodNames.no_index )
 							{
 								theFile->reserve(
 									CheckOutForm->getSelectedTaskID()
@@ -171,12 +191,9 @@ RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 					}
 				}
 			}
-
 /***/		return rtREDRAW;
 		}
-
 	}
-
 	return rtNONE;
 }
 //---------------------------------------------------------------------------
