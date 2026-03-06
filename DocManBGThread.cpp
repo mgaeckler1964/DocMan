@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -32,6 +32,11 @@
 // --------------------------------------------------------------------- //
 // ----- switches ------------------------------------------------------ //
 // --------------------------------------------------------------------- //
+
+#undef STRICT
+#define STRICT 1
+
+#define PROFILER 1
 
 // --------------------------------------------------------------------- //
 // ----- includes ------------------------------------------------------ //
@@ -336,6 +341,7 @@ bool ThreadBackground::updateIndex2()
 
 		if( !StatusForm->isTerminated() )
 		{
+			doEnterFunctionEx( gakLogging::llInfo, "Creating Stat");
 			StatusForm->setStatus( STATUS_VERB, "Creating Stat" );
 			StatistikData	data;
 			globalIndex.getStatistik(&data);
@@ -388,7 +394,6 @@ void ThreadBackground::updateSyncFolders2()
 	gak::DateTime	now;
 	STRING			localPath;
 	bool			hasChanged;
-	std::ofstream 	fp;
 	STRING			logPath = Session->PrivateDir.c_str();
 	STRING			logName = logPath + DIRECTORY_DELIMITER_STRING "refreshDB.log";;
 
@@ -407,68 +412,72 @@ where it.ITEM_TYPE = 2
 or it.ITEM_TYPE = 11
 order by it.parentID, it.ID
 */
-	std::auto_ptr<TQuery> theFolderQuery( new TQuery( NULL ) );
-	theFolderQuery->DatabaseName = "docManDB";
-	theFolderQuery->SQL->Add(
-		"select it.ID, it.NAME "
-		"from item_tree it "
-		"where it.ITEM_TYPE = :TypeSyncFolder "
-		"or it.ITEM_TYPE = :TypeFolderRef "
-	);
-	theFolderQuery->Params->Items[0]->AsInteger = TYPE_SYNC_FOLDER;
-	theFolderQuery->Params->Items[1]->AsInteger = TYPE_FOLDER_REF;
-
 	/*
 		collect the known directoryies
 	*/
-	for(
-		theFolderQuery->Open();
-		!theFolderQuery->Eof && !StatusForm->isTerminated();
-		theFolderQuery->Next()
-	)
 	{
-		m_state = STRING("Checking ")+theFolderQuery->Fields->Fields[1]->AsString.c_str();
-		StatusForm->pushStatus(
-			"Checking",
-			theFolderQuery->Fields->Fields[1]->AsString.c_str()
+		doEnterFunctionEx(gakLogging::llDetail,"collect the known directoryies");
+
+		std::auto_ptr<TQuery> theFolderQuery( new TQuery( NULL ) );
+		theFolderQuery->DatabaseName = "docManDB";
+		theFolderQuery->SQL->Add(
+			"select it.ID, it.NAME "
+			"from item_tree it "
+			"where it.ITEM_TYPE = :TypeSyncFolder "
+			"or it.ITEM_TYPE = :TypeFolderRef "
 		);
+		theFolderQuery->Params->Items[0]->AsInteger = TYPE_SYNC_FOLDER;
+		theFolderQuery->Params->Items[1]->AsInteger = TYPE_FOLDER_REF;
 
-		int				currentID = theFolderQuery->Fields->Fields[0]->AsInteger;
-		PTR_FOLDER_REF	theFolder = getItem( currentID );
-		if( theFolder )
+		for(
+			theFolderQuery->Open();
+			!theFolderQuery->Eof && !StatusForm->isTerminated();
+			theFolderQuery->Next()
+		)
 		{
-			m_state = localPath = theFolder->getDownloadPath();
-			if( !localPath.isEmpty() )
+			m_state = STRING("Checking ")+theFolderQuery->Fields->Fields[1]->AsString.c_str();
+			StatusForm->pushStatus(
+				"Checking",
+				theFolderQuery->Fields->Fields[1]->AsString.c_str()
+			);
+
+			int				currentID = theFolderQuery->Fields->Fields[0]->AsInteger;
+			PTR_FOLDER_REF	theFolder = getItem( currentID );
+			if( theFolder )
 			{
-				localPath.cut( localPath.strlen()-1 );
-
-				try
+				m_state = localPath = theFolder->getDownloadPath();
+				if( !localPath.isEmpty() )
 				{
-					DocmanDirEntry localStat;
+					localPath.cut( localPath.strlen()-1 );
 
-					localStat.findFile( localPath );
+					try
+					{
+						DocmanDirEntry localStat;
 
-					localStat.fileName = localPath;
-					localStat.dbCreatedDate = theFolder->getCreatedDate();
-					localStat.dbModifiedDate = theFolder->getModifiedDate();
-					localStat.itemID = currentID;
-					localDirs.addElement( localStat );
-				}
-				catch( ... )
-				{
-					doLogValueEx(gakLogging::llError, localPath );
+						localStat.findFile( localPath );
+
+						localStat.fileName = localPath;
+						localStat.dbCreatedDate = theFolder->getCreatedDate();
+						localStat.dbModifiedDate = theFolder->getModifiedDate();
+						localStat.itemID = currentID;
+						localDirs.addElement( localStat );
+					}
+					catch( ... )
+					{
+						doLogValueEx(gakLogging::llError, localPath );
+					}
 				}
 			}
-		}
 #ifndef _DEBUG
-		if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
-		{
-/*v*/		break;
-		}
+			if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
+			{
+	/*v*/		break;
+			}
 #endif
-		StatusForm->restore();
+			StatusForm->restore();
+		}
+		theFolderQuery->Close();
 	}
-	theFolderQuery->Close();
 
 	if( StatusForm->isTerminated() )
 	{
@@ -477,46 +486,52 @@ order by it.parentID, it.ID
 
 	localDirs.resort();
 
-	fp.open( logName, std::ofstream::app );
-	fp << "Refresh newer: " << now << '\n';
-	hasChanged = false;
-
-	/*
-		refresh directories with newer date
-	*/
-	for(
-		size_t i=localDirs.size()-1;
-		i!=-1 && !StatusForm->isTerminated();
-		i--
-	)
 	{
-		DocmanDirEntry &curEntry = localDirs[i];
-		if( curEntry.dbModifiedDate < curEntry.modifiedDate )
-		{
-			int				currentID = curEntry.itemID;
-			PTR_FOLDER_REF	theFolder = getItem( currentID );
-			if( theFolder )
-			{
-				m_state = localPath = curEntry.fileName;
-				StatusForm->pushStatus( "Refreshing#1", localPath );
-				hasChanged = theFolder->refresh( false, &fp ) || hasChanged;
-				theFolder->setCreatedDate( curEntry.creationDate.calcOriginalTime() );
-				theFolder->setModifiedDate( curEntry.modifiedDate.calcOriginalTime() );
-				theFolder->updateDatabase();
-#ifndef _DEBUG
-				if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
-				{
-/*v*/				break;
-				}
-#endif
-				StatusForm->restore();
-			}
+		doEnterFunctionEx(gakLogging::llDetail,"refresh directories with newer date");
 
-			curEntry.dbModifiedDate = curEntry.modifiedDate;
+		std::ofstream 	fp;
+
+		fp.open( logName, std::ofstream::app );
+		fp << "Refresh newer: " << now << '\n';
+		hasChanged = false;
+
+		/*
+			refresh directories with newer date
+		*/
+		for(
+			size_t i=localDirs.size()-1;
+			i!=-1 && !StatusForm->isTerminated();
+			i--
+		)
+		{
+			DocmanDirEntry &curEntry = localDirs[i];
+			if( curEntry.dbModifiedDate < curEntry.modifiedDate )
+			{
+				int				currentID = curEntry.itemID;
+				PTR_FOLDER_REF	theFolder = getItem( currentID );
+				if( theFolder )
+				{
+					m_state = localPath = curEntry.fileName;
+					StatusForm->pushStatus( "Refreshing#1", localPath );
+					hasChanged = theFolder->refresh( false, &fp ) || hasChanged;
+					theFolder->setCreatedDate( curEntry.creationDate.calcOriginalTime() );
+					theFolder->setModifiedDate( curEntry.modifiedDate.calcOriginalTime() );
+					theFolder->updateDatabase();
+#ifndef _DEBUG
+					if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
+					{
+/*v*/					break;
+					}
+#endif
+					StatusForm->restore();
+				}
+
+				curEntry.dbModifiedDate = curEntry.modifiedDate;
+			}
 		}
+		fp << "END\n";
+		fp.close();
 	}
-	fp << "END\n";
-	fp.close();
 	if( hasChanged )
 	{
 		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
@@ -529,41 +544,46 @@ order by it.parentID, it.ID
 	/*
 		refresh directories changed date
 	*/
-	fp.open( logName, std::ofstream::app );
-	fp << "Refresh changed: " << now << '\n';
-	hasChanged = false;
-	for(
-		size_t i=localDirs.size()-1;
-		i!=-1 && !StatusForm->isTerminated();
-		i--
-	)
 	{
-		DocmanDirEntry &curEntry = localDirs[i];
-		if( curEntry.dbModifiedDate != curEntry.modifiedDate )
+		doEnterFunctionEx(gakLogging::llDetail,"refresh directories changed date");
+
+		std::ofstream 	fp;
+		fp.open( logName, std::ofstream::app );
+		fp << "Refresh changed: " << now << '\n';
+		hasChanged = false;
+		for(
+			size_t i=localDirs.size()-1;
+			i!=-1 && !StatusForm->isTerminated();
+			i--
+		)
 		{
-			int				currentID = curEntry.itemID;
-			PTR_FOLDER_REF	theFolder = getItem( currentID );
-			if( theFolder )
+			DocmanDirEntry &curEntry = localDirs[i];
+			if( curEntry.dbModifiedDate != curEntry.modifiedDate )
 			{
-				m_state = localPath = curEntry.fileName;
-				StatusForm->pushStatus( "Refreshing#2", localPath );
-				hasChanged = theFolder->refresh( false, &fp ) || hasChanged;
-				theFolder->setCreatedDate( curEntry.creationDate.calcOriginalTime() );
-				theFolder->setModifiedDate( curEntry.modifiedDate.calcOriginalTime() );
-				theFolder->updateDatabase();
-#ifndef _DEBUG
-				if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
+				int				currentID = curEntry.itemID;
+				PTR_FOLDER_REF	theFolder = getItem( currentID );
+				if( theFolder )
 				{
-/*v*/				break;
-				}
+					m_state = localPath = curEntry.fileName;
+					StatusForm->pushStatus( "Refreshing#2", localPath );
+					hasChanged = theFolder->refresh( false, &fp ) || hasChanged;
+					theFolder->setCreatedDate( curEntry.creationDate.calcOriginalTime() );
+					theFolder->setModifiedDate( curEntry.modifiedDate.calcOriginalTime() );
+					theFolder->updateDatabase();
+#ifndef _DEBUG
+					if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
+					{
+/*v*/					break;
+					}
 #endif
-				StatusForm->restore();
+					StatusForm->restore();
+				}
+				curEntry.dbModifiedDate = curEntry.modifiedDate;
 			}
-			curEntry.dbModifiedDate = curEntry.modifiedDate;
 		}
+		fp << "END\n";
+		fp.close();
 	}
-	fp << "END\n";
-	fp.close();
 	if( hasChanged )
 	{
 		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
@@ -576,37 +596,41 @@ order by it.parentID, it.ID
 	/*
 		refresh ALL directories
 	*/
-	fp.open( logName, std::ofstream::app );
-	fp << "Refresh all: " << now << '\n';
-	hasChanged = false;
-	for(
-		size_t i=localDirs.size()-1;
-		i!=-1 && !StatusForm->isTerminated();
-		i--
-	)
 	{
-		const DocmanDirEntry	&curEntry = localDirs[i];
-		int						currentID = curEntry.itemID;
-		PTR_FOLDER_REF			theFolder = getItem( currentID );
-		if( theFolder )
+		doEnterFunctionEx(gakLogging::llDetail,"refresh ALL directories");
+		std::ofstream 	fp;
+		fp.open( logName, std::ofstream::app );
+		fp << "Refresh all: " << now << '\n';
+		hasChanged = false;
+		for(
+			size_t i=localDirs.size()-1;
+			i!=-1 && !StatusForm->isTerminated();
+			i--
+		)
 		{
-			m_state = localPath = curEntry.fileName;
-			StatusForm->pushStatus( "Refreshing#3", localPath );
-			hasChanged = theFolder->refresh( false, &fp ) || hasChanged;
-			theFolder->setCreatedDate( curEntry.creationDate.calcOriginalTime() );
-			theFolder->setModifiedDate( curEntry.modifiedDate.calcOriginalTime() );
-			theFolder->updateDatabase();
-#ifndef _DEBUG
-			if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
+			const DocmanDirEntry	&curEntry = localDirs[i];
+			int						currentID = curEntry.itemID;
+			PTR_FOLDER_REF			theFolder = getItem( currentID );
+			if( theFolder )
 			{
-/*v*/			break;
-			}
+				m_state = localPath = curEntry.fileName;
+				StatusForm->pushStatus( "Refreshing#3", localPath );
+				hasChanged = theFolder->refresh( false, &fp ) || hasChanged;
+				theFolder->setCreatedDate( curEntry.creationDate.calcOriginalTime() );
+				theFolder->setModifiedDate( curEntry.modifiedDate.calcOriginalTime() );
+				theFolder->updateDatabase();
+#ifndef _DEBUG
+				if( StatusForm->waitForUserSleep( IDLE_TIMEOUT ) )
+				{
+/*v*/				break;
+				}
 #endif
-			StatusForm->restore();
+				StatusForm->restore();
+			}
 		}
+		fp << "END\n";
+		fp.close();
 	}
-	fp << "END\n";
-	fp.close();
 	if( hasChanged )
 	{
 		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
@@ -615,8 +639,8 @@ order by it.parentID, it.ID
 
 void ThreadBackground::updateSyncFolders()
 {
-
 	static unsigned s_ExceptionCount = 0;
+
 	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::updateSyncFolders");
 
 	try
@@ -780,6 +804,7 @@ void ThreadBackground::perform()
 
 void readDocManIndex( DocManIndex *index )
 {
+	doEnterFunctionEx(gakLogging::llDetail,"readDocManIndex");
 	F_STRING indexFile = getIndexFileName();
 	try
 	{
@@ -797,12 +822,14 @@ void readDocManIndex( DocManIndex *index )
 
 void writeDocManIndex( const DocManIndex &index )
 {
+	doEnterFunctionEx(gakLogging::llDetail,"writeDocManIndex");
 	F_STRING indexFile = getIndexFileName();
 	writeToBinaryFile( indexFile, index, indexMagic, indexVersion, ovmShortDown );
 }
 
 void deleteDocManIndex()
 {
+	doEnterFunctionEx(gakLogging::llDetail,"deleteDocManIndex");
 	F_STRING indexFile = getIndexFileName();
 	strRemove(indexFile);
 	ConfigDataModule->SetValue( INDEX_START, 0 );

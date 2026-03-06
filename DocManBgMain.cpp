@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -28,6 +28,13 @@
 		OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 		SUCH DAMAGE.
 */
+
+//---------------------------------------------------------------------------
+
+#undef STRICT
+#define STRICT 1
+
+#define PROFILER 1
 
 //---------------------------------------------------------------------------
 
@@ -125,7 +132,7 @@ void __fastcall TDocManBgMainForm::AppMinimize(TObject *)
 //---------------------------------------------------------------------------
 void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 {
-	doEnterFunction( "TDocManBgMainForm::AppWindowProc" );
+//	doEnterFunctionEx( gakLogging::llDetail, "TDocManBgMainForm::AppWindowProc" );
 
 	try
 	{
@@ -136,7 +143,7 @@ void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 			if( msg.LParam == WM_LBUTTONUP
 			||  msg.LParam == WM_RBUTTONUP )
 			{
-	//			::ShowWindow( StatusForm->Handle, SW_SHOW );
+//				::ShowWindow( StatusForm->Handle, SW_SHOW );
 				::ShowWindow( Application->Handle, SW_SHOW );
 				Application->Restore();
 
@@ -147,7 +154,7 @@ void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 		}
 		else if( msg.Msg == WM_ACTIVATEAPP )
 		{
-	#if 0
+#if 0
 			if( isBackgroundJob() )
 			{
 				StatusForm->stopThread();
@@ -156,7 +163,7 @@ void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 				StatusForm->Show();
 				StatusForm->SetFocus();
 			}
-	#endif
+#endif
 		}
 		else if( msg.Msg == WM_QUERYENDSESSION  || msg.Msg == WM_ENDSESSION )
 		{

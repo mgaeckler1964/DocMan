@@ -67,7 +67,8 @@ __published:	// IDE-managed Components
 private:	// User declarations
 	gak::ArrayOfInts	m_ids;
 	int		   	m_lastTaskID;
-	const char	*m_regKey1, *m_regKey2;
+	const char	*m_regKey1;
+	STRING		m_regKey2;
 public:		// User declarations
 	__fastcall TCheckOutForm(TComponent* Owner);
 	int getSelectedTaskID()
@@ -79,7 +80,7 @@ public:		// User declarations
 
 		return 0;
 	}
-	int ShowModal( FormMode mode );
+	int ShowModal( FormMode mode, const STRING &extension=STRING() );
 	void setLastTask( taskID )
 	{
 		m_lastTaskID = taskID;

@@ -133,7 +133,10 @@ RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 	PTR_FILE_BASE theFile = theItem;
 	if( theFile )
 	{
-		if( CheckOutForm->ShowModal(CHECKOUT_FILE) == mrOk )
+		CI_STRING	baseName = theItem->getName();
+		CI_STRING	baseExt = splitFname(baseName);
+
+		if( CheckOutForm->ShowModal(CHECKOUT_FILE, baseExt) == mrOk )
 		{
 			theFile->reserve( CheckOutForm->getSelectedTaskID() );
 			theFile->updateDatabase();
@@ -147,8 +150,6 @@ RefhreshType ACTION_CHECK_OUT::perform( PTR_ITEM theItem )
 				if( parent )
 				{
 					Array<CI_STRING> goodNames;
-					CI_STRING	baseName = theItem->getName();
-					CI_STRING	baseExt = splitFname(baseName);
 
 					ITEM_CONTENT *theContent = parent->getContent();
 
@@ -307,11 +308,11 @@ RefhreshType ACTION_CANCEL_CHECK_OUT::perform( PTR_ITEM theItem )
 
 //---------------------------------------------------------------------------
 __fastcall TCheckOutForm::TCheckOutForm(TComponent* Owner)
-	: TForm(Owner), m_lastTaskID( 0 ), m_regKey1(NULL), m_regKey2(NULL)
+	: TForm(Owner), m_lastTaskID( 0 ), m_regKey1(NULL)
 {
 }
 
-int TCheckOutForm::ShowModal( FormMode mode )
+int TCheckOutForm::ShowModal( FormMode mode, const STRING &extension  )
 {
 	if( mode == CHECKOUT_FILE )
 	{
@@ -320,7 +321,7 @@ int TCheckOutForm::ShowModal( FormMode mode )
 		CheckBoxFlag1->Caption = "Include Other File Extensions";
 		CheckBoxFlag2->Visible = true;
 		m_regKey1 = "CheckBoxIncludeExtensions";
-		m_regKey2 = "CheckBoxIncludeNames";
+		m_regKey2 = STRING("CheckBoxIncludeNames") + extension;
 	}
 	else if( mode == CHECKOUT_TREE )
 	{
@@ -329,7 +330,7 @@ int TCheckOutForm::ShowModal( FormMode mode )
 		CheckBoxFlag1->Caption = "Changed Files, only";
 		CheckBoxFlag2->Visible = false;
 		m_regKey1 = "CheckBoxChangedOnly";
-		m_regKey2 = NULL;
+		m_regKey2.release();
 	}
 	else if( mode == CHANGE_TASK )
 	{
@@ -337,7 +338,7 @@ int TCheckOutForm::ShowModal( FormMode mode )
 		CheckBoxFlag1->Visible = false;
 		CheckBoxFlag2->Visible = false;
 		m_regKey1 = NULL;
-		m_regKey2 = NULL;
+		m_regKey2.release();
 	}
 
 	return TForm::ShowModal();
@@ -362,7 +363,7 @@ void __fastcall TCheckOutForm::FormShow(TObject *)
 			if( m_regKey1 && reg->ValueExists( m_regKey1 ) )
 				CheckBoxFlag1->Checked = reg->ReadBool( m_regKey1 );
 
-			if( m_regKey2 && reg->ValueExists( m_regKey2 ) )
+			if( !m_regKey2.isEmpty() && reg->ValueExists( m_regKey2 ) )
 				CheckBoxFlag2->Checked = reg->ReadBool( m_regKey2 );
 
 			reg->CloseKey();
@@ -411,7 +412,7 @@ void __fastcall TCheckOutForm::ButtonOKClick(TObject *)
 	{
 		reg->WriteBool( m_regKey1, CheckBoxFlag1->Checked );
 	}
-	if( m_regKey2 )
+	if( !m_regKey2.isEmpty() )
 	{
 		reg->WriteBool( m_regKey2, CheckBoxFlag2->Checked );
 	}
