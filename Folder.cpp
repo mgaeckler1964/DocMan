@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -1897,8 +1897,20 @@ void THE_LOCAL_FOLDER::compare( FolderCompareList *iTheList )
 		ArrayOfStrings	gitignore;
 
 		dirContent.dirlist( localPath );
-		STRING gitignorePath = localPath + GITIGNORE;
-		gitignore.readFromFile(gitignorePath);
+		STRING gitignorePath = localPath;
+		while( 1 )
+		{
+			STRING tmpPath = gitignorePath + GITIGNORE;
+			gitignore.readFromFile(tmpPath);
+			if( gitignore.size() )
+/*v*/			break;
+			gitignorePath.cut(gitignorePath.size()-1);
+			size_t slashPos = gitignorePath.searchRChar(DIRECTORY_DELIMITER);
+			if( slashPos != gitignorePath.no_index )
+				gitignorePath.cut( slashPos+1);
+			else
+/*v*/			break;
+		}
 
 		for(
 			DirectoryList::iterator	it = dirContent.begin(), endIT = dirContent.end();
