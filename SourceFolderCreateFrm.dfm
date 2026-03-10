@@ -1,13 +1,13 @@
 inherited SourceFolderCreateForm: TSourceFolderCreateForm
-  Left = 1429
-  Top = 446
-  Width = 855
-  Height = 332
+  Left = 445
+  Top = 400
+  Width = 813
+  Height = 356
   Caption = 'SourceFolderCreateForm'
   PixelsPerInch = 96
   TextHeight = 13
   inherited SpeedButton: TSpeedButton
-    Left = 816
+    Left = 767
   end
   object Label3: TLabel [3]
     Left = 8
@@ -20,7 +20,7 @@ inherited SourceFolderCreateForm: TSourceFolderCreateForm
     Top = 112
   end
   inherited EditName: TEdit
-    Width = 765
+    Width = 720
   end
   inherited ButtonOk: TButton
     Top = 272
@@ -31,7 +31,7 @@ inherited SourceFolderCreateForm: TSourceFolderCreateForm
     TabOrder = 10
   end
   inherited EditLocalPath: TEdit
-    Width = 744
+    Width = 697
     TabOrder = 1
   end
   object EditPatch: TEdit [9]
@@ -63,7 +63,7 @@ inherited SourceFolderCreateForm: TSourceFolderCreateForm
   end
   inherited MemoDescription: TMemo
     Top = 112
-    Width = 765
+    Width = 720
     TabOrder = 8
   end
   object UpDownMajor: TUpDown
