@@ -157,7 +157,6 @@ __published:	// IDE-managed Components
 	void __fastcall SpeedButtonRefreshClick(TObject *Sender);
 	void __fastcall SpeedButtonBackClick(TObject *Sender);
 	void __fastcall SpeedButtonForwardClick(TObject *Sender);
-	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall XSLTFolderClick(TObject *Sender);
 	void __fastcall Categories1Click(TObject *Sender);
 	void __fastcall About1Click(TObject *Sender);
@@ -193,8 +192,6 @@ private:	// User declarations
 	void __fastcall ReportClick(TObject *Sender);
 	void __fastcall OneBookmarkClick(TObject *Sender);
 	void __fastcall WmDropFiles(TWMDropFiles& Message);
-	void __fastcall AppWindowProc(TMessage &msg);
-	void __fastcall AppMinimize(TObject *Sender);
 
 	void initMenu();
 public:		// User declarations

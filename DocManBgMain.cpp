@@ -52,6 +52,7 @@
 
 #pragma hdrstop
 
+#include "common.h"
 #include "LoginDlg.h"
 #include "UserDlg.h"
 #include "RemoteUserFrm.h"
@@ -138,7 +139,7 @@ void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 	{
 		doLogValue( msg.Msg );
 
-		if( msg.Msg == WM_USER + 1 )
+		if( msg.Msg == WM_NOTIFY_ICON )
 		{
 			if( msg.LParam == WM_LBUTTONUP
 			||  msg.LParam == WM_RBUTTONUP )
@@ -196,7 +197,7 @@ void TDocManBgMainForm::performBackgroundTasks()
 	IconData.hWnd = Handle;
 	IconData.uID = 100;
 	IconData.uFlags = NIF_MESSAGE + NIF_ICON + NIF_TIP;
-	IconData.uCallbackMessage = WM_USER + 1;
+	IconData.uCallbackMessage = WM_NOTIFY_ICON;
 	IconData.hIcon = Application->Icon->Handle;
 	strcpy( IconData.szTip, "DocMan Background Process" );
 
