@@ -137,7 +137,8 @@ void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 
 	try
 	{
-		doLogValue( msg.Msg );
+		doLogValueEx( gakLogging::llInfo, msg.Msg );
+		doLogValueEx( gakLogging::llInfo, Handle );
 
 		if( msg.Msg == WM_NOTIFY_ICON )
 		{
@@ -153,22 +154,13 @@ void __fastcall TDocManBgMainForm::AppWindowProc(TMessage &msg)
 				StatusForm->SetFocus();
 			}
 		}
-		else if( msg.Msg == WM_ACTIVATEAPP )
-		{
-#if 0
-			if( isBackgroundJob() )
-			{
-				StatusForm->stopThread();
-
-				StatusForm->WindowState = wsNormal;
-				StatusForm->Show();
-				StatusForm->SetFocus();
-			}
-#endif
-		}
 		else if( msg.Msg == WM_QUERYENDSESSION  || msg.Msg == WM_ENDSESSION )
 		{
 			StatusForm->stopThread();
+		}
+		else if( msg.Msg == WM_UPDATE_INDEX )
+		{
+			m_theThread->forceIndex(msg.LParam);
 		}
 
 		WndProc( msg );
@@ -206,9 +198,9 @@ void TDocManBgMainForm::performBackgroundTasks()
 	::ShowWindow( Application->Handle, SW_HIDE );
 	Application->Minimize();
 
-	SharedObjectPointer<ThreadBackground> theThread = new ThreadBackground;
+	m_theThread = new ThreadBackground;
 
-	theThread->StartThread( true, true );
+	m_theThread->StartThread( true, true );
 
 #ifndef NDEBUG
 	StatusForm->WindowState = wsNormal;
@@ -216,15 +208,15 @@ void TDocManBgMainForm::performBackgroundTasks()
 	StatusForm->SetFocus();
 #endif
 
-	while( theThread->isRunning && !Thread::waitForMsgThreads() )
+	while( m_theThread->isRunning && !Thread::waitForMsgThreads() )
 	{
-		doLogPosition();
+		doLogPositionEx(gakLogging::llInfo);
 		idleLoop();
 	}
 
 	Shell_NotifyIcon(NIM_DELETE, &IconData);
 
-	const STRING &errorText = theThread->getError();
+	const STRING &errorText = m_theThread->getError();
 	if( !errorText.isEmpty() )
 	{
 		::ShowWindow( Application->Handle, SW_SHOW );

@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -91,6 +91,7 @@ class ThreadBackground : public ThreadDocMan
 {
 	STRING		m_state;
 	STRING		m_errorText;
+	int			m_forceIndex;
 
 	void reminderCheck();
 	void updateSyncFolders2();
@@ -102,9 +103,16 @@ class ThreadBackground : public ThreadDocMan
 	virtual void perform();
 
 	public:
+	ThreadBackground() : m_forceIndex(0) {}
+
 	const STRING &getError() const
 	{
 		return m_errorText;
+	}
+	void forceIndex( int index )
+	{
+		if( m_forceIndex<index )
+			m_forceIndex = index;
 	}
 };
 #pragma option -RT.

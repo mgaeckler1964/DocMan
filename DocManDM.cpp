@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -73,7 +73,8 @@ const char *THREAD_CHECK_DB::getTitle() const
 //---------------------------------------------------------------------------
 void THREAD_CHECK_DB::perform()
 {
-	DocManDataModule->checkDB( false );
+	static int s_dummy=0;
+	DocManDataModule->checkDB( false, &s_dummy );
 }
 //---------------------------------------------------------------------------
 const char *THREAD_REFRESH_EXIFS::getTitle() const
@@ -138,7 +139,7 @@ STRING TDocManDataModule::md5file( const STRING &filePath )
 }
 
 //---------------------------------------------------------------------------
-void TDocManDataModule::checkDB( bool silent )
+void TDocManDataModule::checkDB( bool silent, int *forceIndex )
 {
 	STRING 			md5Base64;
 
@@ -190,7 +191,7 @@ void TDocManDataModule::checkDB( bool silent )
 
 	for(
 		TableIstorage->Open();
-		!TableIstorage->Eof;
+		!TableIstorage->Eof && !*forceIndex;
 		TableIstorage->Next()
 	)
 	{
@@ -298,7 +299,7 @@ void TDocManDataModule::checkDB( bool silent )
 			findStorageQuery->Params->Items[0]->AsInteger = TableIstorageID->AsInteger;
 			for(
 				findStorageQuery->Open();
-				!findStorageQuery->Eof;
+				!findStorageQuery->Eof && !*forceIndex;
 				findStorageQuery->Next()
 			)
 			{
@@ -327,7 +328,7 @@ void TDocManDataModule::checkDB( bool silent )
 
 	for(
 		TableIfiles->Open();
-		!TableIfiles->Eof;
+		!TableIfiles->Eof && !*forceIndex;
 		TableIfiles->Next()
 	)
 	{
@@ -439,7 +440,7 @@ void TDocManDataModule::checkDB( bool silent )
 			findFileQuery->Params->Items[0]->AsInteger = TableIfilesID->AsInteger;
 			for(
 				findFileQuery->Open();
-				!findFileQuery->Eof;
+				!findFileQuery->Eof && !*forceIndex;
 				findFileQuery->Next()
 			)
 			{
@@ -463,7 +464,7 @@ void TDocManDataModule::checkDB( bool silent )
 
 	for(
 		TableItemTree->Open();
-		!TableItemTree->Eof;
+		!TableItemTree->Eof && !*forceIndex;
 		TableItemTree->Next()
 	)
 	{

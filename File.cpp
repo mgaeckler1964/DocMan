@@ -49,6 +49,7 @@
 #include <gak/fcopy.h>
 #include <gak/http.h>
 
+#include "common.h"
 #include "File.h"
 #include "ItemManager.h"
 #include "FileCreateFrm.h"
@@ -344,6 +345,11 @@ int THE_FILE::createStorage( const STRING &filePath, STRING *md5Hash )
 
 		theQuery->ExecSQL();
 		*md5Hash = md5base64;
+
+		HWND docBG = ::FindWindow( "TDocManBgMainForm", NULL );
+		doLogValueEx( gakLogging::llInfo, docBG );
+		if( docBG )
+			PostMessage(docBG, WM_UPDATE_INDEX, 0, storageId);
 		return storageId;
 	}
 	else

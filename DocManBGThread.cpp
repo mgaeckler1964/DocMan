@@ -49,6 +49,8 @@
 #include <gak/priorityQueue.h>
 #include <gak/lockQueue.h>
 #include <gak/math.h>
+#include <gak/fcopy.h>
+#include <gak/tmpfile.h>
 
 #pragma hdrstop
 
@@ -358,6 +360,8 @@ bool ThreadBackground::updateIndex2()
 	}
 	if( indexStart != oldIndex )
 		ConfigDataModule->SetValue( INDEX_START, indexStart );
+	if( indexStart >= m_forceIndex )
+		m_forceIndex = 0;
 	return hasLogChanged;
 }
 
@@ -431,7 +435,7 @@ order by it.parentID, it.ID
 
 		for(
 			theFolderQuery->Open();
-			!theFolderQuery->Eof && !StatusForm->isTerminated();
+			!theFolderQuery->Eof && !StatusForm->isTerminated() && !m_forceIndex;
 			theFolderQuery->Next()
 		)
 		{
@@ -479,7 +483,7 @@ order by it.parentID, it.ID
 		theFolderQuery->Close();
 	}
 
-	if( StatusForm->isTerminated() )
+	if( StatusForm->isTerminated() || m_forceIndex )
 	{
 /*@*/	return;
 	}
@@ -500,7 +504,7 @@ order by it.parentID, it.ID
 		*/
 		for(
 			size_t i=localDirs.size()-1;
-			i!=-1 && !StatusForm->isTerminated();
+			i!=-1 && !StatusForm->isTerminated() && !m_forceIndex;
 			i--
 		)
 		{
@@ -536,7 +540,7 @@ order by it.parentID, it.ID
 	{
 		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
 	}
-	if( StatusForm->isTerminated() )
+	if( StatusForm->isTerminated() || m_forceIndex )
 	{
 /*@*/	return;
 	}
@@ -553,7 +557,7 @@ order by it.parentID, it.ID
 		hasChanged = false;
 		for(
 			size_t i=localDirs.size()-1;
-			i!=-1 && !StatusForm->isTerminated();
+			i!=-1 && !StatusForm->isTerminated() && !m_forceIndex;
 			i--
 		)
 		{
@@ -588,7 +592,7 @@ order by it.parentID, it.ID
 	{
 		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
 	}
-	if( StatusForm->isTerminated() )
+	if( StatusForm->isTerminated() || m_forceIndex )
 	{
 /*@*/	return;
 	}
@@ -604,7 +608,7 @@ order by it.parentID, it.ID
 		hasChanged = false;
 		for(
 			size_t i=localDirs.size()-1;
-			i!=-1 && !StatusForm->isTerminated();
+			i!=-1 && !StatusForm->isTerminated() && !m_forceIndex;
 			i--
 		)
 		{
@@ -741,11 +745,14 @@ void ThreadBackground::perform()
 				m_state = "checkDB";
 				if( (int(TDateTime::CurrentDate()) - int(lastCheck)) >= 7 )
 				{
-					DocManDataModule->checkDB( true );
-					lastCheck = TDateTime::CurrentDate();
+					DocManDataModule->checkDB( true, &m_forceIndex );
+					if( !m_forceIndex )
+					{
+						lastCheck = TDateTime::CurrentDate();
 #ifndef _DEBUG
-					registry->WriteDate( "bgLastCheck", lastCheck );
+						registry->WriteDate( "bgLastCheck", lastCheck );
 #endif
+					}
 				}
 			}
 
@@ -757,7 +764,7 @@ void ThreadBackground::perform()
 
 			reminderCheck();
 
-			if( !hasIndexChanged )
+			if( !hasIndexChanged && !m_forceIndex )
 			{
 				m_state = "Sleep";
 				StatusForm->pushStatus( "Sleeping", "" );
@@ -773,12 +780,12 @@ void ThreadBackground::perform()
 					reminderCheck();
 					StatusForm->restore();
 				}
-				while( GetLastInputTime() > 600000 && !StatusForm->isTerminated() );
+				while( GetLastInputTime() > 600000 && !StatusForm->isTerminated() && !m_forceIndex );
 
 
 				StatusForm->restore();
 			}
-		}
+		}	// while( !StatusForm->isTerminated() )
 	}
 	catch( Exception &e )
 	{
@@ -822,9 +829,20 @@ void readDocManIndex( DocManIndex *index )
 
 void writeDocManIndex( const DocManIndex &index )
 {
-	doEnterFunctionEx(gakLogging::llDetail,"writeDocManIndex");
+	doEnterFunctionEx(gakLogging::llInfo,"writeDocManIndex");
 	F_STRING indexFile = getIndexFileName();
-	writeToBinaryFile( indexFile, index, indexMagic, indexVersion, ovmShortDown );
+
+	TempFileName	tmpFile(true);
+	const STRING	&tmp = tmpFile.get();
+	writeToBinaryFile( tmp, index, indexMagic, indexVersion, owmOverwrite );
+
+	STRING newFile = indexFile + ".tmp";
+	STRING oldFile = indexFile + ".old";
+
+	fcopy(tmp, newFile);
+	strRemove(oldFile);
+	strRename(indexFile, oldFile);
+	strRename(newFile, indexFile);
 }
 
 void deleteDocManIndex()

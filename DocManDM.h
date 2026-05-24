@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -353,7 +353,7 @@ public:		// User declarations
 	// static STRING md5Str( unsigned char md5[16] );
 	static STRING md5file( const STRING &filePath );
 
-	void checkDB( bool silent );
+	void checkDB( bool silent, int *forceIndex );
 	void refreshExifs();
 	void refreshMimeTypes();
 
