@@ -386,8 +386,8 @@ void __fastcall TSearchForm::ButtonSearchClick(TObject *)
 	size_t	pIdx = 0;
 	STRING	pName, whereClause;
 	for(
-		CategoryDatas::const_iterator it = attrData.cbegin(),
-			endIT = attrData.cend();
+		CategoryDatas::const_iterator it = m_attrData.cbegin(),
+			endIT = m_attrData.cend();
 		it != endIT;
 		++it
 	)
@@ -580,10 +580,6 @@ void __fastcall TSearchForm::ButtonAdvancedClick(TObject *)
 
 		if( PageControlAdvanced->PageCount <= 1 )
 		{
-			//for( size_t i=0; i<tabSheets.getNumElements(); i++ )
-				//delete tabSheets[i];
-			//tabSheets.clear();
-
 			for(
 				TableCategories->Open();
 				!TableCategories->Eof;
@@ -594,7 +590,6 @@ void __fastcall TSearchForm::ButtonAdvancedClick(TObject *)
 				newSheet->Parent = PageControlAdvanced;
 				newSheet->PageControl = PageControlAdvanced;
 				newSheet->Caption = TableCategoriesNAME->AsString;
-				tabSheets.addElement( newSheet );
 
 				TScrollBox	*scrollBox = new TScrollBox( newSheet );
 				scrollBox->Parent = newSheet;
@@ -607,7 +602,7 @@ void __fastcall TSearchForm::ButtonAdvancedClick(TObject *)
 				);
 
 				buildCategoryUI( scrollBox, &data );
-				attrData.addElement( data );
+				m_attrData.addElement( data );
 			}
 			TableCategories->Close();
 		}

@@ -115,9 +115,7 @@ __published:	// IDE-managed Components
 	void __fastcall QuerySearchAfterOpen(TDataSet *DataSet);
 	void __fastcall QuerySearchBeforeClose(TDataSet *DataSet);
 private:	// User declarations
-	/* TODO 1 -ogak -cRefactory : Do we need this array? */
-	TTabSheets		tabSheets;
-	CategoryDatas	attrData;
+	CategoryDatas	m_attrData;
 
 	void createControl( TWinControl *tab, AttributeValue *val, int yPos );
 	void buildCategoryUI( TWinControl *tab, CategoryData *data );
