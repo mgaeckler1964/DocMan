@@ -62,12 +62,22 @@ __published:	// IDE-managed Components
 	TCheckBox *CheckBoxCaseSensitive;
 	TCheckBox *CheckBoxFuzzy;
 	TCheckBox *CheckBoxWildcard;
+	TLabel *HitCountLabel;
+	TButton *MoreBttn;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ButtonSearchClick(TObject *Sender);
 	void __fastcall GridResultDblClick(TObject *Sender);
+	void __fastcall MoreBttnClick(TObject *Sender);
 private:	// User declarations
-	DocManIndex			m_globalIndex;
-	gak::PODarray<int>	m_itemIDs;
+	DocManIndex							m_globalIndex;
+	DocManSearchResult					m_result;
+	DocManSearchResult::const_iterator	m_it, m_endIT;
+
+	PTR_ITEM 							m_volume;
+	bool								m_currentVersion;
+	std::size_t							m_cRow;			// current row in grid
+	std::size_t 						m_pageSize;
+	gak::PODarray<int>					m_itemIDs;
 
 public:		// User declarations
 	__fastcall TIndexForm(TComponent* Owner);

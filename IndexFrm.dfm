@@ -1,8 +1,8 @@
 object IndexForm: TIndexForm
-  Left = 272
-  Top = 326
+  Left = 559
+  Top = 268
   Width = 750
-  Height = 653
+  Height = 773
   Caption = 'Index Search'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -43,16 +43,30 @@ object IndexForm: TIndexForm
       Height = 13
       Caption = 'Options:'
     end
+    object HitCountLabel: TLabel
+      Left = 656
+      Top = 40
+      Width = 48
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = '___ File(s)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
     object EditKeyword: TEdit
       Left = 64
       Top = 8
-      Width = 590
+      Width = 585
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
     end
     object ButtonSearch: TButton
-      Left = 660
+      Left = 652
       Top = 8
       Width = 75
       Height = 25
@@ -132,12 +146,23 @@ object IndexForm: TIndexForm
       Caption = 'Wildcard Search'
       TabOrder = 9
     end
+    object MoreBttn: TButton
+      Left = 652
+      Top = 64
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'More'
+      Enabled = False
+      TabOrder = 10
+      OnClick = MoreBttnClick
+    end
   end
   object GridResult: TStringGrid
     Left = 0
     Top = 105
     Width = 734
-    Height = 509
+    Height = 629
     Align = alClient
     ColCount = 6
     FixedCols = 0
