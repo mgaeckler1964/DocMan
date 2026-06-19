@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			ReleaseFrm.h
+		Description:	The dialog to create  releases of source folder
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -42,6 +42,9 @@
 #include <Forms.hpp>
 #include "ItemCreateFrm.h"
 #include <ComCtrls.hpp>
+
+#include <gak/fmtNumber.h>
+
 //---------------------------------------------------------------------------
 class TReleaseForm : public TItemCreateForm
 {
@@ -66,10 +69,13 @@ private:	// User declarations
 		int minor = UpDownMinor->Position;
 		int patch = UpDownPatch->Position;
 
-		char buffer[32];
-
-		sprintf( buffer, "%d.%d.%d", major, minor, patch );
-		EditName->Text = buffer;
+		gak::NumberBuffer	buffer;
+		appendNumberFast( &buffer, major );
+		buffer += '.';
+		appendNumberFast( &buffer, minor );
+		buffer += '.';
+		appendNumberFast( &buffer, patch );
+		EditName->Text = buffer.c_str();
 	}
 public:		// User declarations
 	void createBranch( THE_ITEM *theItem )

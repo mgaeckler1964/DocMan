@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:
-		Description:
+		Module:			VersionFrm.cpp
+		Description:	The dialog to manage the file versions
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
+		This program is free software: you can redistribute it and/or modify  
+		it under the terms of the GNU General Public License as published by  
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License
+		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -32,6 +32,8 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+
+#include <gak/fmtNumber.h>
 #pragma hdrstop
 
 #include "VersionsFrm.h"
@@ -222,10 +224,11 @@ void __fastcall TVersionsForm::FormShow(TObject *)
 		ButtonExif->Enabled = true;
 		ButtonAttributes->Enabled = true;
 
-		char filter[128];
+		NumberBuffer filter;
+		filter.add("FILE_ID=");
+		appendNumberFast( &filter, theDbFile->getFileID() );
 		TableVersions->Filtered = true;
-		sprintf( filter, "FILE_ID=%d", theDbFile->getFileID() );
-		TableVersions->Filter = filter;
+		TableVersions->Filter = filter.c_str();
 
 		DataSourceVersions->DataSet = TableVersions;
 

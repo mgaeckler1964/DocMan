@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -303,12 +303,21 @@ int THE_FILE::createStorage( const STRING &filePath, STRING *md5Hash )
 	if( exists( filePath ) )
 	{
 		STRING	destinationPath = getExternalStorageBase();
-		char	file[16];
 		int storageId = ConfigDataModule->getNewMaxValue(
 			"I_STORAGE", "ID"
 		);
-		sprintf( file, "%08d.dat", storageId );
 
+		/*
+			construct the file name
+		*/
+		NumberBuffer	buffer;
+		formatNumberFast(&buffer,storageId, 8, '0' );
+		buffer += ".dat";
+		const char *file = buffer.c_str();
+
+		/*
+			construct the file path
+		*/
 		for( size_t i=0;i<2;i++ )
 			destinationPath += file[i];
 		mkdir( destinationPath );
@@ -321,6 +330,10 @@ int THE_FILE::createStorage( const STRING &filePath, STRING *md5Hash )
 			destinationPath += file[i];
 		mkdir( destinationPath );
 		destinationPath += DIRECTORY_DELIMITER;
+
+		/*
+			add the file to the path
+		*/
 		destinationPath += file;
 
 		fcopy( filePath, destinationPath );
@@ -1934,10 +1947,11 @@ int THE_FILE::createVersion( int srcVersion )
 	int 				fileVerId = ConfigDataModule->getNewMaxValue(
 		"I_FILE_VERS", "ID"
 	);
-	char				filter[32];
-	sprintf( filter, "file_id=%d", m_fileID );
+	NumberBuffer	filter;
+	filter.add("file_id=");
+	appendNumberFast( &filter, m_fileID );
 	int					newVersion = vcl::getNewMaxValue(
-		"docManDB", "I_FILE_VERS", "VERSION", filter
+		"docManDB", "I_FILE_VERS", "VERSION", filter.c_str()
 	);
 	THE_FILE_VERSION	src( m_fileID, srcVersion );
 
@@ -2015,10 +2029,13 @@ void THE_FILE::createVersion( const STRING &filePath, const STRING &description 
 	int fileVerId = ConfigDataModule->getNewMaxValue(
 		"I_FILE_VERS", "ID"
 	);
-	char	filter[32];
-	sprintf( filter, "file_id=%d", m_fileID );
+
+	NumberBuffer	filter;
+	filter.add("file_id=");
+	appendNumberFast( &filter, m_fileID );
+
 	int	version = vcl::getNewMaxValue(
-		"docManDB", "I_FILE_VERS", "VERSION", filter
+		"docManDB", "I_FILE_VERS", "VERSION", filter.c_str()
 	);
 	STRING md5Hash;
 	int storageID = createStorage( filePath, &md5Hash );

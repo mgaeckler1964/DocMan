@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			TaskList.cpp
+		Description:	The task list items
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -36,6 +36,8 @@
 // --------------------------------------------------------------------- //
 // ----- includes ------------------------------------------------------ //
 // --------------------------------------------------------------------- //
+
+#include <gak/numericString.h>
 
 #include "ItemManager.h"
 #include "Folder.h"
@@ -80,21 +82,21 @@ using namespace gak;
 
 class FACTORY_TASKLIST : public FACTORY_BASE
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual const char *getName() const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parentId ) const;
 };
 
 class FACTORY_TASK : public FACTORY_BASE
 {
-	virtual int getItemType( void ) const;
+	virtual int getItemType() const;
 	virtual bool acceptParent( const THE_ITEM *parent ) const;
 	virtual PTR_ITEM createItem( int id ) const;
-	virtual const char *getName( void ) const;
-	virtual TItemCreateForm *getForm( void ) const;
+	virtual const char *getName() const;
+	virtual TItemCreateForm *getForm() const;
 	virtual PTR_ITEM createItemFromForm( const PTR_ITEM &parent ) const;
 	virtual PTR_ITEM createItemFromTemplate(
 		const PTR_ITEM &parent,
@@ -203,7 +205,7 @@ int THE_TASKLIST::itemCompare(
 // ----- class virtuals ------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
-int FACTORY_TASKLIST::getItemType( void ) const
+int FACTORY_TASKLIST::getItemType() const
 {
 	return (int)TYPE_TASKLIST;
 }
@@ -219,12 +221,12 @@ PTR_ITEM FACTORY_TASKLIST::createItem( int id ) const
 	return new THE_TASKLIST( id, this );
 }
 
-const char *FACTORY_TASKLIST::getName( void ) const
+const char *FACTORY_TASKLIST::getName() const
 {
 	return "Task List";
 }
 
-TItemCreateForm *FACTORY_TASKLIST::getForm( void ) const
+TItemCreateForm *FACTORY_TASKLIST::getForm() const
 {
 	return ItemCreateForm;
 }
@@ -245,7 +247,7 @@ PTR_ITEM FACTORY_TASKLIST::createItemFromForm( const PTR_ITEM &parent ) const
 
 // --------------------------------------------------------------------- //
 
-int FACTORY_TASK::getItemType( void ) const
+int FACTORY_TASK::getItemType() const
 {
 	return (int)TYPE_TASK;
 }
@@ -261,12 +263,12 @@ PTR_ITEM FACTORY_TASK::createItem( int id ) const
 	return new THE_TASK( id, this );
 }
 
-const char *FACTORY_TASK::getName( void ) const
+const char *FACTORY_TASK::getName() const
 {
 	return "Task";
 }
 
-TItemCreateForm *FACTORY_TASK::getForm( void ) const
+TItemCreateForm *FACTORY_TASK::getForm() const
 {
 #ifndef DOCMANBG
 	return TaskForm;
@@ -280,7 +282,7 @@ PTR_ITEM FACTORY_TASK::createItemFromForm( const PTR_ITEM &parent ) const
 	PTR_TASK	newTask = createItem( 0 );
 
 #ifndef DOCMANBG
-	(*newTask).setData(
+	newTask->setData(
 		parent,
 		TaskForm->EditName->Text.c_str(),
 		TaskForm->MemoDescription->Text.c_str(),
@@ -291,14 +293,14 @@ PTR_ITEM FACTORY_TASK::createItemFromForm( const PTR_ITEM &parent ) const
 		TaskForm->MemoExternalRemarks->Text.c_str(),
 		TaskForm->MemoInternalRemarks->Text.c_str(),
 		TaskForm->UpDownPriority->Position,
-		atof( TaskForm->EditEstEffort->Text.c_str() ),
-		atof( TaskForm->EditActEffort->Text.c_str() ),
+		gak::getValueN<double>( TaskForm->EditEstEffort->Text.c_str() ),
+		gak::getValueN<double>( TaskForm->EditActEffort->Text.c_str() ),
 		TaskForm->ComboBoxTaskType->Tag,
 		TaskForm->ComboBoxTaskStatus->Tag,
 		TaskForm->ComboBoxAssignedTo->Tag,
 		TaskForm->completed
 	);
-	(*newTask).updateDatabase();
+	newTask->updateDatabase();
 #endif
 
 	return newTask;
@@ -345,7 +347,7 @@ PTR_ITEM FACTORY_TASK::createItemFromTemplate(
 
 // --------------------------------------------------------------------- //
 
-TGraphic *THE_TASKLIST::getItemPicture( void ) const
+TGraphic *THE_TASKLIST::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -357,7 +359,7 @@ TGraphic *THE_TASKLIST::getItemPicture( void ) const
 	return thePic;
 }
 
-STRING THE_TASKLIST::getSize( void )
+STRING THE_TASKLIST::getSize()
 {
 	int		childCount = getChildCount();
 	STRING	size = formatNumber( childCount );
@@ -367,12 +369,12 @@ STRING THE_TASKLIST::getSize( void )
 	return size;
 };
 
-int THE_TASKLIST::getColCount( void ) const
+int THE_TASKLIST::getColCount() const
 {
 	return 7;
 }
 
-int *THE_TASKLIST::getColWidth( void ) const
+int *THE_TASKLIST::getColWidth() const
 {
 	static int colWidth[] =
 	{
@@ -387,7 +389,7 @@ int *THE_TASKLIST::getColWidth( void ) const
 	return colWidth;
 }
 
-ColumnTitle *THE_TASKLIST::getColumnTitles( void ) const
+ColumnTitle *THE_TASKLIST::getColumnTitles() const
 {
 	static ColumnTitle colTitles[] =
 	{
@@ -403,7 +405,7 @@ ColumnTitle *THE_TASKLIST::getColumnTitles( void ) const
 	return colTitles;
 }
 
-void THE_TASKLIST::sort( void )
+void THE_TASKLIST::sort()
 {
 	getContent()->sort( itemCompare, getSortType() );
 }
@@ -451,7 +453,7 @@ STRING THE_TASKLIST::drawCell( int col, int row, TCanvas *canvas, TRect &Rect )
 	return text;
 }
 
-TBrowserFrame *THE_TASKLIST::getFrame( void ) const
+TBrowserFrame *THE_TASKLIST::getFrame() const
 {
 #ifndef DOCMANBG
 	static TTasklistBrowserFrame *theFrame = NULL;
@@ -467,7 +469,7 @@ TBrowserFrame *THE_TASKLIST::getFrame( void ) const
 
 // --------------------------------------------------------------------- //
 
-TGraphic *THE_TASK::getItemPicture( void ) const
+TGraphic *THE_TASK::getItemPicture() const
 {
 	static Graphics::TBitmap *thePic = NULL;
 
@@ -483,21 +485,21 @@ void THE_TASK::loadFields( TQuery *query )
 {
 	THE_ITEM::loadFields( query );
 
-	this->customerRef = query->FieldByName( "customer_ref" )->AsString.c_str();
-	this->module = query->FieldByName( "module" )->AsString.c_str();
-	this->badFunction = query->FieldByName( "bad_function" )->AsString.c_str();
-	this->release = query->FieldByName( "release" )->AsString.c_str();
-	this->externalRemarks = query->FieldByName( "external_remarks" )->AsString.c_str();
-	this->internalRemarks = query->FieldByName( "internal_remarks" )->AsString.c_str();
-	this->priority = query->FieldByName( "priority" )->AsInteger;
-	this->estEffort = query->FieldByName( "estimated_effort" )->AsFloat;
-	this->actEffort = query->FieldByName( "actual_effort" )->AsFloat;
-	this->typeID = query->FieldByName( "type" )->AsInteger;
-	this->statusID = query->FieldByName( "status" )->AsInteger;
-	this->completed = query->FieldByName( "completed" )->AsDateTime;
+	m_customerRef = query->FieldByName( "customer_ref" )->AsString.c_str();
+	m_module = query->FieldByName( "module" )->AsString.c_str();
+	m_badFunction = query->FieldByName( "bad_function" )->AsString.c_str();
+	m_release = query->FieldByName( "release" )->AsString.c_str();
+	m_externalRemarks = query->FieldByName( "external_remarks" )->AsString.c_str();
+	m_internalRemarks = query->FieldByName( "internal_remarks" )->AsString.c_str();
+	m_priority = query->FieldByName( "priority" )->AsInteger;
+	m_estEffort = query->FieldByName( "estimated_effort" )->AsFloat;
+	m_actEffort = query->FieldByName( "actual_effort" )->AsFloat;
+	m_typeID = query->FieldByName( "type" )->AsInteger;
+	m_statusID = query->FieldByName( "status" )->AsInteger;
+	m_completed = query->FieldByName( "completed" )->AsDateTime;
 }
 
-void THE_TASK::updateDatabase( void )
+void THE_TASK::updateDatabase()
 {
 	THE_ITEM::updateDatabase();
 
@@ -522,24 +524,24 @@ void THE_TASK::updateDatabase( void )
 	);
 
 	int col = 0;
-	theQuery->Params->Items[col++]->AsString = (const char *)customerRef;
-	theQuery->Params->Items[col++]->AsString = (const char *)module;
-	theQuery->Params->Items[col++]->AsString = (const char *)badFunction;
-	theQuery->Params->Items[col++]->AsString = (const char *)release;
-	theQuery->Params->Items[col++]->AsString = (const char *)externalRemarks;
-	theQuery->Params->Items[col++]->AsString = (const char *)internalRemarks;
-	theQuery->Params->Items[col++]->AsInteger = priority;
-	theQuery->Params->Items[col++]->AsFloat = estEffort;
-	theQuery->Params->Items[col++]->AsFloat = actEffort;
-	theQuery->Params->Items[col++]->AsInteger = typeID;
-	theQuery->Params->Items[col++]->AsInteger = statusID;
-	theQuery->Params->Items[col++]->AsDateTime = completed;
+	theQuery->Params->Items[col++]->AsString = m_customerRef;
+	theQuery->Params->Items[col++]->AsString = m_module;
+	theQuery->Params->Items[col++]->AsString = m_badFunction;
+	theQuery->Params->Items[col++]->AsString = m_release;
+	theQuery->Params->Items[col++]->AsString = m_externalRemarks;
+	theQuery->Params->Items[col++]->AsString = m_internalRemarks;
+	theQuery->Params->Items[col++]->AsInteger = m_priority;
+	theQuery->Params->Items[col++]->AsFloat = m_estEffort;
+	theQuery->Params->Items[col++]->AsFloat = m_actEffort;
+	theQuery->Params->Items[col++]->AsInteger = m_typeID;
+	theQuery->Params->Items[col++]->AsInteger = m_statusID;
+	theQuery->Params->Items[col++]->AsDateTime = m_completed;
 	theQuery->Params->Items[col++]->AsInteger = getID();
 
 	theQuery->ExecSQL();
 }
 
-void THE_TASK::open( void )
+void THE_TASK::open()
 {
 #ifndef DOCMANBG
 	TaskForm->setItem( this );
@@ -550,18 +552,18 @@ void THE_TASK::open( void )
 		setDescription(TaskForm->MemoDescription->Text.c_str());
 		setAssignedTo( TaskForm->ComboBoxAssignedTo->Tag );
 
-		customerRef = TaskForm->EditCustomerRef->Text.c_str();
-		module = TaskForm->ComboBoxModule->Text.c_str();
-		badFunction = TaskForm->ComboBoxFunction->Text.c_str();
-		release = TaskForm->EditRelease->Text.c_str();
-		externalRemarks = TaskForm->MemoExternalRemarks->Text.c_str();
-		internalRemarks = TaskForm->MemoInternalRemarks->Text.c_str();
-		priority = TaskForm->UpDownPriority->Position;
-		estEffort = atof( TaskForm->EditEstEffort->Text.c_str() );
-		actEffort = atof( TaskForm->EditActEffort->Text.c_str() );
-		typeID = TaskForm->ComboBoxTaskType->Tag;
-		statusID = TaskForm->ComboBoxTaskStatus->Tag;
-		completed = TaskForm->completed;
+		m_customerRef = TaskForm->EditCustomerRef->Text.c_str();
+		m_module = TaskForm->ComboBoxModule->Text.c_str();
+		m_badFunction = TaskForm->ComboBoxFunction->Text.c_str();
+		m_release = TaskForm->EditRelease->Text.c_str();
+		m_externalRemarks = TaskForm->MemoExternalRemarks->Text.c_str();
+		m_internalRemarks = TaskForm->MemoInternalRemarks->Text.c_str();
+		m_priority = TaskForm->UpDownPriority->Position;
+		m_estEffort = gak::getValueN<double>( TaskForm->EditEstEffort->Text.c_str() );
+		m_actEffort = gak::getValueN<double>( TaskForm->EditActEffort->Text.c_str() );
+		m_typeID = TaskForm->ComboBoxTaskType->Tag;
+		m_statusID = TaskForm->ComboBoxTaskStatus->Tag;
+		m_completed = TaskForm->completed;
 
 		updateDatabase();
 	}
@@ -572,29 +574,29 @@ void THE_TASK::createXMLattributes( xml::Element *theElement )
 {
 	THE_ITEM::createXMLattributes( theElement );
 
-	theElement->setStringAttribute( "customerRef", customerRef );
-	theElement->setStringAttribute( "module", module );
-	theElement->setStringAttribute( "badFunction", badFunction );
-	theElement->setStringAttribute( "release", release );
+	theElement->setStringAttribute( "customerRef", m_customerRef );
+	theElement->setStringAttribute( "module", m_module );
+	theElement->setStringAttribute( "badFunction", m_badFunction );
+	theElement->setStringAttribute( "release", m_release );
 	theElement->addObject(
-		new xml::Any( "externalRemarks", externalRemarks )
+		new xml::Any( "externalRemarks", m_externalRemarks )
 	);
 	theElement->addObject(
-		new xml::Any( "internalRemarks", internalRemarks )
+		new xml::Any( "internalRemarks", m_internalRemarks )
 	);
 
 	theElement->setStringAttribute( "status",
-		DocManDataModule->getStatus( statusID )
+		DocManDataModule->getStatus( m_statusID )
 	);
 	theElement->setStringAttribute( "type",
-		DocManDataModule->getType( typeID )
+		DocManDataModule->getType( m_typeID )
 	);
 
-	theElement->setIntegerAttribute( "priority", priority );
-	theElement->setFloatAttribute( "estEffort", estEffort );
-	theElement->setFloatAttribute( "actEffort", actEffort );
+	theElement->setIntegerAttribute( "priority", m_priority );
+	theElement->setFloatAttribute( "estEffort", m_estEffort );
+	theElement->setFloatAttribute( "actEffort", m_actEffort );
 	theElement->setStringAttribute( "assignedTo", getAssignedToUserName() );
-	theElement->setStringAttribute( "completed", completed.DateTimeString().c_str() );
+	theElement->setStringAttribute( "completed", m_completed.DateTimeString().c_str() );
 }
 // --------------------------------------------------------------------- //
 // ----- class publics ------------------------------------------------- //

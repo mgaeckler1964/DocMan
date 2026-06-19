@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			SearchForm.cpp
+		Description:	The database search form
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -33,6 +33,7 @@
 
 #include <vcl.h>
 
+#include <gak/numericString.h>
 #include <winlib/winlib.h>
 
 #pragma hdrstop
@@ -229,11 +230,11 @@ void __fastcall TSearchForm::ButtonSearchClick(TObject *)
 
 	if( EditMinFnumber->Text > "" )
 	{
-		minFnumber = atof( EditMinFnumber->Text.c_str() );
+		minFnumber = gak::getValueN<double>( EditMinFnumber->Text.c_str() );
 	}
 	if( EditMaxFnumber->Text > "" )
 	{
-		maxFnumber = atof( EditMaxFnumber->Text.c_str() );
+		maxFnumber = gak::getValueN<double>( EditMaxFnumber->Text.c_str() );
 	}
 	if( minFnumber > 0 || maxFnumber > 0 )
 	{
@@ -327,13 +328,13 @@ void __fastcall TSearchForm::ButtonSearchClick(TObject *)
 
 	if( EditMinTime->Text > "" )
 	{
-		minTime = atof( EditMinTime->Text.c_str() );
+		minTime = gak::getValueN<double>( EditMinTime->Text.c_str() );
 		if( !EditMinTime->Text.Pos( "." ) )
 			minTime = 1/minTime;
 	}
 	if( EditMaxTime->Text > "" )
 	{
-		maxTime = atof( EditMaxTime->Text.c_str() );
+		maxTime = gak::getValueN<double>( EditMaxTime->Text.c_str() );
 		if( !EditMaxTime->Text.Pos( "." ) )
 			maxTime = 1/maxTime;
 	}

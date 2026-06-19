@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			PermissionsFrm.cpp
+		Description:	The dialog to change standard permissions
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -32,6 +32,9 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+
+#include <gak/fmtNumber.h>
+
 #pragma hdrstop
 
 #include "PermissionsFrm.h"
@@ -71,8 +74,6 @@ __fastcall TPermissionsForm::TPermissionsForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TPermissionsForm::FormShow(TObject *)
 {
-	char filter[128];
-
 	int perms = theItem->loadPermissions();
 	int	permissionID = theItem->getPermissionID();
 
@@ -86,10 +87,12 @@ void __fastcall TPermissionsForm::FormShow(TObject *)
 		permissionID = theItem->getID();
 
 	QueryAll->Open();
-	TableACLs->Filtered = true;
-	sprintf( filter, "ITEM_ID=%d", permissionID );
-	TableACLs->Filter = filter;
 
+	TableACLs->Filtered = true;
+	gak::NumberBuffer filter;
+	filter.add("ITEM_ID=");
+	appendNumberFast( &filter, permissionID );
+	TableACLs->Filter = filter.c_str();
 
 	if( theItem->isContainer() && (perms & ITEM_PERM_EDIT_PERMS) )
 		CheckBoxAddItems->Enabled = true;

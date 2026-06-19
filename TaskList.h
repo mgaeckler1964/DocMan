@@ -1,12 +1,12 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			TaskList.h
+		Description:	The task list items
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 1988-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify  
 		it under the terms of the GNU General Public License as published by  
@@ -15,7 +15,7 @@
 		You should have received a copy of the GNU General Public License 
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -75,7 +75,7 @@
 
 class THE_TASKLIST : public THE_ITEM
 {
-	virtual ColumnTitle *getColumnTitles( void ) const;
+	virtual ColumnTitle *getColumnTitles() const;
 
 	static int itemCompare( const PTR_ITEM &e1, const PTR_ITEM &e2, int crit );
 
@@ -85,13 +85,13 @@ class THE_TASKLIST : public THE_ITEM
 		ITEM_IS_CONTAINER|ITEM_IS_BROWSEABLE|ITEM_IS_MOVEABLE|ITEM_IS_COPYABLE,
 		id, theFactory
 	) {}
-	virtual TGraphic *getItemPicture( void ) const;
-	virtual STRING getSize( void );
+	virtual TGraphic *getItemPicture() const;
+	virtual STRING getSize();
 
-	virtual TBrowserFrame *getFrame( void ) const;
-	virtual int getColCount( void ) const;
-	virtual int *getColWidth( void ) const;
-	virtual void sort( void );
+	virtual TBrowserFrame *getFrame() const;
+	virtual int getColCount() const;
+	virtual int *getColWidth() const;
+	virtual void sort();
 	virtual STRING drawCell( int col, int row, TCanvas *canvas, TRect &Rect );
 };
 
@@ -99,12 +99,12 @@ typedef PTR_TEMPLATE<THE_TASKLIST> PTR_TASKLIST;
 
 class THE_TASK : public THE_ITEM
 {
-	STRING		customerRef, module, badFunction, release,
-				externalRemarks, internalRemarks;
-	int			priority;
-	double		estEffort, actEffort;
-	int			typeID, statusID;
-	TDateTime	completed;
+	STRING		m_customerRef, m_module, m_badFunction, m_release,
+				m_externalRemarks, m_internalRemarks;
+	int			m_priority;
+	double		m_estEffort, m_actEffort;
+	int			m_typeID, m_statusID;
+	TDateTime	m_completed;
 
 	public:
 	THE_TASK( int id, const FACTORY_BASE *theFactory )
@@ -123,71 +123,71 @@ class THE_TASK : public THE_ITEM
 	)
 	{
 		THE_ITEM::setData( parent, name, description );
-		this->customerRef = customerRef;
-		this->module = module;
-		this->badFunction = badFunction;
-		this->release = release;
-		this->externalRemarks = externalRemarks;
-		this->internalRemarks = internalRemarks;
-		this->priority = priority;
-		this->estEffort = estEffort;
-		this->actEffort = actEffort;
-		this->typeID = typeID;
-		this->statusID = statusID;
-		this->completed = completed;
+		m_customerRef = customerRef;
+		m_module = module;
+		m_badFunction = badFunction;
+		m_release = release;
+		m_externalRemarks = externalRemarks;
+		m_internalRemarks = internalRemarks;
+		m_priority = priority;
+		m_estEffort = estEffort;
+		m_actEffort = actEffort;
+		m_typeID = typeID;
+		m_statusID = statusID;
+		m_completed = completed;
 		setAssignedTo( assignedTo );
 	}
-	virtual TGraphic *getItemPicture( void ) const;
+	virtual TGraphic *getItemPicture() const;
 	virtual void loadFields( TQuery *query );
-	virtual void updateDatabase( void );
-	virtual void open( void );
-	STRING getCustomerRef( void ) const
+	virtual void updateDatabase();
+	virtual void open();
+	STRING getCustomerRef() const
 	{
-		return customerRef;
+		return m_customerRef;
 	}
-	STRING getModule( void ) const
+	STRING getModule() const
 	{
-		return module;
+		return m_module;
 	}
-	STRING getBadFunction( void ) const
+	STRING getBadFunction() const
 	{
-		return badFunction;
+		return m_badFunction;
 	}
-	STRING getRelease( void ) const
+	STRING getRelease() const
 	{
-		return release;
+		return m_release;
 	}
-	STRING getExternalRemarks( void ) const
+	STRING getExternalRemarks() const
 	{
-		return externalRemarks;
+		return m_externalRemarks;
 	}
-	STRING getInternalRemarks( void ) const
+	STRING getInternalRemarks() const
 	{
-		return internalRemarks;
+		return m_internalRemarks;
 	}
-	int getPriority( void ) const
+	int getPriority() const
 	{
-		return priority;
+		return m_priority;
 	}
-	double getEstEffort( void ) const
+	double getEstEffort() const
 	{
-		return estEffort;
+		return m_estEffort;
 	}
-	double getActEffort( void ) const
+	double getActEffort() const
 	{
-		return actEffort;
+		return m_actEffort;
 	}
-	int getTypeID( void ) const
+	int getTypeID() const
 	{
-		return typeID;
+		return m_typeID;
 	}
-	int getStatusID( void ) const
+	int getStatusID() const
 	{
-		return statusID;
+		return m_statusID;
 	}
-	TDateTime getCompleted( void ) const
+	TDateTime getCompleted() const
 	{
-		return completed;
+		return m_completed;
 	}
 	virtual void createXMLattributes( gak::xml::Element *target );
 };
