@@ -63,6 +63,8 @@ void __fastcall TIndexForm::FormShow(TObject *)
 	GridResult->Cells[i++][0] = "Hit Count";
 	GridResult->Cells[i++][0] = "Relevance";
 	readDocManIndex( &m_globalIndex );
+	if( m_hitCountLabel.isEmpty() )
+		m_hitCountLabel = HitCountLabel->Caption.c_str();
 }
 //---------------------------------------------------------------------------
 
@@ -70,16 +72,18 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *Sender)
 {
 	doEnterFunctionEx(gakLogging::llInfo, "TIndexForm::ButtonSearchClick");
 	ButtonSearch->Enabled = false;
+	MoreBttn->Enabled = false;
+	HitCountLabel->Caption = m_hitCountLabel;
 
+	::SetCursor( LoadCursor( nullptr, IDC_WAIT ) );
 	m_result = m_globalIndex.getRelevantHits(
 		EditKeyword->Text.c_str(),
 		CheckBoxFuzzy->Checked, !CheckBoxCaseSensitive->Checked,
 		CheckBoxWildcard->Checked
 	);
+	::SetCursor( LoadCursor( nullptr, IDC_ARROW ) );
 	const std::size_t 	hitCount = m_result.size();
 	m_cRow = 0;
-
-	HitCountLabel->Caption = gak::formatNumber(hitCount).add(" File(s)");
 
 	if( hitCount )
 	{
@@ -116,7 +120,7 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *Sender)
 		MoreBttn->Enabled = false;
 	}
 
-	if( !m_cRow )	// nothing found
+	if( !m_cRow )	// nothing found; do not use hitCount. MoreBttnClick may filter more items
 	{
 		GridResult->RowCount = 2;
 		for( int i=0; i<GridResult->ColCount; ++i )
@@ -131,8 +135,12 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *Sender)
 
 void __fastcall TIndexForm::MoreBttnClick(TObject *)
 {
+	doEnterFunctionEx(gakLogging::llInfo, "TIndexForm::MoreBttnClick");
+	ButtonSearch->Enabled = false;
+	MoreBttn->Enabled = false;
 	GridResult->RowCount = GridResult->RowCount + m_pageSize;
 	size_t	rowCount = m_pageSize;
+	::SetCursor( LoadCursor( nullptr, IDC_WAIT ) );
 	for(; m_it != m_endIT; ++m_it )
 	{
 		const StorageKey	&storage = m_it->m_source;
@@ -192,8 +200,17 @@ void __fastcall TIndexForm::MoreBttnClick(TObject *)
 			doLogValueEx( gakLogging::llWarn, storage.curVersion );
 		}
 	}
+	::SetCursor( LoadCursor( nullptr, IDC_ARROW ) );
 	MoreBttn->Enabled = (m_it != m_endIT);
 	GridResult->RowCount = m_cRow+1;	// include head line
+	gak::NumberBuffer label;
+	formatNumberFast(&label, m_cRow);
+	label += " File";
+	if( m_cRow != 1 )
+		label += 's';
+
+	HitCountLabel->Caption = label.c_str();
+	ButtonSearch->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

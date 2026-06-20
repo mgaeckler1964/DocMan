@@ -73,6 +73,7 @@ private:	// User declarations
 	DocManSearchResult					m_result;
 	DocManSearchResult::const_iterator	m_it, m_endIT;
 
+	gak::STRING							m_hitCountLabel;
 	PTR_ITEM 							m_volume;
 	bool								m_currentVersion;
 	std::size_t							m_cRow;			// current row in grid
