@@ -189,6 +189,7 @@ void __fastcall TIndexForm::MoreBttnClick(TObject *)
 			m_itemIDs[m_cRow] = storage.itemID;
 			if( !--rowCount )
 			{
+				++m_it;
 /*v*/			break;
 			}
 		}
