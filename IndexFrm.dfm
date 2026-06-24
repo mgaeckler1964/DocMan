@@ -19,7 +19,7 @@ object IndexForm: TIndexForm
     Left = 0
     Top = 0
     Width = 734
-    Height = 105
+    Height = 137
     Align = alTop
     TabOrder = 0
     object Label1: TLabel
@@ -38,7 +38,7 @@ object IndexForm: TIndexForm
     end
     object Label2: TLabel
       Left = 8
-      Top = 72
+      Top = 64
       Width = 39
       Height = 13
       Caption = 'Options:'
@@ -56,6 +56,20 @@ object IndexForm: TIndexForm
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 8
+      Top = 88
+      Width = 48
+      Height = 13
+      Caption = 'File name:'
+    end
+    object Label4: TLabel
+      Left = 8
+      Top = 112
+      Width = 25
+      Height = 13
+      Caption = 'Path:'
     end
     object EditKeyword: TEdit
       Left = 64
@@ -112,7 +126,7 @@ object IndexForm: TIndexForm
     end
     object CheckBoxCurrentVersion: TCheckBox
       Left = 72
-      Top = 72
+      Top = 64
       Width = 97
       Height = 17
       Caption = 'Current Version'
@@ -122,7 +136,7 @@ object IndexForm: TIndexForm
     end
     object CheckBoxCaseSensitive: TCheckBox
       Left = 176
-      Top = 72
+      Top = 64
       Width = 97
       Height = 17
       Caption = 'Case Sensitive'
@@ -132,7 +146,7 @@ object IndexForm: TIndexForm
     end
     object CheckBoxFuzzy: TCheckBox
       Left = 280
-      Top = 72
+      Top = 64
       Width = 97
       Height = 17
       Caption = 'Fuzzy Search'
@@ -140,7 +154,7 @@ object IndexForm: TIndexForm
     end
     object CheckBoxWildcard: TCheckBox
       Left = 384
-      Top = 72
+      Top = 64
       Width = 97
       Height = 17
       Caption = 'Wildcard Search'
@@ -157,12 +171,28 @@ object IndexForm: TIndexForm
       TabOrder = 10
       OnClick = MoreBttnClick
     end
+    object NameEdit: TEdit
+      Left = 64
+      Top = 88
+      Width = 585
+      Height = 21
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 11
+    end
+    object PathEdit: TEdit
+      Left = 64
+      Top = 112
+      Width = 585
+      Height = 21
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 12
+    end
   end
   object GridResult: TStringGrid
     Left = 0
-    Top = 105
+    Top = 137
     Width = 734
-    Height = 629
+    Height = 597
     Align = alClient
     ColCount = 6
     FixedCols = 0

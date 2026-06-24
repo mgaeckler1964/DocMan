@@ -64,6 +64,10 @@ __published:	// IDE-managed Components
 	TCheckBox *CheckBoxWildcard;
 	TLabel *HitCountLabel;
 	TButton *MoreBttn;
+	TLabel *Label3;
+	TLabel *Label4;
+	TEdit *NameEdit;
+	TEdit *PathEdit;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ButtonSearchClick(TObject *Sender);
 	void __fastcall GridResultDblClick(TObject *Sender);
@@ -73,9 +77,11 @@ private:	// User declarations
 	DocManSearchResult					m_result;
 	DocManSearchResult::const_iterator	m_it, m_endIT;
 
-	gak::STRING							m_hitCountLabel;
 	PTR_ITEM 							m_volume;
 	bool								m_currentVersion;
+	gak::STRING							m_nameFilter,
+										m_pathFilter;
+	gak::STRING							m_hitCountLabel;
 	std::size_t							m_cRow;			// current row in grid
 	std::size_t 						m_pageSize;
 	gak::PODarray<int>					m_itemIDs;

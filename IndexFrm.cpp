@@ -111,6 +111,9 @@ void __fastcall TIndexForm::ButtonSearchClick(TObject *Sender)
 		else
 			m_volume = nullptr;
 
+		m_nameFilter = NameEdit->Text.c_str();
+		m_pathFilter = PathEdit->Text.c_str();
+
 		m_it = m_result.cbegin();
 		m_endIT = m_result.cend();
 		MoreBttnClick( Sender );
@@ -159,6 +162,11 @@ void __fastcall TIndexForm::MoreBttnClick(TObject *)
 		PTR_FILE	hit = getItem( storage.itemID );
 		if( hit )
 		{
+			if( !m_nameFilter.isEmpty() && !hit->getName().match(m_nameFilter) )
+				continue;
+			if( !m_pathFilter.isEmpty() && !hit->getParent()->getPath().match(m_pathFilter) )
+				continue;
+
 			if( m_currentVersion && hit->getVersionNum() != storage.curVersion )
 			{
 				doLogValueEx( gakLogging::llInfo, storage.itemID );
