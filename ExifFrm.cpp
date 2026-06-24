@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			ExifFrm.cpp
+		Description:	Load and display exif data from an image
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -91,39 +91,39 @@ __fastcall TExifForm::TExifForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TExifForm::FormShow(TObject *)
 {
-	PTR_FILE	theFile = theItem;
+	PTR_FILE	theFile = m_theItem;
 	bool		success = false;
 	ImageMetaData	metaData;
 
-	if( (THE_FILE*)theFile )
+	if( theFile )
 	{
-		success = theFile->updateImageMetaData( &metaData, theVersion );
+		success = theFile->updateImageMetaData( &metaData, m_theVersion );
 	}
 	else
 	{
-		PTR_FILE_REF theFileRef = theItem;
-		if( (THE_FILE_REF*)theFileRef )
-			success = (*theFileRef).updateImageMetaData( &metaData );
+		PTR_FILE_REF theFileRef = m_theItem;
+		if( theFileRef )
+			success = theFileRef->updateImageMetaData( &metaData );
 	}
 	if( success )
 	{
 		size_t		i=0;
 		STRING		exif;
 
-		StringGrid->Cells[1][i++] = (const char *)metaData.tiffData.Manufacturer;
-		StringGrid->Cells[1][i++] = (const char *)metaData.tiffData.Model;
-		StringGrid->Cells[1][i++] = (const char *)metaData.getLens();
+		StringGrid->Cells[1][i++] = metaData.tiffData.Manufacturer.c_str();
+		StringGrid->Cells[1][i++] = metaData.tiffData.Model.c_str();
+		StringGrid->Cells[1][i++] = metaData.getLens().c_str();
 
-		exif = "";
+		exif.release();
 		if( metaData.exifData.FNumber.numerator > 0
 		&&  metaData.exifData.FNumber.denominator > 0)
 		{
 			double FNumber = metaData.exifData.FNumber.getAsDouble();
 			exif = formatFloat( FNumber, 0, 1 );
 		}
-		StringGrid->Cells[1][i++] = (const char *)exif;
+		StringGrid->Cells[1][i++] = exif.c_str();
 
-		exif = "";
+		exif.release();
 		if( metaData.exifData.ExposureTime.numerator > 0
 		&&  metaData.exifData.ExposureTime.denominator > 0)
 		{
@@ -151,14 +151,14 @@ void __fastcall TExifForm::FormShow(TObject *)
 		}
 		StringGrid->Cells[1][i++] = (const char *)exif;
 
-		exif = "";
+		exif.release();
 		long ISO = metaData.getISO();
 		if( ISO > 0 )
 			exif = formatNumber( ISO );
-		StringGrid->Cells[1][i++] = (const char *)exif;
+		StringGrid->Cells[1][i++] = exif.c_str();
 
 
-		exif = "";
+		exif.release();
 		if( metaData.exifData.ExposureBiasValue.denominator )
 		{
 			metaData.exifData.ExposureBiasValue.reduce();
@@ -198,12 +198,12 @@ void __fastcall TExifForm::FormShow(TObject *)
 			if( exif.isEmpty() )
 				exif = "0";
 		}
-		StringGrid->Cells[1][i++] = (const char *)exif;
+		StringGrid->Cells[1][i++] = exif.c_str();
 
 		StringGrid->Cells[1][i++] = metaData.getExposureProgram();
 		StringGrid->Cells[1][i++] = metaData.getMeteringMode();
 
-		exif = "";
+		exif.release();
 		if( metaData.exifData.Flash > 0 )
 		{
 			if( !metaData.getFlashFired() )
@@ -213,16 +213,16 @@ void __fastcall TExifForm::FormShow(TObject *)
 			else
 				exif = "On";
 		}
-		StringGrid->Cells[1][i++] = (const char *)exif;
+		StringGrid->Cells[1][i++] = exif.c_str();
 
-		exif = "";
+		exif.release();
 		if( metaData.exifData.FocalLength.numerator > 0
 		&&  metaData.exifData.FocalLength.denominator > 0)
 		{
 			long focalLength = metaData.exifData.FocalLength.getAsLong();
 			exif = formatNumber( focalLength );
 		}
-		StringGrid->Cells[1][i++] = (const char *)exif;
+		StringGrid->Cells[1][i++] = exif.c_str();
 
 		if( !metaData.exifData.DateTimeOriginal.isEmpty() )
 		{
@@ -238,16 +238,16 @@ void __fastcall TExifForm::FormShow(TObject *)
 		}
 		i++;
 
-		StringGrid->Cells[1][i++] = (const char *)metaData.tiffData.Software;
-		StringGrid->Cells[1][i++] = (const char *)metaData.tiffData.Artist;
-		StringGrid->Cells[1][i++] = (const char *)metaData.tiffData.Copyright;
-		StringGrid->Cells[1][i++] = (const char *)metaData.exifData.UserComment;
-		StringGrid->Cells[1][i++] = (const char *)metaData.tiffData.Description;
+		StringGrid->Cells[1][i++] = metaData.tiffData.Software.c_str();
+		StringGrid->Cells[1][i++] = metaData.tiffData.Artist.c_str();
+		StringGrid->Cells[1][i++] = metaData.tiffData.Copyright.c_str();
+		StringGrid->Cells[1][i++] = metaData.exifData.UserComment.c_str();
+		StringGrid->Cells[1][i++] = metaData.tiffData.Description.c_str();
 	}
 	else
 	{
 		StringGrid->Cells[1][0] = "No exif data";
-		for( size_t i=1; i<StringGrid->RowCount; i++ )
+		for( int i=1; i<StringGrid->RowCount; i++ )
 			StringGrid->Cells[1][i] = "";
 	}
 }
