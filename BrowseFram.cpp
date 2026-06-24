@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			BrowseFram.cpp
+		Description:	The base for the browser frame
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -51,7 +51,7 @@ __fastcall TBrowserFrame::TBrowserFrame(TComponent* Owner )
 //---------------------------------------------------------------------------
 int TBrowserFrame::getVisibleItemIndex( int ARow )
 {
-	return ARow - (*currentItem).getHeaderCount();
+	return ARow - currentItem->getHeaderCount();
 }
 //---------------------------------------------------------------------------
 void __fastcall TBrowserFrame::DrawGridContentDrawCell(TObject *,
@@ -65,9 +65,9 @@ void __fastcall TBrowserFrame::DrawGridContentDrawCell(TObject *,
 
 	int	itemIndex = getVisibleItemIndex( ARow );
 	if( itemIndex < 0 )
-		text = (*currentItem).drawHeaderCell( ACol, ARow, canvas, Rect, ImageListSort );
+		text = currentItem->drawHeaderCell( ACol, ARow, canvas, Rect, ImageListSort );
 	else
-		text = (*currentItem).drawCell( ACol, itemIndex, canvas, Rect );
+		text = currentItem->drawCell( ACol, itemIndex, canvas, Rect );
 
 	if( !text.isEmpty() )
 		canvas->TextOut( Rect.Left+2, Rect.Top+3, (const char *)text );
@@ -87,7 +87,7 @@ void __fastcall TBrowserFrame::DrawGridContentMouseDown(TObject *,
 		if( itemIndex >= 0 )
 		{
 			DrawGridContent->Row = row;
-			selectedItem = (*currentItem).getContentItem( itemIndex );
+			selectedItem = currentItem->getContentItem( itemIndex );
 			if( selectedItem )
 			{
 				getItemActions( *DocManDataModule->getActUser(), selectedItem, &popupActions );
@@ -138,7 +138,7 @@ void __fastcall TBrowserFrame::DrawGridContentMouseUp(TObject *,
 			}
 			else
 			{
-				int itemId = selectedItem ? (*selectedItem).getID() : 0;
+				int itemId = selectedItem ? selectedItem->getID() : 0;
 				currentItem->sort( currentItem->getSortType( col ), false );
 				if( itemId )
 					selectItem( itemId );

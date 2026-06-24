@@ -6,16 +6,16 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -93,8 +93,8 @@ int THE_TEST_EXEC_FOLDER::itemCompare( const PTR_ITEM &e1, const PTR_ITEM &e2, i
 
 	if( abs( theSort ) == SORT_STATUS )
 	{
-		int status1 = step1 ? (*step1).getTestStatus() : 0;
-		int status2 = step2 ? (*step2).getTestStatus() : 0;
+		int status1 = step1 ? step1->getTestStatus() : 0;
+		int status2 = step2 ? step2->getTestStatus() : 0;
 
 		compareResult = status1 - status2;
 	}
@@ -272,7 +272,7 @@ RefhreshType ACTION_TEST_PREPARE::perform( PTR_ITEM theItem )
 								theStep->getOrder(),
 								theStep->getID()
 							);
-							(*theExecStep).updateDatabase();
+							theExecStep->updateDatabase();
 						}
 					}
 

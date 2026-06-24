@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2026 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -145,7 +145,7 @@ static std::size_t findItemInCache( int theItemID )
 	size_t numCacheEntries = itemCache.size();
 	for( size_t i=0; i<numCacheEntries; i++ )
 	{
-		if( (*(itemCache[i])).getID() == theItemID )
+		if( itemCache[i]->getID() == theItemID )
 		{
 /***/		return i;
 		}
@@ -1298,7 +1298,7 @@ PTR_ITEM THE_ITEM::getArchive( bool create )
 		"where VOLUME_ID=:theArchive "
 		"and PERMISSION_ID=:mySelf"
 	);
-	theQuery->Params->Items[0]->AsInteger = (*archiveVolume).getID();
+	theQuery->Params->Items[0]->AsInteger = archiveVolume->getID();
 	theQuery->Params->Items[1]->AsInteger = getID();
 	theQuery->Open();
 	if( !theQuery->Eof )
@@ -1904,7 +1904,7 @@ PTR_ITEM getItemByPath( T_STRING path )
 		newItem = getItemByName( parentId, name );
 		if( newItem )
 		{
-			parentId = (*newItem).getID();
+			parentId = newItem->getID();
 
 			if( !path.hasNextToken() )
 /*v*/			break;

@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -571,8 +571,8 @@ void THE_WEB_FOLDER::createLanguageChunk( PTR_FILE theItem, xml::Document *theDo
 
 			if( child->getID() != theItem->getID() )
 			{
-				href = (*child).getDownloadFile( "." );
-				href += (size_t)2;
+				href = child->getDownloadFile( "." );
+				href += size_t(2);
 				theAnchor->setStringAttribute( "href", href );
 			}
 
@@ -878,7 +878,7 @@ STRING THE_WEB_FOLDER::exportFile(
 {
 	doEnterFunction("THE_WEB_FOLDER::exportFile");
 	logFile << ((flags & FLAGS_PRE_EXPORT) ? "Prepare:  " : "Export: " )
-			<< (*file).getName()
+			<< file->getName()
 			<< " to "
 			<< localPath << '\n';
 
@@ -889,7 +889,7 @@ STRING THE_WEB_FOLDER::exportFile(
 /*@*/	return "";
 	}
 
-	STRING downloadPath = exportedFiles[(*file).getID()];
+	STRING downloadPath = exportedFiles[file->getID()];
 	if( !downloadPath.isEmpty() )
 	{
 		if( !(flags & FLAGS_PRE_EXPORT) && !(flags & FLAGS_DONT_SAVE) )
@@ -993,7 +993,7 @@ STRING THE_WEB_FOLDER::exportFile(
 
 void THE_WEB_FOLDER::exportLanguageDoc( THE_LANGUAGE_DOC *theDoc, const STRING &localPath )
 {
-	if( StatusForm->pushStatus( "Refreshing", (*theDoc).getName() ) )
+	if( StatusForm->pushStatus( "Refreshing", theDoc->getName() ) )
 	{
 /*@*/	return;
 	}
@@ -1027,20 +1027,20 @@ STRING THE_WEB_FOLDER::indexFolder(
 
 	STRING	indexFile;
 
-	PTR_ITEM indexXsl = (*childFolder).getContentItem( "index.xsl" );
+	PTR_ITEM indexXsl = childFolder->getContentItem( "index.xsl" );
 	if( indexXsl )
 	{
-		PTR_ITEM indexXml = (*childFolder).getContentItem( "index.xml" );
+		PTR_ITEM indexXml = childFolder->getContentItem( "index.xml" );
 		if( !indexXml )
 		{
-			STRING	indexXMLfile = (*childFolder).getPath() +
+			STRING	indexXMLfile = childFolder->getPath() +
 					DIRECTORY_DELIMITER_STRING "index.xml"
 			;
 
 			xml::Document	xmlDoc( indexXMLfile );
 			xmlDoc.addObject( new xml::Declaration );
 			xmlDoc.addObject( new xml::StyleSheet( "index.xsl" ) );
-			xmlDoc.addObject( (*childFolder).createXML( 1 ) );
+			xmlDoc.addObject( childFolder->createXML( 1 ) );
 			indexXMLfile = localPath +
 				DIRECTORY_DELIMITER_STRING "index.xml"
 			;
@@ -1061,7 +1061,7 @@ void THE_WEB_FOLDER::exportFolder( THE_FOLDER *folder, const STRING &localPath )
 {
 	doEnterFunction("THE_WEB_FOLDER::exportFolder");
 
-	if( StatusForm->pushStatus( "Refreshing", (*folder).getName() ) )
+	if( StatusForm->pushStatus( "Refreshing", folder->getName() ) )
 	{
 /*@*/	return;
 	}
@@ -1087,11 +1087,11 @@ void THE_WEB_FOLDER::exportFolder( THE_FOLDER *folder, const STRING &localPath )
 			if( childFolder )
 			{
 				STRING	subPath = localPath;
-				subPath += (*childFolder).getName();
+				subPath += childFolder->getName();
 				mkdir( subPath );
 				subPath += DIRECTORY_DELIMITER;
 
-				if( StatusForm->pushStatus( "Indexing", (*childFolder).getName() ) )
+				if( StatusForm->pushStatus( "Indexing", childFolder->getName() ) )
 				{
 /*@*/				return;
 				}

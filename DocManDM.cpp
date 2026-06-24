@@ -507,7 +507,7 @@ void TDocManDataModule::checkDB( bool silent, int *forceIndex )
 					fp << "Bad parent for " << externalFile << " - moved to company folder\n";
 					errorCount++;
 					TableItemTree->Edit();
-					TableItemTreePARENTID->AsInteger = (*theCompanyVolume).getID();
+					TableItemTreePARENTID->AsInteger = theCompanyVolume->getID();
 					externalFile = TableItemTreeNAME->AsString.c_str();
 					externalFile += '(';
 					externalFile += formatNumber(
@@ -958,7 +958,7 @@ void TDocManDataModule::refreshExifs()
 			{
 				metaData = new ImageMetaData;
 				success = theFile->loadImageMetaData( metaData, version );
-				doLogValue( "%d", (int)success );
+				doLogValue( success );
 			}
 		}
 		else if( QueryDocVersionsITEM_TYPE->AsInteger == TYPE_FILE_REF )
@@ -968,8 +968,8 @@ void TDocManDataModule::refreshExifs()
 			if( theFileRef )
 			{
 				metaData = new ImageMetaData;
-				success = (*theFileRef).loadImageMetaData( metaData );
-				doLogValue( "%d", (int)success );
+				success = theFileRef->loadImageMetaData( metaData );
+				doLogValue( success );
 			}
 		}
 		else

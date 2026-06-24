@@ -6,13 +6,13 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2026 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
@@ -235,12 +235,12 @@ PTR_ITEM FACTORY_TASKLIST::createItemFromForm( const PTR_ITEM &parent ) const
 {
 	PTR_ITEM newList = createItem( 0 );
 
-	(*newList).setData(
+	newList->setData(
 		parent,
 		ItemCreateForm->EditName->Text.c_str(),
 		ItemCreateForm->MemoDescription->Text.c_str()
 	);
-	(*newList).updateDatabase();
+	newList->updateDatabase();
 
 	return newList;
 }
@@ -445,7 +445,7 @@ STRING THE_TASKLIST::drawCell( int col, int row, TCanvas *canvas, TRect &Rect )
 	{
 		PTR_TASK	theTask = getContentItem( row );
 		if( theTask )
-			text = DocManDataModule->getStatus( (*theTask).getStatusID() );
+			text = DocManDataModule->getStatus( theTask->getStatusID() );
 	}
 	else
 		text = THE_ITEM::drawCell( col+1, row, canvas, Rect );

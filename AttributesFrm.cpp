@@ -1,21 +1,21 @@
 /*
 		Project:		DocMan
-		Module:			
-		Description:	
+		Module:			AttributesFrm.cpp
+		Description:	Editing the attributes of an item
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -117,10 +117,10 @@ const char *THREAD_CAT_ADD_APPLY_DOWN::getTitle( void ) const
 //---------------------------------------------------------------------------
 void THREAD_CAT_REMOVE_APPLY_DOWN::removeCategory( TQuery *testSQL, TQuery *rmSQL, PTR_ITEM &theItemToHandle )
 {
-	if( StatusForm->setStatus( "Removing Category from", (*theItemToHandle).getName() ) )
+	if( StatusForm->setStatus( "Removing Category from", theItemToHandle->getName() ) )
 		return;
 
-	int			itemId = (*theItemToHandle).getID();
+	int			itemId = theItemToHandle->getID();
 	int			version = 0;
 	PTR_FILE	theFile = theItemToHandle;
 	if( theFile )
@@ -160,12 +160,12 @@ void THREAD_CAT_ADD_APPLY_DOWN::addCategory( TQuery *testSQL, PTR_ITEM &theItemT
 {
 	doEnterFunction("THREAD_CAT_ADD_APPLY_DOWN::addCategory");
 
-	if( StatusForm->setStatus( "Adding Category to", (*theItemToHandle).getName() ) )
+	if( StatusForm->setStatus( "Adding Category to", theItemToHandle->getName() ) )
 	{
 /*@*/	return;
 	}
 
-	int			itemId = (*theItemToHandle).getID();
+	int			itemId = theItemToHandle->getID();
 	int			version = 0;
 	PTR_FILE	theFile = theItemToHandle;
 	if( theFile )

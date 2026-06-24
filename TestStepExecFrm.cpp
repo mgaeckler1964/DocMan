@@ -6,16 +6,16 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -148,7 +148,7 @@ void THE_TEST_EXEC_STEP::open( void )
 						newName += ' ';
 						newName += TDateTime::CurrentDateTime().DateTimeString().c_str();
 
-						(*newTask).setData(
+						newTask->setData(
 							taskList, newName, actualItem->getDescription(),
 							// const STRING &customerRef, const STRING &module,
 							"", "",
@@ -163,7 +163,7 @@ void THE_TEST_EXEC_STEP::open( void )
 							assignedTo,
 							0				// completed date
 						);
-						(*newTask).updateDatabase();
+						newTask->updateDatabase();
 					}
 					newStatus = -1;
 					actualItem->testStatus = -1;
@@ -223,7 +223,7 @@ void __fastcall TTestStepExecForm::FormShow(TObject *Sender)
 	PTR_TEST_EXEC_STEP	theStep = theItem;
 
 	if( theStep && !theParent )
-		MemoActualResult->Text = (const char *)(*theStep).getActualResult();
+		MemoActualResult->Text = theStep->getActualResult().c_str();
 	else
 		throw Exception( "Internal Error" );
 }
