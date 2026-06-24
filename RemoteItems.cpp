@@ -6,7 +6,7 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2025 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -36,6 +36,8 @@
 // --------------------------------------------------------------------- //
 // ----- includes ------------------------------------------------------ //
 // --------------------------------------------------------------------- //
+
+#include <fstream>
 
 #include <gak/arrayFile.h>
 #include <gak/io.h>
@@ -1298,13 +1300,12 @@ STRING THE_REMOTE_FILE::download( int version, int flags, const STRING &i_dest )
 				flags |= PROTECT_DOWNLOAD;
 
 			chmod( dest, S_IREAD|S_IWRITE );
-			FILE *fp = fopen( dest, "wb" );
+			std::ofstream	fp( dest, std::ios_base::binary );
 			if( fp )
 			{
 				const net::HTTPclientResponse	&theResponse = theService->getHttpResponse();
-				fwrite( theResponse.getBody(), 1, theResponse.getContentLength(), fp );
-
-				fclose( fp );
+				fp.write( theResponse.getBody(), theResponse.getContentLength() );
+				fp.close();
 
 				if( !version )
 				{
