@@ -200,7 +200,7 @@ class THE_FOLDER_REF : public THE_FOLDER
 	) : THE_FOLDER( id, theFactory, flags )
 	{
 	}
-	virtual bool refresh( bool recursive=true, std::ostream *stream=NULL );
+	virtual bool refresh( bool recursive=true, std::ostream *stream=nullptr );
 	void setData(
 		const PTR_ITEM &parent,
 		const STRING &name, const STRING &description,
@@ -297,7 +297,7 @@ class THE_SOURCE_FOLDER : public THE_LOCAL_FOLDER
 	{
 	}
 	virtual TGraphic *getItemPicture() const;
-	virtual bool refresh( bool recursive=true, std::ostream *stream=NULL );
+	virtual bool refresh( bool recursive=true, std::ostream *stream=nullptr );
 	void import();
 	void checkIn( bool doBranch, const STRING &description );
 	void reserve( int taskID, bool changedOnly );

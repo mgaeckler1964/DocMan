@@ -238,7 +238,7 @@ xml::Element *THE_WEB_FOLDER::findEntryInMenu(
 	doEnterFunction(
 		"THE_WEB_FOLDER::findEntryInMenu(xml::Element * - const STRING &)"
 	);
-	xml::Element *theMenuEntry = NULL;
+	xml::Element *theMenuEntry = nullptr;
 
 	for( size_t i=0; !theMenuEntry && i<theMenuXML->getNumObjects(); i++ )
 	{
@@ -361,7 +361,7 @@ xml::Element *THE_WEB_FOLDER::loadXSLfile( const STRING &fileName )
 		delete newValue.theDocument;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void THE_WEB_FOLDER::convertReferences(
@@ -391,17 +391,17 @@ void THE_WEB_FOLDER::convertReferences(
 	std::size_t		tagsIdx, attrIdx;
 	static const char *tags[][3] =
 	{
-		{ "a", "href", NULL },
-		{ "link", "href", NULL },
-		{ "img", "src", NULL },
-		{ "script", "src", NULL },
-		{ "audio", "src", NULL },
-		{ NULL }
+		{ "a", "href", nullptr },
+		{ "link", "href", nullptr },
+		{ "img", "src", nullptr },
+		{ "script", "src", nullptr },
+		{ "audio", "src", nullptr },
+		{ nullptr }
 	};
 
 	for(
 		tagsIdx=0;
-		!StatusForm->isTerminated() && (htmlTag = tags[tagsIdx][0]) != NULL;
+		!StatusForm->isTerminated() && (htmlTag = tags[tagsIdx][0]) != nullptr;
 		tagsIdx++
 	)
 	{
@@ -417,7 +417,7 @@ void THE_WEB_FOLDER::convertReferences(
 			theLink = *it;
 			for(
 				attrIdx=1;
-				(attrName = tags[tagsIdx][attrIdx]) != NULL;
+				(attrName = tags[tagsIdx][attrIdx]) != nullptr;
 				attrIdx++
 			)
 			{
@@ -1201,7 +1201,7 @@ const char *FACTORY_WEB_MENU_FOLDER::getName( void ) const
 TItemCreateForm *FACTORY_WEB_FOLDER::getForm( void ) const
 {
 #ifdef DOCMANBG
-	return NULL;
+	return nullptr;
 #else
 	return SyncFolderCreateForm;
 #endif
@@ -1228,7 +1228,7 @@ PTR_ITEM FACTORY_WEB_FOLDER::createItemFromForm( const PTR_ITEM &parent ) const
 
 TGraphic *THE_WEB_FOLDER::getItemPicture( void ) const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -1240,7 +1240,7 @@ TGraphic *THE_WEB_FOLDER::getItemPicture( void ) const
 
 TGraphic *THE_WEB_MENU_FOLDER::getItemPicture( void ) const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -1291,7 +1291,7 @@ bool THE_WEB_FOLDER::refresh( bool , ostream * )
 	clearXSLcache();
 
 	logFile.close();
-	ShellExecute( NULL, NULL, logFilePath, NULL, NULL, SW_SHOWDEFAULT );
+	ShellExecute( nullptr, nullptr, logFilePath, nullptr, nullptr, SW_SHOWDEFAULT );
 
 	return false;
 }
@@ -1364,7 +1364,7 @@ STRING THE_WEB_FOLDER::generateWebFile(
 	logFile.close();
 
 	if( !forWebServer )
-		ShellExecute( NULL, NULL, logFilePath, NULL, NULL, SW_SHOWDEFAULT );
+		ShellExecute( nullptr, nullptr, logFilePath, nullptr, nullptr, SW_SHOWDEFAULT );
 
 	return exportedFile;
 }
@@ -1440,7 +1440,7 @@ STRING THE_WEB_FOLDER::generateWebFolder(
 
 	if( !forWebServer )
 	{
-		ShellExecute( NULL, NULL, logFilePath, NULL, NULL, SW_SHOWDEFAULT );
+		ShellExecute( nullptr, nullptr, logFilePath, nullptr, nullptr, SW_SHOWDEFAULT );
 	}
 
 	return exportedFile;

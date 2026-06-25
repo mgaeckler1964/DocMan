@@ -168,7 +168,7 @@ class THE_REMOTE_FOLDER : public THE_LOCAL_FOLDER
 		return remoteData;
 	}
 	bool isRootPurging( void );
-	virtual bool refresh( bool recursive = true, std::ostream *stream=NULL );
+	virtual bool refresh( bool recursive = true, std::ostream *stream=nullptr );
 
 	virtual ColumnTitle *getColumnTitles( void ) const;
 	virtual int getColCount( void ) const;
@@ -264,7 +264,7 @@ class THE_REMOTE_FILE : public THE_FILE_BASE
 	}
 	virtual TGraphic *getStatusPicture( void ) const;
 
-	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=NULL, gak::DateTime *oRemoteDate=NULL );
+	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=nullptr, gak::DateTime *oRemoteDate=nullptr );
 	bool needDownload( const STRING &dest )
 	{
 		return !canUnreserve( true ) && hasChanged( dest );
@@ -289,7 +289,7 @@ class THE_REMOTE_FILE : public THE_FILE_BASE
 		return remoteData.id;
 	}
 
-	virtual STRING download( int version = 0, int flags=0, const STRING &dest = STRING((const char*)NULL) );
+	virtual STRING download( int version = 0, int flags=0, const STRING &dest = STRING(nullptr) );
 	virtual STRING getVersionFileName( void );
 
 	DocManService *getService( void ) const

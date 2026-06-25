@@ -206,7 +206,7 @@ class THE_FILE_BASE : public THE_ITEM
 	void openVersion( int version )
 	{
 		STRING dest = download( version, 0, "" );
-		ShellExecute( NULL, NULL, dest, NULL, NULL, SW_SHOWDEFAULT );
+		ShellExecute( nullptr, nullptr, dest, nullptr, nullptr, SW_SHOWDEFAULT );
 	}
 	virtual void open();
 	virtual STRING getVersionFileName() = 0;
@@ -254,7 +254,7 @@ class THE_FILE_BASE : public THE_ITEM
 
 	virtual bool canCreateVersion() const = 0;
 	virtual void createVersion( const STRING &filePath, const STRING &description ) = 0;
-	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=NULL, gak::DateTime *oRemoteDate=NULL ) = 0;
+	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=nullptr, gak::DateTime *oRemoteDate=nullptr ) = 0;
 	virtual const char *compare( int firstVersion=0, int secondVersion=-1  ) = 0;
 	virtual bool canReserve() const = 0;
 	virtual bool canUnreserve( bool noAdminCheck ) const = 0;
@@ -336,7 +336,7 @@ class THE_FILE : public THE_FILE_BASE
 		if( m_latestVersion )
 		{
 			delete m_latestVersion;
-			m_latestVersion = NULL;
+			m_latestVersion = nullptr;
 		}
 	}
 	THE_FILE_VERSION *refreshLatestVersion()
@@ -351,7 +351,7 @@ class THE_FILE : public THE_FILE_BASE
 	: THE_FILE_BASE( flags, id, theFactory )
 	{
 		m_fileID = 0;
-		m_latestVersion = NULL;
+		m_latestVersion = nullptr;
 	}
 	public:
 	THE_FILE( int id, const FACTORY_BASE *theFactory )
@@ -361,7 +361,7 @@ class THE_FILE : public THE_FILE_BASE
 	)
 	{
 		m_fileID = 0;
-		m_latestVersion = NULL;
+		m_latestVersion = nullptr;
 	}
 	~THE_FILE();
 	void setData( const PTR_ITEM &parent, const STRING &name, const STRING &description, const STRING &newFilePath )
@@ -456,7 +456,7 @@ class THE_FILE : public THE_FILE_BASE
 	virtual void cancelReserve();
 	virtual const char *compare( int firstVersion=0, int secondVersion=-1  );
 	virtual bool hasReserved( const STRING &machine, int userId );
-	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=NULL, gak::DateTime *oRemoteDate=NULL );
+	virtual bool hasChanged( const STRING &dest, gak::DateTime *oLocalDate=nullptr, gak::DateTime *oRemoteDate=nullptr );
 	STRING getContent()
 	{
 		STRING	src = getExternalFile();
@@ -483,7 +483,7 @@ class THE_FILE : public THE_FILE_BASE
 	gak::xml::Document *getXmlDocument()
 	{
 		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getXmlDocument");
-		gak::xml::Document *result = NULL;
+		gak::xml::Document *result = nullptr;
 		STRING mimeType = getMimeType();
 
 		if( mimeType == "text/xml"
@@ -503,7 +503,7 @@ class THE_FILE : public THE_FILE_BASE
 	{
 		doEnterFunctionEx(gakLogging::llDetail, "THE_FILE::getHtmlDocument");
 
-		gak::html::Document	*result = NULL;
+		gak::html::Document	*result = nullptr;
 		STRING 				mimeType = getMimeType();
 
 		if( mimeType == "text/html" )

@@ -170,7 +170,7 @@ class THE_WEB_FOLDER : public THE_LOCAL_FOLDER
 	}
 	virtual TGraphic *getItemPicture( void ) const;
 	virtual void getItemFactories( Array<const FACTORY_BASE*> *factory ) const;
-	virtual bool refresh( bool recursive=true, std::ostream *stream=NULL );
+	virtual bool refresh( bool recursive=true, std::ostream *stream=nullptr );
 	STRING generateWebFile( PTR_FILE theFile, bool forWebServer, STRING &mimeType );
 	STRING generateWebFolder( PTR_FOLDER theFolder, bool forWebServer, STRING &mimeType );
 };

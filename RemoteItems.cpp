@@ -268,7 +268,7 @@ PTR_ITEM FACTORY_REMOTE_FILE::createItemFromForm( const PTR_ITEM &parent ) const
 		FileCreateForm->MemoDescription->Text.c_str(),
 		src, mimeType,
 		0,
-		time( NULL ), time( NULL )
+		time( nullptr ), time( nullptr )
 	);
 
 	newFile->updateDatabase();
@@ -298,7 +298,7 @@ const char *FACTORY_REMOTE_FOLDER::getName( void ) const
 TItemCreateForm *FACTORY_REMOTE_FOLDER::getForm( void ) const
 {
 #ifdef DOCMANBG
-	return NULL;
+	return nullptr;
 #else
 	return RemoteFolderCreateForm;
 #endif
@@ -344,7 +344,7 @@ ITEM_CONTENT *THE_REMOTE_FOLDER::loadContent( void )
 	DocManService *theService = RemoteServerForm->GetServiceByID( RemoteServerID );
 	if( theService )
 	{
-		xml::Element *result = NULL;
+		xml::Element *result = nullptr;
 		try
 		{
 			result = theService->sGetItemContent( remoteData.id );
@@ -596,7 +596,7 @@ void THE_REMOTE_FOLDER::purgeItem( void )
 
 TGraphic *THE_REMOTE_FOLDER::getItemPicture( void ) const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -1082,7 +1082,7 @@ TGraphic *THE_REMOTE_FILE::getStatusPicture( void ) const
 {
 	if( remoteData.reservedBy )
 	{
-		static Graphics::TBitmap *thePic = NULL;
+		static Graphics::TBitmap *thePic = nullptr;
 
 		if( !thePic )
 		{
@@ -1092,7 +1092,7 @@ TGraphic *THE_REMOTE_FILE::getStatusPicture( void ) const
 		return thePic;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void THE_REMOTE_FILE::updateDatabase( void )
@@ -1211,7 +1211,7 @@ void THE_REMOTE_FOLDER::dropFile( const STRING &path )
 		else
 		{
 			PTR_REMOTE_FILE	theFile = createItem( TYPE_REMOTE_FILE );
-			theFile->setData( this, fileName, "", path, "", 0, time( NULL ), time( NULL ) );
+			theFile->setData( this, fileName, "", path, "", 0, time( nullptr ), time( nullptr ) );
 			theFile->updateDatabase();
 		}
 	}
@@ -1326,7 +1326,7 @@ STRING THE_REMOTE_FILE::download( int version, int flags, const STRING &i_dest )
 const char *THE_REMOTE_FILE::compare( int firstVersion, int secondVersion )
 {
 	STRING		firstFile, secondFile;
-	const char *diffResult = NULL;
+	const char *diffResult = nullptr;
 
 	PTR_ITEM	theParent = getParent();
 	if( theParent )
@@ -1451,7 +1451,7 @@ void THE_REMOTE_FOLDER::updateLocalDatabase( void )
 	if( !getPermissionID() )
 		setPermissionID( getID(), getUserPermissions() );
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -1480,7 +1480,7 @@ void THE_REMOTE_FILE::updateLocalDatabase( void )
 
 	THE_FILE_BASE::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(

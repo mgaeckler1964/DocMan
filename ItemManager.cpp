@@ -123,7 +123,7 @@ using namespace gak;
 	contructed
 */
 typedef Array<FACTORY_BASE*>	ItemFactory;
-static ItemFactory				*theItemFactory = NULL;
+static ItemFactory				*theItemFactory = nullptr;
 static FACTORY_VIRTUAL_ROOT		theVirtualRootFactory;
 
 static ITEM_CONTENT				itemCache;
@@ -260,7 +260,7 @@ void THE_ITEM::clearAncestors()
 
 int THE_ITEM::loadChildCount()
 {
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add( "select count(*) from ITEM_TREE where parentId = :theParent" );
 	theQuery->Params->Items[0]->AsInteger = id;
@@ -293,7 +293,7 @@ void THE_ITEM::loadACL()
 {
 	ItemPermissions	itemPerm;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add( "select * from I_ACLS where item_id = :theId" );
 	theQuery->Params->Items[0]->AsInteger = id;
@@ -414,7 +414,7 @@ const char *FACTORY_VIRTUAL_ROOT::getName() const
 
 TItemCreateForm *FACTORY_BASE::getForm() const
 {
-	return NULL;
+	return nullptr;
 }
 
 TItemCreateForm *FACTORY_SIMPLE_BASE::getForm() const
@@ -500,7 +500,7 @@ int THE_ITEM::loadPermissions()
 		userPermissions = 0;
 	else
 	{
-		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add(
 			"select permissions "
@@ -552,7 +552,7 @@ void THE_ITEM::updateDatabase()
 		int			parentID = getParentID();
 		bool		isNew;
 
-		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 
 		if( id )
@@ -791,14 +791,14 @@ STRING THE_ITEM::getSize()
 TBrowserFrame *THE_ITEM::getFrame() const
 {
 #ifndef DOCMANBG
-	static TBrowserFrame *theFrame = NULL;
+	static TBrowserFrame *theFrame = nullptr;
 
 	if( !theFrame )
-		theFrame = new TBrowserFrame( NULL );
+		theFrame = new TBrowserFrame( nullptr );
 
 	return theFrame;
 #else
-	return NULL;
+	return nullptr;
 #endif
 }
 
@@ -876,7 +876,7 @@ STRING THE_ITEM::drawHeaderCell( int col, int, TCanvas *canvas, TRect &Rect, TIm
 
 TGraphic *THE_ITEM::getStatusPicture() const
 {
-	return NULL;
+	return nullptr;
 }
 
 STRING THE_ITEM::drawCell( int col, int row, TCanvas *canvas, TRect &Rect )
@@ -1165,7 +1165,7 @@ void THE_ITEM::dropFolder( const STRING &path )
 
 TGraphic *THE_ROOT::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -1183,7 +1183,7 @@ ITEM_CONTENT *THE_ITEM::loadContent()
 	{
 		clearContent();
 
-		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add(
 			ITEM_SELECT_SQL
@@ -1290,7 +1290,7 @@ PTR_ITEM THE_ITEM::getArchive( bool create )
 
 	PTR_ITEM archiveVolume = getArchiveVolume();
 
-	std::auto_ptr<TQuery> theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery> theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"select ID "
@@ -1487,7 +1487,7 @@ void THE_ITEM::purgeItem()
 
 	if( !StatusForm->isTerminated() )
 	{
-		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add( "delete from I_ACLS where item_id = :theID" );
 		theQuery->Params->Items[0]->AsInteger = id;
@@ -1771,7 +1771,7 @@ const FACTORY_BASE *getItemFactory( int itemType )
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 const char *getItemTypeString( int itemType )
@@ -1790,7 +1790,7 @@ const char *getItemTypeString( int itemType )
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 PTR_ITEM createItem( int itemType, int id )
@@ -1824,7 +1824,7 @@ PTR_ITEM getItem( int id )
 			newItem = itemCache[cachePos];
 		else
 		{
-			std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+			std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 			theQuery->DatabaseName = "docManDB";
 			theQuery->SQL->Add(
 				ITEM_SELECT_SQL
@@ -1863,7 +1863,7 @@ PTR_ITEM getItemByName( int id, const char *name )
 
 	PTR_ITEM	newItem;
 /* TODO 1 -cDB : perm check??? */
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		ITEM_SELECT_SQL
@@ -1925,7 +1925,7 @@ PTR_ITEM getPersonalItem( int itemType )
 
 	PTR_ITEM	newItem;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"select ITEM_TREE.*, 1 as num_links "
@@ -1961,7 +1961,7 @@ PTR_ITEM getPublicVolume( int itemType )
 	doEnterFunctionEx(gakLogging::llDetail, "getPublicVolume");
 	PTR_ITEM	newItem;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"select ITEM_TREE.*, 1 as num_links "

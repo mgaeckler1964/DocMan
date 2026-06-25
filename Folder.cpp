@@ -569,7 +569,7 @@ const char *FACTORY_BOOKMARK_FOLDER::getName() const
 TItemCreateForm *FACTORY_SYNC_FOLDER::getForm() const
 {
 #ifdef DOCMANBG
-	return NULL;
+	return nullptr;
 #else
 	return SyncFolderCreateForm;
 #endif
@@ -578,7 +578,7 @@ TItemCreateForm *FACTORY_SYNC_FOLDER::getForm() const
 TItemCreateForm *FACTORY_SOURCE_FOLDER::getForm() const
 {
 #ifdef DOCMANBG
-	return NULL;
+	return nullptr;
 #else
 	return SourceFolderCreateForm;
 #endif
@@ -587,7 +587,7 @@ TItemCreateForm *FACTORY_SOURCE_FOLDER::getForm() const
 TItemCreateForm *FACTORY_RELEASE_FOLDER::getForm() const
 {
 #ifdef DOCMANBG
-	return NULL;
+	return nullptr;
 #else
 	return ReleaseForm;
 #endif
@@ -734,7 +734,7 @@ PTR_ITEM FACTORY_RELEASE_FOLDER::createItemFromTemplate(
 
 TGraphic *THE_PUBLIC_TEMPLATE_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -746,7 +746,7 @@ TGraphic *THE_PUBLIC_TEMPLATE_FOLDER::getItemPicture() const
 
 TGraphic *THE_PERSONAL_TEMPLATE_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -758,7 +758,7 @@ TGraphic *THE_PERSONAL_TEMPLATE_FOLDER::getItemPicture() const
 
 TGraphic *THE_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -770,7 +770,7 @@ TGraphic *THE_FOLDER::getItemPicture() const
 
 TGraphic *THE_PERSONAL_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -782,7 +782,7 @@ TGraphic *THE_PERSONAL_FOLDER::getItemPicture() const
 
 TGraphic *THE_BOOKMARK_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -794,7 +794,7 @@ TGraphic *THE_BOOKMARK_FOLDER::getItemPicture() const
 
 TGraphic *THE_SYNC_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -806,7 +806,7 @@ TGraphic *THE_SYNC_FOLDER::getItemPicture() const
 
 TGraphic *THE_SOURCE_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -818,7 +818,7 @@ TGraphic *THE_SOURCE_FOLDER::getItemPicture() const
 
 TGraphic *THE_RELEASE_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -830,7 +830,7 @@ TGraphic *THE_RELEASE_FOLDER::getItemPicture() const
 
 TGraphic *THE_XSLT_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -842,7 +842,7 @@ TGraphic *THE_XSLT_FOLDER::getItemPicture() const
 
 TGraphic *THE_COMPANY_FOLDER::getItemPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -860,7 +860,7 @@ void THE_LOCAL_FOLDER::loadFields( TQuery *query )
 
 	STRING machine = TDocManDataModule::getMachine();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -926,7 +926,7 @@ void THE_LOCAL_FOLDER::updateDatabase()
 	if( !m_localPath.isEmpty() )
 	{
 		STRING machine = TDocManDataModule::getMachine();
-		std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 
 		if( !m_id )
@@ -968,7 +968,7 @@ void THE_LOCAL_FOLDER::purgeItem()
 	if( !canDelete( true, false ) )
 		throw Exception( "Cannot purge item"  );
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -984,7 +984,7 @@ void THE_RELEASE_FOLDER::updateDatabase()
 {
 	THE_LOCAL_FOLDER::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -1316,7 +1316,7 @@ void THE_FOLDER_REF::updateDatabase()
 
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -1334,7 +1334,7 @@ void THE_FOLDER_REF::updateDatabase()
 
 TGraphic *THE_FOLDER_REF::getStatusPicture() const
 {
-	static Graphics::TBitmap *thePic = NULL;
+	static Graphics::TBitmap *thePic = nullptr;
 
 	if( !thePic )
 	{
@@ -1346,7 +1346,7 @@ TGraphic *THE_FOLDER_REF::getStatusPicture() const
 
 TGraphic *THE_LOCAL_FOLDER::getStatusPicture() const
 {
-	return NULL;
+	return nullptr;
 }
 
 void THE_SYNC_FOLDER::getItemFactories( Array<const FACTORY_BASE*> *factory ) const
@@ -1538,7 +1538,7 @@ RefhreshType ACTION_EXPLORER::perform( PTR_ITEM theItem )
 	STRING	downloadPath = theItem->getDownloadPath();
 	if( !downloadPath.isEmpty() )
 	{
-		ShellExecute( NULL, NULL, downloadPath, NULL, NULL, SW_SHOWDEFAULT );
+		ShellExecute( nullptr, nullptr, downloadPath, nullptr, nullptr, SW_SHOWDEFAULT );
 	}
 	else
 	{

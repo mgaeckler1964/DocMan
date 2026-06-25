@@ -6,13 +6,13 @@
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2026 Martin Gäckler
+		Copyright:		(c) 2011-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
@@ -153,8 +153,8 @@ namespace gak
 		typedef IndexSourcePtr	object_type;
 
 		ProcessorType(
-			IndexResultQueue	*resultQueue = NULL,
-			gak::Set<STRING>	*stopWords = NULL,
+			IndexResultQueue	*resultQueue = nullptr,
+			gak::Set<STRING>	*stopWords = nullptr,
 			const F_STRING		&storageBase=F_STRING() )
 		: m_storageBase( storageBase )
 		{
@@ -355,7 +355,7 @@ bool ThreadBackground::updateIndex2()
 			fp << "Index:\n";
 			fp << data;
 			fp.close();
-			ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
+			ShellExecute( nullptr, nullptr, logName, nullptr, nullptr, SW_SHOW );
 		}
 	}
 	if( indexStart != oldIndex )
@@ -422,7 +422,7 @@ order by it.parentID, it.ID
 	{
 		doEnterFunctionEx(gakLogging::llDetail,"collect the known directoryies");
 
-		std::auto_ptr<TQuery> theFolderQuery( new TQuery( NULL ) );
+		std::auto_ptr<TQuery> theFolderQuery( new TQuery( nullptr ) );
 		theFolderQuery->DatabaseName = "docManDB";
 		theFolderQuery->SQL->Add(
 			"select it.ID, it.NAME "
@@ -538,7 +538,7 @@ order by it.parentID, it.ID
 	}
 	if( hasChanged )
 	{
-		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
+		ShellExecute( nullptr, nullptr, logName, nullptr, nullptr, SW_SHOW );
 	}
 	if( StatusForm->isTerminated() || m_forceIndex )
 	{
@@ -590,7 +590,7 @@ order by it.parentID, it.ID
 	}
 	if( hasChanged )
 	{
-		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
+		ShellExecute( nullptr, nullptr, logName, nullptr, nullptr, SW_SHOW );
 	}
 	if( StatusForm->isTerminated() || m_forceIndex )
 	{
@@ -637,7 +637,7 @@ order by it.parentID, it.ID
 	}
 	if( hasChanged )
 	{
-		ShellExecute( NULL, NULL, logName, NULL, NULL, SW_SHOW );
+		ShellExecute( nullptr, nullptr, logName, nullptr, nullptr, SW_SHOW );
 	}
 }
 

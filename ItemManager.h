@@ -114,7 +114,7 @@ template <typename ItemClass>
 class PTR_TEMPLATE : public gak::SharedObjectPointer<ItemClass>
 {
 	public:
-	PTR_TEMPLATE( const ItemClass *fp=NULL ) : gak::SharedObjectPointer<ItemClass>( fp )
+	PTR_TEMPLATE( const ItemClass *fp=nullptr ) : gak::SharedObjectPointer<ItemClass>( fp )
 	{
 	}
 	PTR_TEMPLATE( const PTR_ITEM &src ) : gak::SharedObjectPointer<ItemClass>(
