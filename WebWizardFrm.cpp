@@ -540,13 +540,13 @@ RefhreshType ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 {
 	int				cssID = 0;
 
-	xml::Document	*theConfig = NULL;
-	xml::Element	*layoutElement = NULL;
-	xml::Element	*formElement;
+	XmlDocPtr		theConfig;
+	xml::Element	*layoutElement = nullptr;
+	xml::Element	*formElement = nullptr;
 
-	xml::Document	*xmlExample = NULL;
-	xml::Element	*xmlRoot = NULL;
-	xml::Element	*titleElement;
+	xml::Document	*xmlExample = nullptr;
+	xml::Element	*xmlRoot = nullptr;
+	xml::Element	*titleElement = nullptr;
 
 
 	PTR_FOLDER	theFolder = theItem->getContentItem( "_layout" );
@@ -557,7 +557,7 @@ RefhreshType ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 		theFolder->updateDatabase();
 	}
 
-	WebWizardForm->dataLoaded = false;
+	WebWizardForm->m_dataLoaded = false;
 	PTR_FILE theFile = theFolder->getContentItem( "layout.xml" );
 	if( theFile )
 	{
@@ -571,7 +571,7 @@ RefhreshType ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 				if( formElement )
 				{
 					layoutElement->removeObject( formElement );
-					WebWizardForm->dataLoaded = true;
+					WebWizardForm->m_dataLoaded = true;
 				}
 			}
 			else
@@ -598,7 +598,7 @@ RefhreshType ACTION_WEB_WIZARD::perform( PTR_ITEM theItem )
 		layoutElement->addObject( new xml::Any( "doc:bottom" ) );
 		layoutElement->addObject( new xml::Any( "doc:bottomRight" ) );
 	}
-	WebWizardForm->configDocument = theConfig;
+	WebWizardForm->m_configDocument = theConfig;
 
 	STRING newCaption = STRING( "Web Wizard " ) + theItem->getName();
 	WebWizardForm->Caption = (const char *)newCaption;
@@ -1315,7 +1315,7 @@ void __fastcall TWebWizardForm::EnableDisableLayout(TObject *)
 //---------------------------------------------------------------------------
 void __fastcall TWebWizardForm::FormShow(TObject *Sender)
 {
-	if( !dataLoaded )
+	if( !m_dataLoaded )
 	{
 		ComboBoxContent->ItemIndex = 0;
 
@@ -1744,10 +1744,10 @@ void __fastcall TWebWizardForm::PaintBoxPreviewPaint(TObject *)
 //---------------------------------------------------------------------------
 void __fastcall TWebWizardForm::ButtonEditClick(TObject *)
 {
-	TEditXmlFileForm	*theEditor = new TEditXmlFileForm( (TComponent*)NULL );
-	theEditor->setDocument( configDocument );
+	std::auto_ptr<TEditXmlFileForm>	theEditor( new TEditXmlFileForm( nullptr ) );
+	theEditor->setDocument( m_configDocument );
 	theEditor->ShowModal();
-	configDocument->clearTypes();
+	m_configDocument->clearTypes();
 }
 //---------------------------------------------------------------------------
 

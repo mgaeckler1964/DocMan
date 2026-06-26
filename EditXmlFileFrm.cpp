@@ -60,7 +60,7 @@ TEditXmlFileForm *EditXmlFileForm;
 __fastcall TEditXmlFileForm::TEditXmlFileForm(TComponent* Owner)
 	: TEditFileForm(Owner)
 {
-	XmlViewerForm = NULL;
+	XmlViewerForm = nullptr;
 }
 //---------------------------------------------------------------------------
 void TEditXmlFileForm::styleChangedCB( const STRING &styleSheetFile, const STRING &stylesheetType )
@@ -80,23 +80,23 @@ void TEditXmlFileForm::setText( const PTR_FILE &theFile, const STRING &data )
 		fileName += extension;
 	}
 
-	this->theFile = theFile;
-	this->theDocument = NULL;
+	m_theFile = theFile;
+	m_theDocument = nullptr;
 
 	xmlEditorFrame->refreshSchema();
 	xmlEditorFrame->setText( data, fileName );
 }
 //---------------------------------------------------------------------------
-void TEditXmlFileForm::setDocument( xml::Document *theDocument )
+void TEditXmlFileForm::setDocument( const XmlDocPtr &theDocument )
 {
-	this->theFile = NULL;
-	this->theDocument = theDocument;
+	m_theFile = nullptr;
+	m_theDocument = theDocument;
 
 	xmlEditorFrame->refreshSchema();
-	xmlEditorFrame->setDocument( theDocument, false );
+	xmlEditorFrame->setDocument( m_theDocument, false );
 }
 //---------------------------------------------------------------------------
-STRING TEditXmlFileForm::getText( void )
+STRING TEditXmlFileForm::getText()
 {
 	return xmlEditorFrame->getText();
 }
@@ -116,9 +116,9 @@ void __fastcall TEditXmlFileForm::FormCreate(TObject *Sender)
 	if( exists( cssFilename ) )
 	{
 		std::ifstream	istream( cssFilename );
-		editorRules.readCssFile( &istream, false );
+		m_editorRules.readCssFile( &istream, false );
 	}
-	xmlEditorFrame->initFrame( &theManager, &editorRules );
+	xmlEditorFrame->initFrame( &m_theManager, &m_editorRules );
 	xmlEditorFrame->setStyleChangedCB( styleChangedCB );
 }
 //---------------------------------------------------------------------------
@@ -167,9 +167,9 @@ void __fastcall TEditXmlFileForm::ButtonTransformClick(TObject *)
 
 						if( htmlDoc )
 							ShellExecute(
-								NULL,
+								nullptr,
 								"open", resultFile,
-								NULL, NULL, SW_SHOWNORMAL
+								nullptr, nullptr, SW_SHOWNORMAL
 							);
 						else
 						{
@@ -197,7 +197,7 @@ void __fastcall TEditXmlFileForm::SelectPopupClick(TObject *Sender)
 			xml::Element *theElement = static_cast<xml::Element*>(node->Data);
 			if( theElement )
 			{
-				PTR_ITEM	startItem = theFile;
+				PTR_ITEM	startItem = m_theFile;
 				int			row = menuItem->Tag-1;
 
 				int destinationItemID;
@@ -223,7 +223,7 @@ void __fastcall TEditXmlFileForm::SelectPopupClick(TObject *Sender)
 						theElement->setStringAttribute( row, ref );
 						xmlEditorFrame->AttributeGrid->Cells[row+1][1] = (const char *)ref;
 						xmlEditorFrame->refreshValue();
-						theManager.setChanged( NULL, theElement );
+						m_theManager.setChanged( nullptr, theElement );
 					}
 				}
 			}
@@ -299,14 +299,14 @@ void __fastcall TEditXmlFileForm::ButtonRendererClick(TObject *)
 	doEnterFunction("TEditXmlFileForm::ButtonRendererClick");
 	STRING css;
 
-	xml::Document	*theDocument = xmlEditorFrame->getDocument();
+	const XmlDocPtr	&theDocument = xmlEditorFrame->getDocument();
 	if( theDocument )
 	{
-		if( !XmlViewerForm )
-			XmlViewerForm = new TXmlViewerForm( this );
+		if( !m_xmlViewerForm )
+			m_xmlViewerForm = new TXmlViewerForm( this );
 
-		XmlViewerForm->setDocument( theDocument, &theManager );
-		XmlViewerForm->Show();
+		m_xmlViewerForm->setDocument( theDocument, &m_theManager );
+		m_xmlViewerForm->Show();
 	}
 }
 //---------------------------------------------------------------------------
@@ -317,14 +317,14 @@ void __fastcall TEditXmlFileForm::FormClose( TObject *Sender, TCloseAction &Acti
 	{
 		XmlViewerForm->Close();
 		delete XmlViewerForm;
-		XmlViewerForm = NULL;
+		XmlViewerForm = nullptr;
 	}
 	TEditFileForm::FormClose( Sender, Action );
 }
 //---------------------------------------------------------------------------
 void __fastcall TEditXmlFileForm::Button1Click(TObject *Sender)
 {
-	if( theFile )
+	if( m_theFile )
 		TEditFileForm::Button1Click( Sender );
 }
 //---------------------------------------------------------------------------

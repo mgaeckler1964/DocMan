@@ -66,17 +66,17 @@ __published:	// Von der IDE verwaltete Komponenten
 	void __fastcall Button1Click(TObject *Sender);
 
 private:	// Anwender-Deklarationen
-	PTR_FILE			theFile;
-	gak::ChangeManager	theManager;
-	TXmlViewerForm		*XmlViewerForm;
-	gak::css::Rules		editorRules;
-	gak::xml::Document	*theDocument;
+	PTR_FILE			m_theFile;
+	gak::ChangeManager	m_theManager;
+	gak::css::Rules		m_editorRules;
+	XmlDocPtr			m_theDocument;
+	TXmlViewerForm		*m_xmlViewerForm;
 
 	void styleChangedCB( const STRING &styleSheetFile, const STRING &stylesheetType );
 public:		// Anwender-Deklarationen
 	__fastcall TEditXmlFileForm(TComponent* Owner);
 	virtual void setText( const PTR_FILE &theFile, const STRING &data );
-	void setDocument( gak::xml::Document *theDocument );
+	void setDocument( const XmlDocPtr &theDocument );
 	virtual STRING getText( void );
 };
 //---------------------------------------------------------------------------

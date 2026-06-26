@@ -93,8 +93,8 @@ __published:	// IDE-managed Components
 private:	// User declarations
 public:		// User declarations
 	__fastcall TWebWizardForm(TComponent* Owner);
-	bool dataLoaded;
-	gak::xml::Document	*configDocument;
+	bool		m_dataLoaded;
+	XmlDocPtr	m_configDocument;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TWebWizardForm *WebWizardForm;
