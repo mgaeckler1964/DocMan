@@ -40,6 +40,7 @@
 #include <gak/vcl_tools.h>
 #include <gak/md5.h>
 #include <gak/directory.h>
+#include <gak/memory>
 
 #pragma hdrstop
 
@@ -150,18 +151,18 @@ void TDocManDataModule::checkDB( bool silent, int *forceIndex )
 	bool			hasError;
 	size_t			errorCount = 0;
 
-	std::auto_ptr<TQuery> ucCheckQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery> ucCheckQuery( new TQuery( NULL ) );
 	ucCheckQuery->DatabaseName = "docManDB";
-	std::auto_ptr<TQuery> versionCheckQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery> versionCheckQuery( new TQuery( NULL ) );
 	versionCheckQuery->DatabaseName = "docManDB";
-	std::auto_ptr<TQuery> parentCheckQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery> parentCheckQuery( new TQuery( NULL ) );
 	parentCheckQuery->DatabaseName = "docManDB";
-	std::auto_ptr<TQuery> fileCheckQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery> fileCheckQuery( new TQuery( NULL ) );
 	fileCheckQuery->DatabaseName = "docManDB";
 
-	std::auto_ptr<TQuery> findStorageQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery> findStorageQuery( new TQuery( NULL ) );
 	findStorageQuery->DatabaseName = "docManDB";
-	std::auto_ptr<TQuery> findFileQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery> findFileQuery( new TQuery( NULL ) );
 	findFileQuery->DatabaseName = "docManDB";
 
 	PTR_ITEM theCompanyVolume = getCompanyVolume();
@@ -1109,7 +1110,7 @@ void TDocManDataModule::getCategoryID(
 )
 {
 	int		id=0, version = 0;
-	std::auto_ptr<TQuery>	checkCat( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	checkCat( new TQuery( NULL ) );
 
 	checkCat->DatabaseName = "docManDB";
 	checkCat->SQL->Add(

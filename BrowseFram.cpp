@@ -34,6 +34,8 @@
 #include <vcl.h>
 #pragma hdrstop
 
+#include <gak/memory>
+
 #include "BrowseFram.h"
 #include "ItemManager.h"
 #include "ActionManager.h"
@@ -191,7 +193,7 @@ void TBrowserFrame::fillContents( PTR_ITEM currentItem, int selectID )
 	}
 	catch( std::exception &e )
 	{
-		std::auto_ptr<Exception>	vclException( new Exception( e.what() ) );
+		std::unique_ptr<Exception>	vclException( new Exception( e.what() ) );
 		Application->ShowException( vclException.get() );
 	}
 	catch( ... )

@@ -43,6 +43,7 @@
 #include <gak/exif.h>
 #include <gak/numericString.h>
 #include <gak/http.h>
+#include <gak/memory>
 
 #include <graphix/magic.h>
 
@@ -860,7 +861,7 @@ void THE_LOCAL_FOLDER::loadFields( TQuery *query )
 
 	STRING machine = TDocManDataModule::getMachine();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -926,7 +927,7 @@ void THE_LOCAL_FOLDER::updateDatabase()
 	if( !m_localPath.isEmpty() )
 	{
 		STRING machine = TDocManDataModule::getMachine();
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 
 		if( !m_id )
@@ -968,7 +969,7 @@ void THE_LOCAL_FOLDER::purgeItem()
 	if( !canDelete( true, false ) )
 		throw Exception( "Cannot purge item"  );
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -984,7 +985,7 @@ void THE_RELEASE_FOLDER::updateDatabase()
 {
 	THE_LOCAL_FOLDER::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -1316,7 +1317,7 @@ void THE_FOLDER_REF::updateDatabase()
 
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(

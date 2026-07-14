@@ -53,6 +53,7 @@
 #include <gak/tmpfile.h>
 
 #pragma hdrstop
+#include <gak/memory>
 
 #include "DocManBGThread.h"
 #include "DocManDM.h"
@@ -422,7 +423,7 @@ order by it.parentID, it.ID
 	{
 		doEnterFunctionEx(gakLogging::llDetail,"collect the known directoryies");
 
-		std::auto_ptr<TQuery> theFolderQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery> theFolderQuery( new TQuery( nullptr ) );
 		theFolderQuery->DatabaseName = "docManDB";
 		theFolderQuery->SQL->Add(
 			"select it.ID, it.NAME "
@@ -706,7 +707,7 @@ void ThreadBackground::perform()
 	doEnterFunctionEx(gakLogging::llDetail,"ThreadBackground::perform");
 
 	TDateTime					lastCheck = 0;
-	std::auto_ptr<TRegistry>	registry( new TRegistry );
+	std::unique_ptr<TRegistry>	registry( new TRegistry );
 
 	if( registry->OpenKey( registryKey, true ) )
 	{

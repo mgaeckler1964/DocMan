@@ -38,6 +38,7 @@
 // --------------------------------------------------------------------- //
 
 #include <gak/numericString.h>
+#include <gak/memory>
 
 #include "ItemManager.h"
 #include "Folder.h"
@@ -503,7 +504,7 @@ void THE_TASK::updateDatabase()
 {
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(

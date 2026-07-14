@@ -34,6 +34,7 @@
 #include <vcl.h>
 #include <vcl/registry.hpp>
 #pragma hdrstop
+#include <gak/memory>
 
 #include "DocManDM.h"
 #include "ActionManager.h"
@@ -353,7 +354,7 @@ void __fastcall TCheckOutForm::FormShow(TObject *)
 
 	if( !m_lastTaskID )
 	{
-		std::auto_ptr<TRegistry> reg( new TRegistry );
+		std::unique_ptr<TRegistry> reg( new TRegistry );
 
 		if( reg->OpenKey( registryKey, false ) )
 		{
@@ -404,7 +405,7 @@ void __fastcall TCheckOutForm::FormShow(TObject *)
 void __fastcall TCheckOutForm::ButtonOKClick(TObject *)
 {
 	m_lastTaskID = m_ids[ComboBoxTasks->ItemIndex];
-	std::auto_ptr<TRegistry> reg( new TRegistry );
+	std::unique_ptr<TRegistry> reg( new TRegistry );
 
 	reg->OpenKey( registryKey, true );
 	reg->WriteInteger( "lastTaskID", m_lastTaskID );

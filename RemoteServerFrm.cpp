@@ -34,6 +34,7 @@
 #include <vcl.h>
 #include <vcl/registry.hpp>
 #pragma hdrstop
+#include <gak/memory>
 
 #include "RemoteServerFrm.h"
 #include "DocManService.h"
@@ -174,7 +175,7 @@ DocManService *TRemoteServerForm::GetServiceByID( int serverID )
 
 			if( result->getNeedCredentials() )
 			{
-				std::auto_ptr<TRegistry>	registry( new TRegistry );
+				std::unique_ptr<TRegistry>	registry( new TRegistry );
 
 				AnsiString serverName = AnsiString((const char*)theServer.name);
 				AnsiString userNameValue = serverName + "UserName";

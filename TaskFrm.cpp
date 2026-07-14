@@ -35,6 +35,7 @@
 
 #include <gak/sortedArray.h>
 #include <gak/fmtNumber.h>
+#include <gak/memory>
 
 #pragma hdrstop
 
@@ -88,7 +89,7 @@ static void fillTaskUserByQuery( TQuery *theQuery, int groupPermissions=0 )
 				{
 					theTaskGroups.addElement( userFound );
 
-					std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+					std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 					theQuery->DatabaseName = "docManDb";
 
 					theQuery->SQL->Add(
@@ -117,7 +118,7 @@ static void fillTaskUserForItem( int itemId )
 	theTaskUser.clear();
 	theTaskUser.resort( 0 );
 	theTaskGroups.clear();
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDb";
 
 	theQuery->SQL->Add(
@@ -189,7 +190,7 @@ void __fastcall TTaskForm::FormShow(TObject *Sender)
 		throw Exception( "Internal Error" );
 
 	parentID = theParent ? theParent->getID() : theItem->getParentID();
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 
 	ComboBoxModule->Items->Clear();

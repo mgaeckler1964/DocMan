@@ -1744,7 +1744,7 @@ void __fastcall TWebWizardForm::PaintBoxPreviewPaint(TObject *)
 //---------------------------------------------------------------------------
 void __fastcall TWebWizardForm::ButtonEditClick(TObject *)
 {
-	std::auto_ptr<TEditXmlFileForm>	theEditor( new TEditXmlFileForm( nullptr ) );
+	std::unique_ptr<TEditXmlFileForm>	theEditor( new TEditXmlFileForm( nullptr ) );
 	theEditor->setDocument( m_configDocument );
 	theEditor->ShowModal();
 	m_configDocument->clearTypes();

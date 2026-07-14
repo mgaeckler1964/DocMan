@@ -41,6 +41,7 @@
 
 #include <gak/arrayFile.h>
 #include <gak/io.h>
+#include <gak/memory>
 
 #include "RemoteItems.h"
 #include "CryptoFile.h"
@@ -1451,7 +1452,7 @@ void THE_REMOTE_FOLDER::updateLocalDatabase( void )
 	if( !getPermissionID() )
 		setPermissionID( getID(), getUserPermissions() );
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -1480,7 +1481,7 @@ void THE_REMOTE_FILE::updateLocalDatabase( void )
 
 	THE_FILE_BASE::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(

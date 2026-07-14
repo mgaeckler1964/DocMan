@@ -40,6 +40,7 @@
 
 #include <gak/xslt.h>
 #include <gak/numericString.h>
+#include <gak/memory>
 
 #include "WebFolder.h"
 #include "DocManDM.h"
@@ -592,7 +593,7 @@ void THE_WEB_FOLDER::createLanguageChunk( PTR_FILE theItem, xml::Document *theDo
 				xml::Transformator	theXslProcessor(
 					&theSourceDoc, xslStylesheet
 				);
-				std::auto_ptr<xml::Document> theResultDoc(
+				std::unique_ptr<xml::Document> theResultDoc(
 					theXslProcessor.transform()
 				);
 				theRoot = theResultDoc->getRoot();
@@ -644,7 +645,7 @@ void THE_WEB_FOLDER::createHTMLmenuChunk(
 				xml::Transformator	theXslProcessor(
 					theMenuDoc, menuStyleSheet
 				);
-				std::auto_ptr<xml::Document> theMenuResultDoc(
+				std::unique_ptr<xml::Document> theMenuResultDoc(
 					theXslProcessor.transform()
 				);
 				if( theMenuResultDoc.get() )
@@ -761,7 +762,7 @@ STRING THE_WEB_FOLDER::transformXmlFile(
 			xml::Transformator	theXslProcessor(
 				theSourceDoc, stylesheet
 			);
-			std::auto_ptr<xml::Document> theResultDoc(
+			std::unique_ptr<xml::Document> theResultDoc(
 				theXslProcessor.transform()
 			);
 
@@ -901,7 +902,7 @@ STRING THE_WEB_FOLDER::exportFile(
 				// do post processing not yet done
 				doLogValue( downloadPath );
 				html::Parser	theParser( downloadPath );
-				std::auto_ptr<html::Document> theResultDoc(
+				std::unique_ptr<html::Document> theResultDoc(
 					theParser.readFile( false )
 				);
 				theParser.closeStream();
@@ -927,8 +928,8 @@ STRING THE_WEB_FOLDER::exportFile(
 	}
 	else
 	{
-		std::auto_ptr<html::Document>	theHtmlDoc( file->getHtmlDocument() );
-		if( theHtmlDoc.get() )
+		std::unique_ptr<html::Document>	theHtmlDoc( file->getHtmlDocument() );
+		if( theHtmlDoc )
 		{
 			downloadPath = file->getDownloadFile( localPath );
 
@@ -961,8 +962,8 @@ STRING THE_WEB_FOLDER::exportFile(
 		}
 		else
 		{
-			std::auto_ptr<xml::Document>	theXmlDoc( file->getXmlDocument() );
-			if( theXmlDoc.get() )
+			std::unique_ptr<xml::Document>	theXmlDoc( file->getXmlDocument() );
+			if( theXmlDoc )
 			{
 				downloadPath = transformXmlFile(
 					theXmlDoc.get(), file, file->getName(), localPath, flags

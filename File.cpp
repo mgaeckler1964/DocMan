@@ -48,6 +48,7 @@
 #include <gak/strFiles.h>
 #include <gak/fcopy.h>
 #include <gak/http.h>
+#include <gak/memory>
 
 #include "common.h"
 #include "File.h"
@@ -205,7 +206,7 @@ THE_FILE_VERSION::THE_FILE_VERSION( int fileID, int version )
 {
 	doEnterFunctionEx( gakLogging::llInfo, "THE_FILE_VERSION::THE_FILE_VERSION(int fileID, int version)" );
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	if( !version )
@@ -291,7 +292,7 @@ STRING THE_FILE::getStoragePath( int theVersionNum )
 {
 	if( theVersionNum )
 	{
-		std::auto_ptr<THE_FILE_VERSION> theVersion( getVersion( theVersionNum ) );
+		std::unique_ptr<THE_FILE_VERSION> theVersion( getVersion( theVersionNum ) );
 		return theVersion->getStoragePath();
 	}
 	else
@@ -342,7 +343,7 @@ int THE_FILE::createStorage( const STRING &filePath, STRING *md5Hash )
 
 		STRING		md5base64 = TDocManDataModule::md5file( filePath );
  
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 
 		theQuery->SQL->Add(
@@ -695,7 +696,7 @@ void THE_FILE_REF::updateDatabase( void )
 
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -745,7 +746,7 @@ void THE_FILE_BASE::updateDatabase( void )
 {
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -768,7 +769,7 @@ void THE_FILE::updateDatabase( void )
 {
 	THE_FILE_BASE::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	if( !m_fileID )
@@ -1298,7 +1299,7 @@ bool THE_FILE::canDelete(  bool forPurge, bool recursive  )
 /***/	return false;
 
 	int		lockCount = 0;
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -1326,7 +1327,7 @@ void THE_FILE::purgeItem( void )
 
 	int		usageCount=0;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -1385,7 +1386,7 @@ void THE_FILE::purgeVersions( int numVersions )
 	int perms = getUserPermissions();
 	if( perms & ITEM_PERM_DELETE_VERSION )
 	{
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 
 		theQuery->SQL->Add(
@@ -1447,7 +1448,7 @@ PTR_ITEM THE_FILE::copy(
 		);
 		int col;
 
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 
 		theQuery->SQL->Add(
@@ -1544,7 +1545,7 @@ RefhreshType ACTION_DOWNLOAD::perform( PTR_ITEM theItem )
 	PTR_FILE	theFile = theItem;
 	if( theFile )
 	{
-		std::auto_ptr<TSaveDialog>	saveDialog( new TSaveDialog( nullptr ) );
+		std::unique_ptr<TSaveDialog>	saveDialog( new TSaveDialog( nullptr ) );
 
 		saveDialog->FileName = (const char *)theItem->getName();
 		if( saveDialog->Execute() )
@@ -1664,7 +1665,7 @@ void THE_FILE::lock( void )
 			if( StatusForm->pushStatus( "Locking", getName() ) )
 /*@*/			return;
 
-			std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+			std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 			theQuery->DatabaseName = "docManDB";
 			theQuery->SQL->Add(
 				"update i_file_vers "
@@ -1685,7 +1686,7 @@ void THE_FILE::unlock( void )
 	if( perms & ITEM_PERM_MODIFY )
 	{
 		THE_ITEM::unlock();
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add(
 			"update i_file_vers "
@@ -1776,7 +1777,7 @@ PTR_ITEM THE_FILE::link( const PTR_ITEM &target, const STRING &newName )
 	newLink->setACL( getACL() );
 	newLink->setCopyID( getID() );
 	newLink->updateDatabase();
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"update i_files "
@@ -1955,7 +1956,7 @@ int THE_FILE::createVersion( int srcVersion )
 	);
 	THE_FILE_VERSION	src( m_fileID, srcVersion );
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -2056,7 +2057,7 @@ void THE_FILE::createVersion( const STRING &filePath, const STRING &description 
 
 	setMimeType( MimeTypesForm->GetMimeType( fileName ) );
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
@@ -2115,7 +2116,7 @@ void THE_FILE::deleteVersion( int versionId, int storageId, bool updateMaxVersio
 	int			itemID = getID();
 	int			version = 0;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add( "select * from i_storage where id = :storageId" );

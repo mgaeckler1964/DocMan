@@ -37,6 +37,7 @@
 #include <winlib/winlib.h>
 
 #pragma hdrstop
+#include <gak/memory>
 
 #include "SearchFrm.h"
 #include "ActionManager.h"
@@ -542,7 +543,7 @@ void __fastcall TSearchForm::ButtonAdvancedClick(TObject *)
 	{
 		::SetCursor( LoadCursor( NULL, IDC_WAIT ) );
 
-		std::auto_ptr<TQuery>	fillSql( new TQuery( NULL ) );
+		std::unique_ptr<TQuery>	fillSql( new TQuery( NULL ) );
 		fillSql->DatabaseName = "docManDB";
 
 		if( !ComboBoxManufacturer->Items->Count )

@@ -35,6 +35,7 @@
 #include <vcl/registry.hpp>
 
 #pragma hdrstop
+#include <gak/memory>
 
 #include "MimeTypesFrm.h"
 
@@ -89,7 +90,7 @@ STRING	TMimeTypesForm::GetMimeType( const STRING &filePath )
 
 		if( mimeType.isEmpty() )
 		{
-			std::auto_ptr<TRegistry> reg( new TRegistry(KEY_READ) );
+			std::unique_ptr<TRegistry> reg( new TRegistry(KEY_READ) );
 
 			reg->RootKey = HKEY_CLASSES_ROOT;
 

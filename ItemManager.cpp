@@ -43,6 +43,7 @@
 #include <graphics.hpp>
 
 #include <gak/vcl_tools.h>
+#include <gak/memory>
 
 #include "ItemManager.h"
 #include "UserDlg.h"
@@ -260,7 +261,7 @@ void THE_ITEM::clearAncestors()
 
 int THE_ITEM::loadChildCount()
 {
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add( "select count(*) from ITEM_TREE where parentId = :theParent" );
 	theQuery->Params->Items[0]->AsInteger = id;
@@ -293,7 +294,7 @@ void THE_ITEM::loadACL()
 {
 	ItemPermissions	itemPerm;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add( "select * from I_ACLS where item_id = :theId" );
 	theQuery->Params->Items[0]->AsInteger = id;
@@ -500,7 +501,7 @@ int THE_ITEM::loadPermissions()
 		userPermissions = 0;
 	else
 	{
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add(
 			"select permissions "
@@ -552,7 +553,7 @@ void THE_ITEM::updateDatabase()
 		int			parentID = getParentID();
 		bool		isNew;
 
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 
 		if( id )
@@ -1183,7 +1184,7 @@ ITEM_CONTENT *THE_ITEM::loadContent()
 	{
 		clearContent();
 
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add(
 			ITEM_SELECT_SQL
@@ -1290,7 +1291,7 @@ PTR_ITEM THE_ITEM::getArchive( bool create )
 
 	PTR_ITEM archiveVolume = getArchiveVolume();
 
-	std::auto_ptr<TQuery> theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery> theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"select ID "
@@ -1487,7 +1488,7 @@ void THE_ITEM::purgeItem()
 
 	if( !StatusForm->isTerminated() )
 	{
-		std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+		std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 		theQuery->DatabaseName = "docManDB";
 		theQuery->SQL->Add( "delete from I_ACLS where item_id = :theID" );
 		theQuery->Params->Items[0]->AsInteger = id;
@@ -1824,7 +1825,7 @@ PTR_ITEM getItem( int id )
 			newItem = itemCache[cachePos];
 		else
 		{
-			std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+			std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 			theQuery->DatabaseName = "docManDB";
 			theQuery->SQL->Add(
 				ITEM_SELECT_SQL
@@ -1863,7 +1864,7 @@ PTR_ITEM getItemByName( int id, const char *name )
 
 	PTR_ITEM	newItem;
 /* TODO 1 -cDB : perm check??? */
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		ITEM_SELECT_SQL
@@ -1925,7 +1926,7 @@ PTR_ITEM getPersonalItem( int itemType )
 
 	PTR_ITEM	newItem;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"select ITEM_TREE.*, 1 as num_links "
@@ -1961,7 +1962,7 @@ PTR_ITEM getPublicVolume( int itemType )
 	doEnterFunctionEx(gakLogging::llDetail, "getPublicVolume");
 	PTR_ITEM	newItem;
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( nullptr ) );
 	theQuery->DatabaseName = "docManDB";
 	theQuery->SQL->Add(
 		"select ITEM_TREE.*, 1 as num_links "

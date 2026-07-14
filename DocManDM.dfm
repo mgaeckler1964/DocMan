@@ -1306,7 +1306,6 @@ object DocManDataModule: TDocManDataModule
   end
   object theDatabase: TDatabase
     AliasName = 'DOCMAN'
-    Connected = True
     DatabaseName = 'docManDB'
     SessionName = 'Default'
     Left = 40

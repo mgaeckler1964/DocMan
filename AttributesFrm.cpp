@@ -33,6 +33,7 @@
 
 #include <vcl.h>
 #include <gak/vcl_tools.h>
+#include <gak/memory>
 
 #pragma hdrstop
 
@@ -201,8 +202,8 @@ void THREAD_CAT_ADD_APPLY_DOWN::addCategory( TQuery *testSQL, PTR_ITEM &theItemT
 //---------------------------------------------------------------------------
 void THREAD_CAT_REMOVE_APPLY_DOWN::perform( void )
 {
-	std::auto_ptr<TQuery>	testSQL( new TQuery( NULL ) );
-	std::auto_ptr<TQuery>	rmSQL( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	testSQL( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	rmSQL( new TQuery( NULL ) );
 
 	testSQL->DatabaseName = "docManDb";
 	rmSQL->DatabaseName = "docManDb";
@@ -233,7 +234,7 @@ void THREAD_CAT_REMOVE_APPLY_DOWN::perform( void )
 //---------------------------------------------------------------------------
 void THREAD_CAT_ADD_APPLY_DOWN::perform( void )
 {
-	std::auto_ptr<TQuery>	testSQL( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	testSQL( new TQuery( NULL ) );
 
 	testSQL->DatabaseName = "docManDb";
 

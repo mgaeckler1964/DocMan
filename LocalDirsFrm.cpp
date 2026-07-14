@@ -35,6 +35,7 @@
 #include <gak/vcl_tools.h>
 
 #pragma hdrstop
+#include <gak/memory>
 
 #include "LocalDirsFrm.h"
 #include "ItemManager.h"
@@ -136,7 +137,7 @@ void __fastcall TLocalDirsForm::SpeedButtonDeleteClick(TObject *)
 			STRING	machine = QueryLocalDirsMACHINE->AsString.c_str();
 			int		reserveCount;
 
-			std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+			std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 			theQuery->DatabaseName = "docmandb";
 			theQuery->SQL->Add(
 				"select count(*) "

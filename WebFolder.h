@@ -40,9 +40,9 @@
 // ----- includes ------------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
+#include <gak/memory>
 #include <gak/string.h>
 #include "Folder.h"
-
 // --------------------------------------------------------------------- //
 // ----- imported datas ------------------------------------------------ //
 // --------------------------------------------------------------------- //
@@ -134,7 +134,7 @@ class THE_WEB_FOLDER : public THE_LOCAL_FOLDER
 	void testDocument( Document *theDocument )
 	{
 #ifndef DOCMANBG
-		std::auto_ptr<XmlMySchemaManager>	theManager( new XmlMySchemaManager );
+		std::unique_ptr<XmlMySchemaManager>	theManager( new XmlMySchemaManager );
 		STRING errText = theManager->testDocument( theDocument );
 		if( !errText.isEmpty() )
 			logFile <<

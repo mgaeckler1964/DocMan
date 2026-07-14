@@ -37,6 +37,8 @@
 // ----- includes ------------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
+#include <gak/memory>
+
 #include "TestFolder.h"
 #include "Folder.h"
 #include "ItemCreateFrm.h"
@@ -292,7 +294,7 @@ void THE_TEST_FOLDER::updateDatabase( void )
 {
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(

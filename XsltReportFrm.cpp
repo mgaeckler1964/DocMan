@@ -39,6 +39,7 @@
 #include <winlib/winlib.h>
 
 #pragma hdrstop
+#include <gak/memory>
 
 #include "XsltReportFrm.h"
 #include "ItemManager.h"
@@ -153,7 +154,7 @@ RefhreshType ACTION_REPORT::perform( PTR_ITEM theItem )
 				theFile = theXsltFolder->getContentItem(
 					XsltReportForm->ComboBoxStylesheet->Text.c_str()
 				);
-				std::auto_ptr<xml::Document> xmlStyleDoc(
+				std::unique_ptr<xml::Document> xmlStyleDoc(
 					theFile->getXmlDocument()
 				);
 				if( xmlStyleDoc.get() )

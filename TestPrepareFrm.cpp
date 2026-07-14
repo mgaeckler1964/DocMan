@@ -36,6 +36,7 @@
 #include <gak/vcl_tools.h>
 
 #pragma hdrstop
+#include <gak/memory>
 
 #include "TestFolder.h"
 #include "TestStepFrm.h"
@@ -118,7 +119,7 @@ void THE_TEST_EXEC_FOLDER::updateDatabase( void )
 {
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(

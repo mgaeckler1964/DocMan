@@ -34,6 +34,7 @@
 #include <vcl.h>
 
 #pragma hdrstop
+#include <gak/memory>
 
 #include "TestStepFrm.h"
 #include "DocManDM.h"
@@ -150,7 +151,7 @@ void THE_TEST_STEP::updateDatabase( void )
 {
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(

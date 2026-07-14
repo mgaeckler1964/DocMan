@@ -37,6 +37,8 @@
 // ----- includes ------------------------------------------------------ //
 // --------------------------------------------------------------------- //
 
+#include <gak/memory>
+
 #include "Alias.h"
 #include "ItemManager.h"
 
@@ -180,7 +182,7 @@ void THE_ALIAS::updateDatabase()
 {
 	THE_ITEM::updateDatabase();
 
-	std::auto_ptr<TQuery>	theQuery( new TQuery( NULL ) );
+	std::unique_ptr<TQuery>	theQuery( new TQuery( NULL ) );
 	theQuery->DatabaseName = "docManDB";
 
 	theQuery->SQL->Add(
