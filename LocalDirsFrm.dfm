@@ -1,8 +1,8 @@
 object LocalDirsForm: TLocalDirsForm
   Left = 470
   Top = 521
-  Width = 790
-  Height = 292
+  Width = 820
+  Height = 311
   Caption = 'Local Directories'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object LocalDirsForm: TLocalDirsForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 782
+    Width = 804
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -86,8 +86,8 @@ object LocalDirsForm: TLocalDirsForm
   object DBGrid1: TDBGrid
     Left = 0
     Top = 41
-    Width = 782
-    Height = 224
+    Width = 804
+    Height = 231
     Align = alClient
     DataSource = DataSource
     TabOrder = 1

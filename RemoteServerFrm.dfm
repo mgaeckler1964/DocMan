@@ -1,8 +1,8 @@
 object RemoteServerForm: TRemoteServerForm
   Left = 304
   Top = 399
-  Width = 802
-  Height = 330
+  Width = 835
+  Height = 360
   Caption = 'Remote Server'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object RemoteServerForm: TRemoteServerForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 794
+    Width = 819
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -36,8 +36,8 @@ object RemoteServerForm: TRemoteServerForm
   object DBGridRemoteServer: TDBGrid
     Left = 0
     Top = 41
-    Width = 794
-    Height = 262
+    Width = 819
+    Height = 280
     Align = alClient
     DataSource = DataSourceRemoteServer
     TabOrder = 1

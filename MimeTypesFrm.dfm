@@ -1,8 +1,8 @@
 object MimeTypesForm: TMimeTypesForm
   Left = 327
   Top = 436
-  Width = 590
-  Height = 286
+  Width = 655
+  Height = 325
   Caption = 'Mime Types'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object MimeTypesForm: TMimeTypesForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 582
+    Width = 639
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -35,8 +35,8 @@ object MimeTypesForm: TMimeTypesForm
   object DBGridMimeTypes: TDBGrid
     Left = 0
     Top = 41
-    Width = 582
-    Height = 218
+    Width = 639
+    Height = 245
     Align = alClient
     DataSource = DataSourceMimeTypes
     TabOrder = 1

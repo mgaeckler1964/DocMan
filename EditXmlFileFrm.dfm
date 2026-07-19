@@ -1,6 +1,6 @@
 inherited EditXmlFileForm: TEditXmlFileForm
-  Left = 490
-  Top = 312
+  Left = 703
+  Top = 153
   Width = 627
   Height = 475
   Caption = 'EditXmlFileForm'
@@ -9,8 +9,8 @@ inherited EditXmlFileForm: TEditXmlFileForm
   PixelsPerInch = 96
   TextHeight = 13
   inherited Panel1: TPanel
-    Top = 407
-    Width = 619
+    Top = 395
+    Width = 611
     object ButtonTransform: TButton
       Left = 168
       Top = 8
@@ -41,34 +41,34 @@ inherited EditXmlFileForm: TEditXmlFileForm
     end
   end
   inline xmlEditorFrame: TxmlEditorFrame
-    Width = 619
-    Height = 407
+    Width = 611
+    Height = 395
     Align = alClient
     TabOrder = 1
     inherited Splitter2: TSplitter
-      Height = 388
+      Height = 376
     end
     inherited XmlTreeView: TTreeView
-      Height = 388
+      Height = 376
     end
     inherited Panel1: TPanel
-      Width = 397
-      Height = 388
+      Width = 389
+      Height = 376
       inherited Splitter1: TSplitter
-        Width = 395
+        Width = 387
       end
       inherited AttributeGrid: TStringGrid
-        Width = 395
+        Width = 387
         OnContextPopup = xmlEditorFrameAttributeGridContextPopup
       end
       inherited ValueMemo: TMemo
-        Width = 395
-        Height = 197
+        Width = 387
+        Height = 185
       end
     end
     inherited StatusBar: TStatusBar
-      Top = 388
-      Width = 619
+      Top = 376
+      Width = 611
     end
   end
 end
